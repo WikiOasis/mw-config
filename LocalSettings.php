@@ -174,6 +174,7 @@ $wgConf->settings += [
 	'wgExtraLanguageNames' => [
 		'default' => [
 			'mh' => '',
+			'wo' => '',
 		],
 	],
 
@@ -879,12 +880,6 @@ $wgConf->settings += [
 				/* Miraheze */
 				'interwiki' => 'mh',
 				'url' => 'https://$2.miraheze.org/wiki/$1',
-				'baseTransOnly' => true,
-			],
-			'wikitide' => [
-				/* WikiTide */
-				'interwiki' => 'wt',
-				'url' => 'https://$2.wikitide.org/wiki/$1',
 				'baseTransOnly' => true,
 			],
 			'kyoikuportal' => [
