@@ -36,11 +36,7 @@ class MirahezeFunctions {
 
 	private const ALLOWED_DOMAINS = [
 		'default' => [
-			'kyoikuportal.com'
-		],
-		'beta' => [
-			'mirabeta.org',
-			'nexttide.org',
+			'wikioasis.org'
 		],
 	];
 
@@ -50,12 +46,10 @@ class MirahezeFunctions {
 
 	private const CENTRAL_DATABASE = [
 		'default' => 'metawiki',
-		'beta' => 'metawikibeta',
 	];
 
 	private const DEFAULT_SERVER = [
-		'default' => 'kyoikuportal.com',
-		'beta' => 'mirabeta.org',
+		'default' => 'wikioasis.org',
 	];
 
 	private const GLOBAL_DATABASE = [
