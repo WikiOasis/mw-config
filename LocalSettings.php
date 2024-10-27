@@ -1010,7 +1010,7 @@ $wgConf->settings += [
 
 	// CookieWarning
 	'wgCookieWarningMoreUrl' => [
-		'default' => 'https://meta.kyoikuportal.com/wiki/Privacy_policy',
+		'default' => 'https://meta.wikioasis.org/wiki/Privacy_policy',
 	],
 	'wgCookieWarningEnabled' => [
 		'default' => true,

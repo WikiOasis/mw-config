@@ -34,7 +34,7 @@ wfLoadExtensions( [
     'Interwiki',
     'InterwikiDispatcher',
     //'IPInfo',
-    'KyoikuPortalMagic',
+    //'KyoikuPortalMagic',
     'LoginNotify',
     'ManageWiki',
     //'MatomoAnalytics',
