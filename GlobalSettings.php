@@ -52,7 +52,7 @@ if ($cwClosed) {
 	}
 }
 
-$wgDataDumpDirectory = '';
+$wgDataDumpDirectory = '/var/www/dumps/';
 
 $wgDataDump = [
 	'xml' => [
