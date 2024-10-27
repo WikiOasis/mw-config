@@ -30,7 +30,7 @@ wfLoadExtensions( [
     'GlobalCssJs',
     'GlobalPreferences',
     //'GlobalNewFiles',
-    //'ImportDump',
+    'ImportDump',
     'Interwiki',
     'InterwikiDispatcher',
     //'IPInfo',

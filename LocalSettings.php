@@ -1072,6 +1072,36 @@ $wgConf->settings += [
 	'wgRemovePIIHashPrefix' => [
 		'default' => 'Deleted_User_',
 	],
+
+	// UnoirtDyno
+	'wgImportDumpCentralWiki' => [
+		'default' => 'metawiki',
+	],
+	'wgImportDumpEnableAutomatedJob' => [
+		'default' => true,
+	],
+	'wgImportDumpInterwikiMap' => [
+		'default' => [
+			'fandom.com' => 'wikia',
+			'miraheze.org' => 'mh',
+			// 'wikitide.org' => 'wt',
+		],
+	],
+	'wgImportDumpScriptCommand' => [
+		'default' => 'screen -d -m bash -c "wget {file-path} -O /home/$USER/{file-name}; php /var/www/mediawiki/maintenance/run importDump.php {wiki} -y --no-updates --username-prefix={username-prefix} /home/$USER/{file-name}; php /var/www/mediawiki/maintenance/run rebuildall.php {wiki} -y; php /var/www/mediawiki/maintenance/run initSiteStats.php {wiki} --active --update -y; rm /home/$USER/{file-name}"',
+		'metawikibeta' => 'screen -d -m bash -c ". /etc/swift-env.sh; swift download miraheze-metawikibeta-local-public {file-path} -o /home/$USER/{file-name}; mwscript importDump.php {wiki} -y --no-updates --username-prefix={username-prefix} /home/$USER/{file-name}; mwscript rebuildall.php {wiki} -y; mwscript initSiteStats.php {wiki} --active --update -y; rm /home/$USER/{file-name}"',
+	],
+	'wgImportDumpUsersNotifiedOnAllRequests' => [
+		'default' => [
+			'Waki285',
+		],
+	],
+	'wgImportDumpUsersNotifiedOnFailedImports' => [
+		'default' => [
+			'Waki285',
+		],
+	],
+
 ];
 require_once "$IP/config/ManageWikiExtensions.php";
 
