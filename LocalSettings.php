@@ -31,7 +31,7 @@ require_once "$IP/config/PrivateSettings.php";
 
 $wgConf->suffixes = [ 'wiki' ];
 
-$wmgUploadHostname = 'wikioasis.org';
+$wmgUploadHostname = 'static.wikioasis.org';
 
 $wgDBtype = "mysql";
 
@@ -53,8 +53,6 @@ $wgVirtualDomainsMapping['virtual-oathauth'] = [ 'db' => 'centralauth' ];
 $wgVirtualDomainsMapping['virtual-importdump'] = [ 'db' => 'metawiki' ];
 
 $wgCreateWikiUsePhpCache = true;
-
-$wgPasswordSender = 'noreply@wikioasis.org';
 
 $wgDebugLogGroups['MirahezeFunctions'] = "/var/log/mediawiki/mf.log";
 require_once "$IP/config/MirahezeFunctions.php";
@@ -93,7 +91,7 @@ $wgConf->settings += [
 		'default' => '',
 	],
 	'wgPasswordSender' => [
-		'default' => '',
+		'default' => 'noreply@wikioasis.org',
 	],
 	'wgEnotifUserTalk' => [
 		'default' => true,
@@ -1073,9 +1071,13 @@ require_once __DIR__ . '/ManageWikiSettings.php';
 //var_dump($wgConf->settings);
 require_once "$IP/config/Database.php";
 
-$wgUploadPath = "/images/$wgDBname";
-$wgUploadDirectory = "$IP/images/$wgDBname";
+$wgUploadPath = "//$wmgUploadHostname/$wgDBname";
+$wgUploadDirectory = "/var/www/mediawiki/images/$wgDBname";
 
+if ( $cwPrivate ) {
+	$wgUploadDirectory = "/var/www/images/$wgDBname";
+	$wgUploadPath = '/img_auth.php';
+}
 #if ( $wi->missing ) {
 #	require_once '/var/www/mediawiki/ErrorPages/MissingWiki.php';
 #}
