@@ -106,7 +106,7 @@ $wgDataDump = [
 		],
 	],
 
-	'managewiki_backup' => [
+	/*'managewiki_backup' => [
 		'file_ending' => '.json',
 		'generate' => [
 			'type' => 'mwscript',
@@ -122,7 +122,7 @@ $wgDataDump = [
 			'generate' => 'generate-dump',
 			'delete' => 'delete-dump',
 		],
-	],
+	],*/
 ];
 
 /*// $wgLogos
