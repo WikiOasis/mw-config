@@ -593,7 +593,7 @@ $wgConf->settings += [
 			'global-renamer' => [
 				'centralauth-rename' => true,
 			],
-			'global-sysop' => [
+			'global-admin' => [
 				'abusefilter-modify-global' => true,
 				'centralauth-lock' => true,
 				'globalblock' => true,
