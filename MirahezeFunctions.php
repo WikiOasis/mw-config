@@ -38,7 +38,8 @@ class MirahezeFunctions {
 		'default' => [
 			'wikioasis.org'
 		],
-	];
+        'beta' => []
+    ];
 
 	private const BETA_HOSTNAME = 'test151';
 
@@ -46,10 +47,12 @@ class MirahezeFunctions {
 
 	private const CENTRAL_DATABASE = [
 		'default' => 'metawiki',
+        'beta' => 'metawikibeta',
 	];
 
 	private const DEFAULT_SERVER = [
 		'default' => 'wikioasis.org',
+        'beta' => ''
 	];
 
 	private const GLOBAL_DATABASE = [
