@@ -110,7 +110,7 @@ $wgDataDump = [
 		'file_ending' => '.json',
 		'generate' => [
 			'type' => 'mwscript',
-			'script' => "$IP/extensions/MirahezeMagic/maintenance/generateManageWikiBackup.php",
+			'script' => "$IP/extensions/WikiOasisMagic/maintenance/generateManageWikiBackup.php",
 			'options' => [
 				'--filename',
 				'${filename}'
