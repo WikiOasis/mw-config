@@ -54,6 +54,7 @@ $wgVirtualDomainsMapping['virtual-importdump'] = [ 'db' => 'metawiki' ];
 
 $wgCreateWikiUsePhpCache = true;
 
+$wgPasswordSender = 'noreply@wikioasis.org';
 
 $wgDebugLogGroups['MirahezeFunctions'] = "/var/log/mediawiki/mf.log";
 require_once "$IP/config/MirahezeFunctions.php";
