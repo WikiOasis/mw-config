@@ -785,7 +785,7 @@ $wgConf->settings += [
 			'steward',
 			'staff',
 			'suppress',
-			'techteam',
+			'sysadmin',
 			'trustandsafety',
 		],
 	],
