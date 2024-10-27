@@ -17,23 +17,23 @@ if (!defined('MEDIAWIKI')) {
 $wgHooks['CreateWikiPhpBuilder'][] = 'MirahezeFunctions::onCreateWikiPhpBuilder';
 $wgHooks['CreateWikiPhpGenerateDatabaseList'][] = 'MirahezeFunctions::onGenerateDatabaseLists';
 
-if ( $wi->isExtensionActive( 'CirrusSearch' ) ) {
-	wfLoadExtension( 'Elastica' );
+if ($wi->isExtensionActive('CirrusSearch')) {
+	wfLoadExtension('Elastica');
 	$wgSearchType = 'CirrusSearch';
 	$wgCirrusSearchServers = ['localhost'];
 
-	if ( $wi->isExtensionActive( 'RelatedArticles' ) ) {
+	if ($wi->isExtensionActive('RelatedArticles')) {
 		$wgRelatedArticlesUseCirrusSearch = true;
 	}
 }
 
-if ( $wi->isExtensionActive( 'SocialProfile' ) ) {
+if ($wi->isExtensionActive('SocialProfile')) {
 	require_once "$IP/extensions/SocialProfile/SocialProfile.php";
 
 	#$wgSocialProfileFileBackend = 'miraheze-swift';
 }
 
-if ( $cwClosed ) {
+if ($cwClosed) {
 	$wgRevokePermissions = [
 		'*' => [
 			'block' => true,
@@ -47,7 +47,7 @@ if ( $cwClosed ) {
 		],
 	];
 
-	if ( $wi->isExtensionActive( 'Comments' ) ) {
+	if ($wi->isExtensionActive('Comments')) {
 		$wgRevokePermissions['*']['comment'] = true;
 	}
 }
@@ -83,28 +83,29 @@ $wgDataDump = [
 			'type' => 'namespaceselect',
 			'exists' => true,
 			'noArgsValue' => 'all',
-			'hide-if' => [ '!==', 'generatedumptype', 'xml' ],
+			'hide-if' => ['!==', 'generatedumptype', 'xml'],
 			'label-message' => 'datadump-namespaceselect-label'
 		],
 	],
-	/*'image' => [
-		'file_ending' => '.tar.gz',
-		'useBackendTempStore' => true,
+	'zip' => [
+		'file_ending' => '.zip',
 		'generate' => [
-			'type' => 'mwscript',
-			'script' => "$IP/extensions/MirahezeMagic/maintenance/swiftDump.php",
+			'type' => 'script',
+			'script' => '/usr/bin/zip',
 			'options' => [
-				'--filename',
-				'${filename}'
+				'-r',
+				"{$wgDataDumpDirectory}" . '${filename}',
+				($cwPrivate ? "/var/www/images/{$wgDBname}" : "$IP/images/{$wgDBname}"),  // 条件による切り替え
 			],
 		],
 		'limit' => 1,
 		'permissions' => [
 			'view' => 'view-dump',
-			'generate' => 'managewiki-restricted',
+			'generate' => 'generate-dump',
 			'delete' => 'delete-dump',
 		],
-	],*/
+	],
+
 	'managewiki_backup' => [
 		'file_ending' => '.json',
 		'generate' => [
@@ -150,7 +151,7 @@ $wgRightsUrl = 'https://creativecommons.org/licenses/by-sa/4.0/';
  * values to be absolute overrides. This is however how licensing should
  * be forced. LocalSettings.php values should take priority, which they do.
  */
-switch ( $wmgWikiLicense ) {
+switch ($wmgWikiLicense) {
 	case 'arr':
 		$wgRightsIcon = 'https://static.miraheze.org/commonswiki/6/67/License_icon-copyright-88x31.svg';
 		$wgRightsText = 'All Rights Reserved';
@@ -214,10 +215,10 @@ switch ( $wmgWikiLicense ) {
  * Make sure it works to override the footer icon
  * for other overrides in LocalSettings.php.
  */
-if ( $wgConf->get( 'wgRightsIcon', $wi->dbname ) ) {
+if ($wgConf->get('wgRightsIcon', $wi->dbname)) {
 	$wgFooterIcons['copyright']['copyright'] = [
-		'url' => $wgConf->get( 'wgRightsUrl', $wi->dbname ),
-		'src' => $wgConf->get( 'wgRightsIcon', $wi->dbname ),
-		'alt' => $wgConf->get( 'wgRightsText', $wi->dbname ),
+		'url' => $wgConf->get('wgRightsUrl', $wi->dbname),
+		'src' => $wgConf->get('wgRightsIcon', $wi->dbname),
+		'alt' => $wgConf->get('wgRightsText', $wi->dbname),
 	];
 }
