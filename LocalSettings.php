@@ -1073,7 +1073,7 @@ $wgConf->settings += [
 		'default' => 'Deleted_User_',
 	],
 
-	// UnoirtDyno
+	// ImportDump
 	'wgImportDumpCentralWiki' => [
 		'default' => 'metawiki',
 	],

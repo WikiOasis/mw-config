@@ -61,6 +61,7 @@ wfLoadExtensions( [
     //'WebAuthn',
     'WikiDiscover',
     'WikiEditor',
+	'WikiOasisMagic',
     'cldr',
 ] );
 
