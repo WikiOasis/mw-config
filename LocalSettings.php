@@ -1102,6 +1102,117 @@ $wgConf->settings += [
 		],
 	],
 
+	// DiscordNotifications
+	'wgDiscordAvatarUrl' => [
+		'default' => '',
+	],
+	'wgDiscordFromName' => [
+		'default' => $wi->sitename,
+	],
+	'wgDiscordIgnoreMinorEdits' => [
+		'default' => false,
+	],
+	'wgDiscordIncludePageUrls' => [
+		'default' => true,
+	],
+	'wgDiscordIncludeUserUrls' => [
+		'default' => true,
+	],
+	'wgDiscordIncludeDiffSize' => [
+		'default' => true,
+	],
+	'wgDiscordNotificationMovedArticle' => [
+		'default' => true,
+	],
+	'wgDiscordNotificationFileUpload' => [
+		'default' => true,
+	],
+	'wgDiscordNotificationProtectedArticle' => [
+		'default' => true,
+	],
+	'wgDiscordNotificationAfterImportPage' => [
+		'default' => true,
+	],
+	'wgDiscordNotificationShowSuppressed' => [
+		'default' => false,
+	],
+	'wgDiscordNotificationCentralAuthWikiUrl' => [
+		'default' => 'https://meta.wikioasis.org/',
+	],
+	'wgDiscordNotificationBlockedUser' => [
+		'default' => true,
+	],
+	'wgDiscordNotificationNewUser' => [
+		'default' => true,
+	],
+	'wgDiscordNotificationIncludeAutocreatedUsers' => [
+		'default' => true,
+		'loginwiki' => false,
+		'metawiki' => false,
+	],
+	'wgDiscordAdditionalIncomingWebhookUrls' => [
+		'default' => [],
+	],
+	'wgDiscordDisableEmbedFooter' => [
+		'default' => false,
+	],
+	'wgDiscordExcludeConditions' => [
+		'default' => [
+			'experimental' => [
+				'article_inserted' => [
+					'groups' => [
+						'sysop',
+					],
+					'permissions' => [
+						'bot',
+						'managewiki-core',
+						'managewiki-extensions',
+						'managewiki-namespaces',
+						'managewiki-permissions',
+						'managewiki-settings',
+					],
+				],
+				'article_saved' => [
+					'groups' => [
+						'sysop',
+					],
+					'permissions' => [
+						'bot',
+						'managewiki-core',
+						'managewiki-extensions',
+						'managewiki-namespaces',
+						'managewiki-permissions',
+						'managewiki-settings',
+					],
+				],
+			],
+			'users' => [],
+		],
+		'+metawiki' => [
+			'article_inserted' => [
+				'groups' => [
+					'bot',
+					'flood',
+				],
+			],
+			'article_saved' => [
+				'groups' => [
+					'bot',
+					'flood',
+				],
+			],
+		],
+	],
+	'wgDiscordEnableExperimentalCVTFeatures' => [
+		'default' => true,
+	],
+	'wgDiscordExperimentalCVTMatchFilter' => [
+		'default' => [ '(n[1i!*]gg[3*e]r|r[e3*]t[4@*a]rd|f[@*4]gg[0*o]t|ch[1!i*]nk)' ],
+	],
+	'wgDiscordExperimentalFeedLanguageCode' => [
+		'default' => 'en',
+	],
+
 ];
 require_once "$IP/config/ManageWikiExtensions.php";
 
