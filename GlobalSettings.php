@@ -17,6 +17,10 @@ if (!defined('MEDIAWIKI')) {
 $wgHooks['CreateWikiPhpBuilder'][] = 'MirahezeFunctions::onCreateWikiPhpBuilder';
 $wgHooks['CreateWikiPhpGenerateDatabaseList'][] = 'MirahezeFunctions::onGenerateDatabaseLists';
 
+if ( $wi->isExtensionActive( 'chameleon' ) ) {
+	wfLoadExtension( 'Bootstrap' );
+}
+
 if ($wi->isExtensionActive('CirrusSearch')) {
 	wfLoadExtension('Elastica');
 	$wgSearchType = 'CirrusSearch';
