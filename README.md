@@ -2,4 +2,4 @@
 
 Production configuration for MediaWiki
 
-Forked from [https://github.com/miraheze/mw-config](miraheze/mw-config)
+Forked from [miraheze/mw-config](https://github.com/miraheze/mw-config)
