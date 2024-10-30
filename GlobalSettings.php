@@ -37,6 +37,11 @@ if ($wi->isExtensionActive('SocialProfile')) {
 	#$wgSocialProfileFileBackend = 'miraheze-swift';
 }
 
+// Public Wikis
+if ( !$cwPrivate ) {
+	$wgDiscordIncomingWebhookUrl = $wmgGlobalDiscordWebhookUrl;
+}
+
 if ($cwClosed) {
 	$wgRevokePermissions = [
 		'*' => [
