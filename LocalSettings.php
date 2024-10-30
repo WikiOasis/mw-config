@@ -273,6 +273,12 @@ $wgConf->settings += [
 		],
 	],
 
+	// url
+	'wgMainPageIsDomainRoot' => [
+		'default' => false,
+		'metawiki' => true,
+	],
+
 	// ==================
 	// EXTENSION SETTINGS
 	// ==================
