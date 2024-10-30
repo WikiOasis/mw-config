@@ -1248,6 +1248,20 @@ $wgConf->settings += [
 
 ];
 require_once "$IP/config/ManageWikiExtensions.php";
+$wi::$disabledExtensions = [
+	'drafts' => '<a href="https://issue-tracker.miraheze.org/T11970">T11970</a>',
+	'pageproperties' => '<a href="https://issue-tracker.miraheze.org/T11641">T11641</a>',
+	'score' => '<a href="https://issue-tracker.miraheze.org/T5863">T5863</a>',
+	'wikiforum' => '<a href="https://issue-tracker.miraheze.org/T11641">T11641</a>',
+
+	'lingo' => 'Currently broken',
+
+	'chameleon' => 'Incompatible with MediaWiki 1.42',
+	'evelution' => 'Incompatible with MediaWiki 1.42',
+	'eveskin' => 'Incompatible with MediaWiki 1.42',
+	'femiwiki' => 'Incompatible with MediaWiki 1.42',
+	'snapwikiskin' => 'Incompatible with MediaWiki 1.42',
+];
 
 $globals = MirahezeFunctions::getConfigGlobals();
 
