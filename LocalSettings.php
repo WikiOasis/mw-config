@@ -1215,6 +1215,17 @@ $wgConf->settings += [
 		'default' => 'en',
 	],
 
+	// SecurePoll
+	'wgSecurePollUseLogging' => [
+		'default' => true,
+	],
+	'wgSecurePollSingleTransferableVoteEnabled' => [
+		'default' => true,
+	],
+	'wgSecurePollUseNamespace' => [
+		'default' => true,
+	],
+
 ];
 require_once "$IP/config/ManageWikiExtensions.php";
 
