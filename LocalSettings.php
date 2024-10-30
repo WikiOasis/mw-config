@@ -1232,6 +1232,20 @@ $wgConf->settings += [
 		'default' => true,
 	],
 
+	// Scribunto
+	'wgCodeEditorEnableCore' => [
+		'default' => true,
+	],
+	'wgScribuntoDefaultEngine' => [
+		'default' => 'luasandbox',
+	],
+	'wgScribuntoUseCodeEditor' => [
+		'default' => true,
+	],
+	'wgScribuntoSlowFunctionThreshold' => [
+		'default' => 0.99,
+	],
+
 ];
 require_once "$IP/config/ManageWikiExtensions.php";
 
