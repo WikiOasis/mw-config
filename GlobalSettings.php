@@ -37,6 +37,16 @@ if ($wi->isExtensionActive('SocialProfile')) {
 	#$wgSocialProfileFileBackend = 'miraheze-swift';
 }
 
+$articlePath = str_replace( '$1', '', $wgArticlePath );
+
+$wgDiscordNotificationWikiUrl = $wi->server . $articlePath;
+$wgDiscordNotificationWikiUrlEnding = '';
+$wgDiscordNotificationWikiUrlEndingDeleteArticle = '?action=delete';
+$wgDiscordNotificationWikiUrlEndingDiff = '?diff=prev&oldid=';
+$wgDiscordNotificationWikiUrlEndingEditArticle = '?action=edit';
+$wgDiscordNotificationWikiUrlEndingHistory = '?action=history';
+$wgDiscordNotificationWikiUrlEndingUserRights = 'Special:UserRights?user=';
+
 // Public Wikis
 if ( !$cwPrivate ) {
 	$wgDiscordIncomingWebhookUrl = $wmgGlobalDiscordWebhookUrl;
