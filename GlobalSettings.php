@@ -37,6 +37,10 @@ if ($wi->isExtensionActive('SocialProfile')) {
 	#$wgSocialProfileFileBackend = 'miraheze-swift';
 }
 
+if ( $wi->isExtensionActive( 'StandardDialogs' ) ) {
+	wfLoadExtension( 'OOJSPlus' );
+}
+
 $articlePath = str_replace( '$1', '', $wgArticlePath );
 
 $wgDiscordNotificationWikiUrl = $wi->server . $articlePath;

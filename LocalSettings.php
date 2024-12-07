@@ -599,13 +599,6 @@ $wgConf->settings += [
 			'electionadmin' => [
 				'securepoll-create-poll' => true,
 			],
-			'global-renamer' => [
-				'centralauth-rename' => true,
-			],
-			'global-admin' => [
-				'abusefilter-modify-global' => true,
-				'abusefilter-modify-restricted' => true,
-			],
 			'steward' => [
 				'abusefilter-modify-global' => true,
 				'centralauth-lock' => true,
@@ -671,10 +664,6 @@ $wgConf->settings += [
 				'request-import' => true,
 				'request-ssl' => true,
 				'requestwiki' => true,
-			],
-			'wiki-creator' => [
-				'createwiki' => true,
-				'createwiki-deleterequest' => true,
 			],
 		],
 	],
@@ -1261,6 +1250,7 @@ $wi::$disabledExtensions = [
 	'eveskin' => 'Incompatible with MediaWiki 1.42',
 	'femiwiki' => 'Incompatible with MediaWiki 1.42',
 	'snapwikiskin' => 'Incompatible with MediaWiki 1.42',
+	'hawelcome' => 'Privacy issue',
 ];
 
 $globals = MirahezeFunctions::getConfigGlobals();
@@ -1282,9 +1272,9 @@ if ( $cwPrivate ) {
 	$wgUploadDirectory = "/var/www/images/$wgDBname";
 	$wgUploadPath = '/img_auth.php';
 }
-#if ( $wi->missing ) {
-#	require_once '/var/www/mediawiki/ErrorPages/MissingWiki.php';
-#}
+if ( $wi->missing ) {
+	require_once '/var/www/mediawiki/config/MissingWiki.php';
+}
 
 if ( $cwDeleted ) {
 	if ( MW_ENTRY_POINT === 'cli' ) {
@@ -1295,7 +1285,7 @@ if ( $cwDeleted ) {
 }
 
 function wfHandleDeletedWiki() {
-	require_once '/var/www/mediawiki/ErrorPages/DeletedWiki.php';
+	require_once '/var/www/mediawiki/config/DeletedWiki.php';
 }
 
 require_once "$IP/config/GlobalSettings.php";
