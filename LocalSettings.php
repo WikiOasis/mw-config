@@ -180,38 +180,6 @@ $wgConf->settings += [
 			'wo' => '',
 		],
 	],
-	
-	// Footer icons
-	'+wgFooterIcons' => [
-		'lhmnwiki' => [
-			'hostedby' => [
-				'songnguxyz' => [
-					'src' => '//songnguxyz.wikioasis.org/img_auth.php/5/58/Footer.SN.xyz.svg',
-					'url' => 'https://songngu.xyz',
-					'alt' => 'Dự án được bảo quản bởi SongNgư.xyz',
-					"height" => "32",
-					"width" => "200",
-				],
-			],
-			'poweredby' => [
-				'mediawiki' => [
-					'src' => '//songnguxyz.wikioasis.org/img_auth.php/9/9b/MediaWiki.svg',
-					'url' => '//www.mediawiki.org',
-					'alt' => 'Xây dựng trên MediaWiki',
-					'height' => "60",
-					'width' => "185",
-				],
-			],
-			'copyright' => [
-				'copyright' => [
-					'src' => '//songnguxyz.wikioasis.org/img_auth.php/8/89/ARR.svg',
-					'alt' => 'Toàn quyền được bảo lưu',
-					'height' => "50",
-					'width' => "50",
-				],
-			],
-		],
-	],
 
 	// copyright
 	'wgRightsPage' => [
