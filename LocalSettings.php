@@ -1172,7 +1172,7 @@ $wgConf->settings += [
 	'wgPortableInfoboxCacheRenderers' => [
 		'default' => true,
 	],
-    	'wgPortableInfoboxCustomImageWidth' => [
+    'wgPortableInfoboxCustomImageWidth' => [
 		'default' => 300,
 	],
 	
