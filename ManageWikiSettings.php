@@ -367,7 +367,7 @@ $wgManageWikiSettings = [
 		'help' => 'This option controls whether or not feeds will be linked to in the sidebar',
 		'requires' => [],
 	],
-	'wmgMirahezeFeaturedFeedsInUserLanguage' => [
+	'wmgWikiOasisFeaturedFeedsInUserLanguage' => [
 		'name' => 'Should feeds honor the user\'s preferred language?',
 		'from' => 'featuredfeeds',
 		'type' => 'check',
@@ -727,7 +727,7 @@ $wgManageWikiSettings = [
 		],
 		'overridedefault' => 'cc-by-sa',
 		'section' => 'editing',
-		'help' => 'Each wiki on Miraheze is by default licensed under CC-BY-SA 4.0 although this can be changed to another supported license. If you would like to release the contributions on your wiki under another license, please let us know so that we can make it available to you. Be aware that changing the license on your wiki can have an impact on your community and should not be done lightly.',
+		'help' => 'Each wiki on WikiOasis is by default licensed under CC-BY-SA 4.0 although this can be changed to another supported license. If you would like to release the contributions on your wiki under another license, please let us know so that we can make it available to you. Be aware that changing the license on your wiki can have an impact on your community and should not be done lightly.',
 		'requires' => [],
 	],
 	'wgActiveUserDays' => [
@@ -1211,8 +1211,8 @@ $wgManageWikiSettings = [
 		'help' => 'Source to get the page description from.',
 		'requires' => [],
 	],
-	'wmgMirahezeContactPageFooter' => [
-		'name' => 'Miraheze Contact Page Footer',
+	'wmgWikiOasisContactPageFooter' => [
+		'name' => 'WikiOasis Contact Page Footer',
 		'from' => 'contactpage',
 		'type' => 'check',
 		'overridedefault' => false,
@@ -1525,7 +1525,7 @@ $wgManageWikiSettings = [
 		'type' => 'check',
 		'overridedefault' => false,
 		'section' => 'media',
-		'help' => 'By default, Miraheze enables file upload only from a local media but with this option you can upload files remotely from other sites.',
+		'help' => 'By default, WikiOasis enables file upload only from a local media but with this option you can upload files remotely from other sites.',
 		'requires' => [],
 	],
 	'wgCopyUploadsFromSpecialUpload' => [
@@ -1546,16 +1546,6 @@ $wgManageWikiSettings = [
 		'overridedefault' => true,
 		'section' => 'media',
 		'help' => 'This option allows you to use the Wikimedia Commons file database on your wiki. This is a performance optimised version of the core <code>$wgUseInstantCommons</code>.',
-		'requires' => [],
-	],
-	'wgMirahezeCommons' => [
-		'name' => 'Enable Miraheze Commons (linking to commons.miraheze.org)',
-		'from' => 'mediawiki',
-		'global' => true,
-		'type' => 'check',
-		'overridedefault' => true,
-		'section' => 'media',
-		'help' => 'This option allows you to use the Miraheze Commons file database on your wiki.',
 		'requires' => [],
 	],
 	'wgShowArchiveThumbnails' => [
@@ -1923,7 +1913,7 @@ $wgManageWikiSettings = [
 		'type' => 'text',
 		'overridedefault' => false,
 		'section' => 'media',
-		'help' => 'The database name for the wiki to allow to use this wiki as the file repository for that wiki. This value must be a valid Miraheze-hosted wiki database.',
+		'help' => 'The database name for the wiki to allow to use this wiki as the file repository for that wiki. This value must be a valid WikiOasis-hosted wiki database.',
 		'requires' => [
 			'visibility' => [
 				'state' => 'public',
@@ -1937,7 +1927,7 @@ $wgManageWikiSettings = [
 		'type' => 'text',
 		'overridedefault' => false,
 		'section' => 'media',
-		'help' => 'The database name for the wiki to use as the file repository. This value must be a valid Miraheze-hosted wiki database. The databse in this field will be used for granting permission from the client database. This <b>can not</b> be a private wiki database.',
+		'help' => 'The database name for the wiki to use as the file repository. This value must be a valid WikiOasis-hosted wiki database. The databse in this field will be used for granting permission from the client database. This <b>can not</b> be a private wiki database.',
 		'requires' => [],
 	],
 	'wmgEnableSharedUploads' => [
@@ -2059,13 +2049,13 @@ $wgManageWikiSettings = [
 		'requires' => [],
 	],
 	'wmgSiteNoticeOptOut' => [
-		'name' => 'Opt out of global Miraheze notices',
+		'name' => 'Opt out of global WIkiOasis notices',
 		'from' => 'mediawiki',
 		'global' => true,
 		'type' => 'check',
 		'overridedefault' => false,
 		'section' => 'notifications',
-		'help' => 'Opts your wiki out of global Miraheze notices, only showing important notices.',
+		'help' => 'Opts your wiki out of global WikiOasis notices, only showing important notices.',
 		'requires' => [],
 	],
 	'wgMinervaEnableSiteNotice' => [
@@ -3101,9 +3091,9 @@ $wgManageWikiSettings = [
 		'from' => 'mediawiki',
 		'global' => true,
 		'type' => 'text',
-		'overridedefault' => "https://$wmgUploadHostname/metawiki/3/35/Miraheze_Logo.svg",
+		'overridedefault' => "https://$wmgUploadHostname/metawiki/3/38/WikiOasis_Logo.png",
 		'section' => 'styling',
-		'help' => 'This will replace Miraheze\'s default logo. See <a href="https://meta.miraheze.org/wiki/ManageWiki#How_do_I_change_my_logo.2Ffavicon.3F">this link</a> for how you can change it. Also sets the value of <code>$wgLogos[\'1x\']</code>.',
+		'help' => 'This will replace WikiOasis\' default logo. See <a href="https://meta.miraheze.org/wiki/ManageWiki#How_do_I_change_my_logo.2Ffavicon.3F">this link</a> for how you can change it. Also sets the value of <code>$wgLogos[\'1x\']</code>.',
 		'requires' => [],
 	],
 	'wgFavicon' => [
@@ -3992,7 +3982,7 @@ $wgManageWikiSettings = [
 		'type' => 'database',
 		'overridedefault' => $wi->dbname,
 		'section' => 'wikibase',
-		'help' => 'Database identifier of the repository being used. This value must be a valid Miraheze-hosted wiki database.',
+		'help' => 'Database identifier of the repository being used. This value must be a valid WikiOasis-hosted wiki database.',
 		'requires' => [],
 	],
 	'wmgAllowEntityImport' => [

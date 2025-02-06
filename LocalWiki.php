@@ -10,7 +10,8 @@ use MediaWiki\User\User;
 
 // Per-wiki settings that are incompatible with LocalSettings.php
 switch ( $wi->dbname ) {
-    case 'metawiki':
-	wfLoadExtension('SecurePoll');
-    break;
+	case 'metawiki':
+		wfLoadExtension('SecurePoll');
+		wfLoadExtension('RequestSSL');
+		break;
 }

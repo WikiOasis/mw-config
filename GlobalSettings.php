@@ -37,6 +37,11 @@ if ($wi->isExtensionActive('SocialProfile')) {
 	#$wgSocialProfileFileBackend = 'miraheze-swift';
 }
 
+if ( $wi->isAnyOfExtensionsActive( 'WikibaseClient', 'WikibaseRepository' ) ) {
+	// Includes Wikibase Configuration. There is a global and per-wiki system here.
+	require_once "$IP/config/Wikibase.php";
+}
+
 if ( $wi->isExtensionActive( 'StandardDialogs' ) ) {
 	wfLoadExtension( 'OOJSPlus' );
 }
@@ -148,7 +153,7 @@ $wgDataDump = [
 	],*/
 ];
 
-/*// $wgLogos
+// $wgLogos
 $wgLogos = [
 	'1x' => $wgLogo,
 ];
@@ -160,7 +165,15 @@ $wgApexLogo = [
 
 if ( $wgIcon ) {
 	$wgLogos['icon'] = $wgIcon;
-}*/
+}
+
+if ( $wgWordmark ) {
+	$wgLogos['wordmark'] = [
+		'src' => $wgWordmark,
+		'width' => $wgWordmarkWidth,
+		'height' => $wgWordmarkHeight,
+	];
+}
 
 
 $wgRightsIcon = 'https://meta.wikioasis.org/' . '/resources/assets/licenses/cc-by-sa.png';

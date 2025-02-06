@@ -5,7 +5,7 @@ use MediaWiki\Context\IContextSource;
 use MediaWiki\MediaWikiServices;
 use Miraheze\CreateWiki\Services\RemoteWikiFactory;
 use Miraheze\ManageWiki\Helpers\ManageWikiSettings;
-use Wikimedia\Rdbms\DBConnRef;
+use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IReadableDatabase;
 
 class MirahezeFunctions {
@@ -36,10 +36,9 @@ class MirahezeFunctions {
 
 	private const ALLOWED_DOMAINS = [
 		'default' => [
-			'wikioasis.org'
+			'wikioasis.org',
 		],
-        'beta' => []
-    ];
+	];
 
 	private const BETA_HOSTNAME = 'test151';
 
@@ -47,16 +46,18 @@ class MirahezeFunctions {
 
 	private const CENTRAL_DATABASE = [
 		'default' => 'metawiki',
-        'beta' => 'metawikibeta',
 	];
 
 	private const DEFAULT_SERVER = [
 		'default' => 'wikioasis.org',
-        'beta' => ''
 	];
 
 	private const GLOBAL_DATABASE = [
 		'default' => 'wikidb',
+	];
+
+	private const INCIDENTS_DATABASE = [
+		'default' => 'incidents',
 		'beta' => 'testglobal',
 	];
 
@@ -68,14 +69,13 @@ class MirahezeFunctions {
 	];
 
 	public const MEDIAWIKI_VERSIONS = [
-		'alpha' => '1.43',
-		'beta' => '1.43',
-		'stable' => '1.42',
+		'alpha' => '1.44',
+		'beta' => '1.44',
+		'stable' => '1.43',
 	];
 
 	public const SUFFIXES = [
 		'wiki' => self::ALLOWED_DOMAINS['default'],
-		'wikibeta' => self::ALLOWED_DOMAINS['beta'],
 	];
 
 	public function __construct() {
@@ -340,13 +340,22 @@ class MirahezeFunctions {
 		return self::GLOBAL_DATABASE[ array_flip( self::TAGS )[$this->realm] ];
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getIncidentsDatabase(): string {
+		return self::INCIDENTS_DATABASE[ array_flip( self::TAGS )[$this->realm] ];
+	}
+
 	public function setDatabase() {
-		global $wgConf, $wgDBname, $wgCreateWikiDatabase;
+		global $wgConf, $wgDBname, $wgVirtualDomainsMapping;
 
 		$wgConf->settings['wgDBname'][$this->dbname] = $this->dbname;
 		$wgDBname = $this->dbname;
 
-		$wgCreateWikiDatabase = $this->getGlobalDatabase();
+		$wgVirtualDomainsMapping['virtual-createwiki'] = [
+			'db' => $this->getGlobalDatabase(),
+		];
 	}
 
 	/**
@@ -530,7 +539,7 @@ class MirahezeFunctions {
 		// To-Do: merge ManageWiki cache with main config cache,
 		// to automatically update when ManageWiki is updated
 		$confActualMtime = max(
-		// When config files are updated
+			// When config files are updated
 			filemtime( __DIR__ . '/LocalSettings.php' ),
 			filemtime( __DIR__ . '/ManageWikiExtensions.php' ),
 			filemtime( __DIR__ . '/ManageWikiNamespaces.php' ),
@@ -595,8 +604,8 @@ class MirahezeFunctions {
 
 		self::$activeExtensions ??= self::getActiveExtensions();
 		$wikiTags = array_merge( preg_filter( '/^/', 'ext-',
-			str_replace( ' ', '', self::$activeExtensions )
-		), $wikiTags
+				str_replace( ' ', '', self::$activeExtensions )
+			), $wikiTags
 		);
 
 		[ $site, $lang ] = $wgConf->siteFromDB( $wgDBname );
@@ -661,8 +670,6 @@ class MirahezeFunctions {
 	public static function getManageWikiConfigCache(): array {
 		static $cacheArray = null;
 		$cacheArray ??= self::getCacheArray();
-
-		wfDebugLog("MirahezeFunctions", json_encode($cacheArray));
 
 		if ( !$cacheArray ) {
 			return [];
@@ -780,7 +787,7 @@ class MirahezeFunctions {
 		// To-Do: merge ManageWiki cache with main config cache,
 		// to automatically update when ManageWiki is updated
 		$confActualMtime = max(
-		// When config files are updated
+			// When config files are updated
 			filemtime( __DIR__ . '/LocalSettings.php' ),
 			filemtime( __DIR__ . '/ManageWikiExtensions.php' ),
 
@@ -917,6 +924,7 @@ class MirahezeFunctions {
 
 			file_put_contents( self::CACHE_DIRECTORY . '/' . $this->version . '/extension-list.php', $phpContent, LOCK_EX );
 			chmod(self::CACHE_DIRECTORY . '/' . $this->version . '/extension-list.php', 0777);
+
 		} else {
 			$list = include self::CACHE_DIRECTORY . '/' . $this->version . '/extension-list.php';
 		}
@@ -936,13 +944,11 @@ class MirahezeFunctions {
 
 	/**
 	 * @param string $databaseName
-	 * @return DBConnRef
+	 * @return IReadableDatabase
 	 */
-	private static function getDatabaseConnection( string $databaseName ): DBConnRef {
-		return MediaWikiServices::getInstance()
-			->getDBLoadBalancerFactory()
-			->getMainLB( $databaseName )
-			->getMaintenanceConnectionRef( DB_REPLICA, [], $databaseName );
+	private static function getDatabaseConnection( string $databaseName ): IReadableDatabase {
+		return MediaWikiServices::getInstance()->getConnectionProvider()
+			->getReplicaDatabase( $databaseName );
 	}
 
 	/**
@@ -954,16 +960,16 @@ class MirahezeFunctions {
 		$allWikis = $dbr->newSelectQueryBuilder()
 			->table( 'cw_wikis' )
 			->fields( [
-				'wiki_dbcluster',
-				'wiki_dbname',
-				'wiki_url',
-				'wiki_primary_domain',
-				'wiki_sitename',
-				'wiki_version',
-				'wiki_deleted',
-				'wiki_closed',
-				'wiki_inactive',
-				'wiki_private',
+				 'wiki_dbcluster',
+				 'wiki_dbname',
+				 'wiki_url',
+				 'wiki_primary_domain',
+				 'wiki_sitename',
+				 'wiki_version',
+				 'wiki_deleted',
+				 'wiki_closed',
+				 'wiki_inactive',
+				 'wiki_private',
 			] )
 			->caller( __METHOD__ )
 			->fetchResultSet();
@@ -1073,8 +1079,8 @@ class MirahezeFunctions {
 		$row = $dbr->newSelectQueryBuilder()
 			->table( 'cw_wikis' )
 			->fields( [
-				'wiki_deleted',
-				'wiki_locked',
+				 'wiki_deleted',
+				 'wiki_locked',
 			] )
 			->where( [ 'wiki_dbname' => $wiki ] )
 			->caller( __METHOD__ )
@@ -1095,7 +1101,7 @@ class MirahezeFunctions {
 
 		$mwVersion = self::getMediaWikiVersion( $dbName );
 		$versions = array_unique( array_filter( self::MEDIAWIKI_VERSIONS, static function ( $version ) use ( $mwVersion ): bool {
-			return $mwVersion === $version || is_dir( self::MEDIAWIKI_DIRECTORY . $version );
+			return $mwVersion === $version || is_dir( self::MEDIAWIKI_DIRECTORY);
 		} ) );
 
 		asort( $versions );
@@ -1148,7 +1154,7 @@ class MirahezeFunctions {
 	/**
 	 * @param IContextSource $context
 	 * @param string $dbName
-	 * @param DBConnRef $dbw
+	 * @param IDatabase $dbw
 	 * @param array $formData
 	 * @param RemoteWikiFactory &$remoteWiki
 	 */

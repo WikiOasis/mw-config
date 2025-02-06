@@ -21,8 +21,9 @@ if ( !defined( 'MW_ENTRY_POINT' ) ) {
 }
 
 // for debugging
-// error_reporting( -1 );
-// ini_set( 'display_errors', 1 );
+#error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
+error_reporting(E_ALL);
+ini_set( 'display_errors', E_ALL);
 ini_set( 'xdebug.var_display_max_children', - 1 );
 ini_set( 'xdebug.var_display_max_data', - 1 );
 ini_set( 'xdebug.var_display_max_depth', - 1 );
@@ -48,9 +49,12 @@ $wgDiff3 = "/usr/bin/diff3";
 require_once "$IP/config/GlobalExtensions.php";
 
 $wgVirtualDomainsMapping['virtual-centralauth'] = [ 'db' => 'centralauth' ];
+$wgVirtualDomainsMapping['virtual-createwiki'] = [ 'db' => 'wikidb' ];
+$wgVirtualDomainsMapping['virtual-createwiki-central'] = [ 'db' => 'metawiki' ];
 $wgVirtualDomainsMapping['virtual-globalblocking'] = [ 'db' => 'centralauth'];
 $wgVirtualDomainsMapping['virtual-oathauth'] = [ 'db' => 'centralauth' ];
 $wgVirtualDomainsMapping['virtual-importdump'] = [ 'db' => 'metawiki' ];
+$wgVirtualDomainsMapping['virtual-requestssl'] = [ 'db' => 'metawiki' ];
 
 $wgCreateWikiUsePhpCache = true;
 
@@ -65,10 +69,11 @@ $wgConf->settings += [
 	// make sure we don't have any jobs in the queue!
 
 	'wgShowExceptionDetails' => [
-		'default' => false,
+		'default' => true,
 	],
-	'wgReadonly' => [
+	'wgReadOnly' => [
 		'default' => false,
+	//	'default' => 'Server maintenance.',
 	],
 
 	// =============
@@ -210,12 +215,27 @@ $wgConf->settings += [
 		'default' => [ 'realname' ],
 	],
 
-	// css/js
+	// styling
 	'wgAllowUserCss' => [
 		'default' => true,
 	],
 	'wgAllowUserJs' => [
 		'default' => true,
+	],
+	'wgIcon' => [
+		'default' => false,
+	],
+	'wgWordmark' => [
+		'default' => false,
+	],
+	'wgWordmarkHeight' => [
+		'default' => 18,
+	],
+	'wgWordmarkWidth' => [
+		'default' => 116,
+	],
+	'wgMaxTocLevel' => [
+		'default' => 999,
 	],
 
 	// for Cloudflare
@@ -361,7 +381,6 @@ $wgConf->settings += [
 	],
 	'wgCentralAuthLoginWiki' => [
 		'default' => 'loginwiki',
-		'mirabeta' => 'loginwikibeta',
 	],
 	'wgCentralAuthOldNameAntiSpoofWiki' => [
 		'default' => 'metawiki',
@@ -1027,6 +1046,15 @@ $wgConf->settings += [
 	'wgLogSpamBlacklistHits' => [
 		'default' => true,
 	],
+	'wgBlacklistSettings' => [
+		'default' => [
+			'spam' => [
+				'files' => [
+					"https://meta.wikioasis.org/index.php?title=Spam_blacklist&action=raw&sb_ver=1"
+				],
+			],
+		]
+	],
 
 	// TitleBlacklist
 	'wgTitleBlacklistLogHits' => [
@@ -1096,6 +1124,15 @@ $wgConf->settings += [
 	'wgImportDumpUsersNotifiedOnFailedImports' => [
 		'default' => [
 			'Waki285',
+		],
+	],
+
+	// RequestSSL
+	'wgRequestSSLScriptCommand' => [
+		'default' => '',
+	],
+	'wgRequestSSLUsersNotifiedOnAllRequests' => [
+		'default' => [
 		],
 	],
 
@@ -1235,6 +1272,289 @@ $wgConf->settings += [
 		'default' => 0.99,
 	],
 
+	// Wikibase
+	'wmgAllowEntityImport' => [
+		'default' => false,
+	],
+	'wmgCanonicalUriProperty' => [
+		'default' => false,
+	],
+	'wmgEnableEntitySearchUI' => [
+		'default' => false,
+	],
+	'wmgFederatedPropertiesEnabled' => [
+		'default' => false,
+	],
+	'wmgFormatterUrlProperty' => [
+		'default' => false,
+	],
+	'wmgWikibaseRepoDatabase' => [
+		'default' => $wi->dbname
+	],
+	'wmgWikibaseRepoUrl' => [
+		'default' => 'https://wikidata.org'
+	],
+	'wmgWikibaseItemNamespaceID' => [
+		'default' => 0
+	],
+	'wmgWikibasePropertyNamespaceID' => [
+		'default' => 120
+	],
+	'wmgWikibaseRepoItemNamespaceID' => [
+		'default' => 860
+	],
+	'wmgWikibaseRepoPropertyNamespaceID' => [
+		'default' => 862
+	],
+
+	// WikibaseLexeme
+	'wgLexemeLanguageCodePropertyId' => [
+		'default' => null,
+	],
+	'wgLexemeEnableDataTransclusion' => [
+		'default' => false,
+	],
+
+	// WikibaseQualityConstraints
+	'wgWBQualityConstraintsInstanceOfId' => [
+		'default' => 'P31',
+	],
+	'wgWBQualityConstraintsSubclassOfId' => [
+		'default' => 'P279',
+	],
+	'wgWBQualityConstraintsStartTimePropertyIds' => [
+		'default' => [
+			'P569',
+			'P571',
+			'P580',
+			'P585',
+		],
+		'gratisdatawiki' => [
+			'P26',
+			'P11',
+			'P174',
+			'P80',
+		],
+	],
+	'wgWBQualityConstraintsEndTimePropertyIds' => [
+		'default' => [
+			'P570',
+			'P576',
+			'P582',
+			'P585',
+		],
+		'gratisdatawiki' => [
+			'P132',
+			'P539',
+			'P175',
+			'P80',
+		],
+	],
+	'wgWBQualityConstraintsPropertyConstraintId' => [
+		'default' => 'P2302',
+	],
+	'wgWBQualityConstraintsExceptionToConstraintId' => [
+		'default' => 'P2303',
+	],
+	'wgWBQualityConstraintsConstraintStatusId' => [
+		'default' => 'P2316',
+	],
+	'wgWBQualityConstraintsMandatoryConstraintId' => [
+		'default' => 'Q21502408',
+	],
+	'wgWBQualityConstraintsSuggestionConstraintId' => [
+		'default' => 'Q62026391',
+	],
+	'wgWBQualityConstraintsDistinctValuesConstraintId' => [
+		'default' => 'Q21502410',
+	],
+	'wgWBQualityConstraintsMultiValueConstraintId' => [
+		'default' => 'Q21510857',
+	],
+	'wgWBQualityConstraintsUsedAsQualifierConstraintId' => [
+		'default' => 'Q21510863',
+	],
+	'wgWBQualityConstraintsSingleValueConstraintId' => [
+		'default' => 'Q19474404',
+	],
+	'wgWBQualityConstraintsSymmetricConstraintId' => [
+		'default' => 'Q21510862',
+	],
+	'wgWBQualityConstraintsTypeConstraintId' => [
+		'default' => 'Q21503250',
+	],
+	'wgWBQualityConstraintsValueTypeConstraintId' => [
+		'default' => 'Q21510865',
+	],
+	'wgWBQualityConstraintsInverseConstraintId' => [
+		'default' => 'Q21510855',
+	],
+	'wgWBQualityConstraintsItemRequiresClaimConstraintId' => [
+		'default' => 'Q21503247',
+	],
+	'wgWBQualityConstraintsValueRequiresClaimConstraintId' => [
+		'default' => 'Q21510864',
+	],
+	'wgWBQualityConstraintsConflictsWithConstraintId' => [
+		'default' => 'Q21502838',
+	],
+	'wgWBQualityConstraintsOneOfConstraintId' => [
+		'default' => 'Q21510859',
+	],
+	'wgWBQualityConstraintsMandatoryQualifierConstraintId' => [
+		'default' => 'Q21510856',
+	],
+	'wgWBQualityConstraintsAllowedQualifiersConstraintId' => [
+		'default' => 'Q21510851',
+	],
+	'wgWBQualityConstraintsRangeConstraintId' => [
+		'default' => 'Q21510860',
+	],
+	'wgWBQualityConstraintsDifferenceWithinRangeConstraintId' => [
+		'default' => 'Q21510854',
+	],
+	'wgWBQualityConstraintsCommonsLinkConstraintId' => [
+		'default' => 'Q21510852',
+	],
+	'wgWBQualityConstraintsContemporaryConstraintId' => [
+		'default' => 'Q25796498',
+	],
+	'wgWBQualityConstraintsFormatConstraintId' => [
+		'default' => 'Q21502404',
+	],
+	'wgWBQualityConstraintsUsedForValuesOnlyConstraintId' => [
+		'default' => 'Q21528958',
+	],
+	'wgWBQualityConstraintsUsedAsReferenceConstraintId' => [
+		'default' => 'Q21528959',
+	],
+	'wgWBQualityConstraintsNoBoundsConstraintId' => [
+		'default' => 'Q51723761',
+	],
+	'wgWBQualityConstraintsAllowedUnitsConstraintId' => [
+		'default' => 'Q21514353',
+	],
+	'wgWBQualityConstraintsSingleBestValueConstraintId' => [
+		'default' => 'Q52060874',
+	],
+	'wgWBQualityConstraintsAllowedEntityTypesConstraintId' => [
+		'default' => 'Q52004125',
+	],
+	'wgWBQualityConstraintsCitationNeededConstraintId' => [
+		'default' => 'Q54554025',
+	],
+	'wgWBQualityConstraintsPropertyScopeConstraintId' => [
+		'default' => 'Q53869507',
+	],
+	'wgWBQualityConstraintsLexemeLanguageConstraintId' => [
+		'default' => 'Q55819106',
+	],
+	'wgWBQualityConstraintsLabelInLanguageConstraintId' => [
+		'default' => 'Q108139345',
+	],
+	'wgWBQualityConstraintsLanguagePropertyId' => [
+		'default' => 'P424',
+	],
+	'wgWBQualityConstraintsClassId' => [
+		'default' => 'P2308',
+	],
+	'wgWBQualityConstraintsRelationId' => [
+		'default' => 'P2309',
+	],
+	'wgWBQualityConstraintsInstanceOfRelationId' => [
+		'default' => 'Q21503252',
+	],
+	'wgWBQualityConstraintsSubclassOfRelationId' => [
+		'default' => 'Q21514624',
+	],
+	'wgWBQualityConstraintsInstanceOrSubclassOfRelationId' => [
+		'default' => 'Q30208840',
+	],
+	'wgWBQualityConstraintsPropertyId' => [
+		'default' => 'P2306',
+	],
+	'wgWBQualityConstraintsQualifierOfPropertyConstraintId' => [
+		'default' => 'P2305',
+	],
+	'wgWBQualityConstraintsMinimumQuantityId' => [
+		'default' => 'P2313',
+	],
+	'wgWBQualityConstraintsMaximumQuantityId' => [
+		'default' => 'P2312',
+	],
+	'wgWBQualityConstraintsMinimumDateId' => [
+		'default' => 'P2310',
+	],
+	'wgWBQualityConstraintsMaximumDateId' => [
+		'default' => 'P2311',
+	],
+	'wgWBQualityConstraintsNamespaceId' => [
+		'default' => 'P2307',
+	],
+	'wgWBQualityConstraintsFormatAsARegularExpressionId' => [
+		'default' => 'P1793',
+	],
+	'wgWBQualityConstraintsSyntaxClarificationId' => [
+		'default' => 'P2916',
+	],
+	'wgWBQualityConstraintsConstraintScopeId' => [
+		'default' => 'P4680',
+	],
+	'wgWBQualityConstraintsConstraintEntityTypesId' => [
+		'default' => 'P4680',
+	],
+	'wgWBQualityConstraintsSeparatorId' => [
+		'default' => 'P4155',
+	],
+	'wgWBQualityConstraintsConstraintCheckedOnMainValueId' => [
+		'default' => 'Q46466787',
+	],
+	'wgWBQualityConstraintsConstraintCheckedOnQualifiersId' => [
+		'default' => 'Q46466783',
+	],
+	'wgWBQualityConstraintsConstraintCheckedOnReferencesId' => [
+		'default' => 'Q46466805',
+	],
+	'wgWBQualityConstraintsNoneOfConstraintId' => [
+		'default' => 'Q52558054',
+	],
+	'wgWBQualityConstraintsIntegerConstraintId' => [
+		'default' => 'Q52848401',
+	],
+	'wgWBQualityConstraintsWikibaseItemId' => [
+		'default' => 'Q29934200',
+	],
+	'wgWBQualityConstraintsWikibasePropertyId' => [
+		'default' => 'Q29934218',
+	],
+	'wgWBQualityConstraintsWikibaseLexemeId' => [
+		'default' => 'Q51885771',
+	],
+	'wgWBQualityConstraintsWikibaseFormId' => [
+		'default' => 'Q54285143',
+	],
+	'wgWBQualityConstraintsWikibaseSenseId' => [
+		'default' => 'Q54285715',
+	],
+	'wgWBQualityConstraintsWikibaseMediaInfoId' => [
+		'default' => 'Q59712033',
+	],
+	'wgWBQualityConstraintsPropertyScopeId' => [
+		'default' => 'P5314',
+	],
+	'wgWBQualityConstraintsAsMainValueId' => [
+		'default' => 'Q54828448',
+	],
+	'wgWBQualityConstraintsAsQualifiersId' => [
+		'default' => 'Q54828449',
+	],
+	'wgWBQualityConstraintsAsReferencesId' => [
+		'default' => 'Q54828450',
+	],
+	'wgWBQualityConstraintsEnableSuggestionConstraintStatus' => [
+		'default' => false,
+	],
+
 ];
 require_once "$IP/config/ManageWikiExtensions.php";
 $wi::$disabledExtensions = [
@@ -1251,14 +1571,17 @@ $wi::$disabledExtensions = [
 	'femiwiki' => 'Incompatible with MediaWiki 1.42',
 	'snapwikiskin' => 'Incompatible with MediaWiki 1.42',
 	'hawelcome' => 'Privacy issue',
+	#'wikibaserepository' => 'Currently not configured',
+	#'wikibaseclient' => 'Currently not configured',
 ];
 
 $globals = MirahezeFunctions::getConfigGlobals();
 
 // phpcs:ignore MediaWiki.Usage.ForbiddenFunctions.extract
 extract( $globals );
-
-$wi->loadExtensions();
+#if ($wi->dbname != "wikicordwiki") {
+	$wi->loadExtensions();
+#}
 require_once __DIR__ . '/ManageWikiNamespaces.php';
 require_once __DIR__ . '/ManageWikiSettings.php';
 
@@ -1273,11 +1596,16 @@ if ( $cwPrivate ) {
 	$wgUploadPath = '/img_auth.php';
 }
 if ( $wi->missing ) {
-	require_once '/var/www/mediawiki/config/MissingWiki.php';
+	if ( MW_ENTRY_POINT === 'cli') {
+		die("Unknown wiki.");
+	} else {
+		require_once '/var/www/mediawiki/config/MissingWiki.php';
+	}
 }
 
 if ( $cwDeleted ) {
 	if ( MW_ENTRY_POINT === 'cli' ) {
+		die("Deleted Wiki: {$wgDBname}\n");
 		wfHandleDeletedWiki();
 	} else {
 		define( 'MW_FINAL_SETUP_CALLBACK', 'wfHandleDeletedWiki' );
