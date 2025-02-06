@@ -183,7 +183,7 @@ $wgConf->settings += [
 	
 	// Footer icons
 	'+wgFooterIcons' => [
-		'lhmnwiki' => [
+		'songnguxyzwiki' => [
 			'hostedby' => [
 				'songnguxyz' => [
 					'src' => '//songnguxyz.wikioasis.org/img_auth.php/5/58/Footer.SN.xyz.svg',
