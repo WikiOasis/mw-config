@@ -269,6 +269,9 @@ $wgConf->settings += [
 	'wgMaxTocLevel' => [
 		'default' => 999,
 	],
+	'wgEnableProtectionIndicators' => [
+		'default' => false,
+	],
 
 	// for Cloudflare
 	'wgUseCdn' => [
@@ -1159,6 +1162,20 @@ $wgConf->settings += [
 		],
 	],
 
+	// PortableInfobox
+	'wgPortableInfoboxResponsiblyOpenCollapsed' => [
+		'default' => true,
+	],
+	'wgPortableInfoboxUseFileDescriptionPage' => [
+		'default' => false,
+	],
+	'wgPortableInfoboxCacheRenderers' => [
+		'default' => true,
+	],
+    	'wgPortableInfoboxCustomImageWidth' => [
+		'default' => 300,
+	],
+	
 	// RequestSSL
 	'wgRequestSSLScriptCommand' => [
 		'default' => '',
