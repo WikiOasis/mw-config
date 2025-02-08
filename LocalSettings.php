@@ -21,8 +21,8 @@ if ( !defined( 'MW_ENTRY_POINT' ) ) {
 }
 
 // for debugging
-#error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
-error_reporting(E_ALL);
+error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
+#error_reporting(E_ALL);
 ini_set( 'display_errors', E_ALL);
 ini_set( 'xdebug.var_display_max_children', - 1 );
 ini_set( 'xdebug.var_display_max_data', - 1 );
@@ -49,10 +49,12 @@ $wgDiff3 = "/usr/bin/diff3";
 require_once "$IP/config/GlobalExtensions.php";
 
 $wgVirtualDomainsMapping['virtual-centralauth'] = [ 'db' => 'centralauth' ];
+$wgVirtualDomainsMapping['virtual-checkuser-global'] = [ 'db' => 'centralauth' ];
 $wgVirtualDomainsMapping['virtual-createwiki'] = [ 'db' => 'wikidb' ];
 $wgVirtualDomainsMapping['virtual-createwiki-central'] = [ 'db' => 'metawiki' ];
 $wgVirtualDomainsMapping['virtual-globalblocking'] = [ 'db' => 'centralauth'];
 $wgVirtualDomainsMapping['virtual-oathauth'] = [ 'db' => 'centralauth' ];
+$wgVirtualDomainsMapping['virtual-LoginNotify'] = [ 'db' => 'centralauth' ];
 $wgVirtualDomainsMapping['virtual-importdump'] = [ 'db' => 'metawiki' ];
 $wgVirtualDomainsMapping['virtual-requestssl'] = [ 'db' => 'metawiki' ];
 
@@ -268,6 +270,23 @@ $wgConf->settings += [
 	],
 	'wgMaxTocLevel' => [
 		'default' => 999,
+	],
+
+	// RecentChanges
+	'wgFeedLimit' => [
+		'default' => 50,
+	],
+	'wgRCMaxAge' => [
+		'default' => 180 * 24 * 3600,
+	],
+	'wgRCLinkDays' => [
+		'default' => [ 1, 3, 7, 14, 30 ],
+	],
+	'wgRCLinkLimits' => [
+		'default' => [ 50, 100, 250, 500 ],
+	],
+	'wgUseRCPatrol' => [
+		'default' => true,
 	],
 
 	// for Cloudflare
@@ -577,11 +596,17 @@ $wgConf->settings += [
 			"$IP/extensions/DataDump/sql/data_dump.sql",
 			"$IP/extensions/Echo/sql/mysql/tables-generated.sql",
 			"$IP/extensions/GlobalBlocking/sql/mysql/tables-generated-global_block_whitelist.sql",
+			#"$IP/extensions/LoginNotify/sql/mysql/tables-generated.sql",
 			"$IP/extensions/OATHAuth/sql/mysql/tables-generated.sql",
 			"$IP/extensions/OAuth/schema/mysql/tables-generated.sql",
 			//"$IP/extensions/RottenLinks/sql/rottenlinks.sql",
 			//"$IP/extensions/UrlShortener/schemas/tables-generated.sql",
 		],
+	],
+
+	// CheckUser
+	'wgCheckUserLogLogins' => [
+		'default' => true,
 	],
 
 	// ManageWiki
@@ -593,6 +618,9 @@ $wgConf->settings += [
 			'permissions' => true,
 			'settings' => true
 		],
+	],
+	'wgManageWikiUseCustomDomains' => [
+		'default' => true,
 	],
 	'wgManageWikiPermissionsAdditionalAddGroups' => [
 		'default' => [],
@@ -697,6 +725,7 @@ $wgConf->settings += [
 				'createwiki-deleterequest' => true,
 				'handle-import-request-interwiki' => true,
 				'handle-import-requests' => true,
+				'handle-ssl-requests' => true,
 				'globalgroupmembership' => true,
 				'globalgrouppermissions' => true,
 				'managewiki-core' => true,
