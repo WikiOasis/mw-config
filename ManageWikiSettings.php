@@ -3979,6 +3979,7 @@ $wgManageWikiSettings = [
 	'wgEnableProtectionIndicators' => [
 		'name' => 'Enable Core Protection Indicators',
 		'from' => 'mediawiki',
+		'global' => true,
 		'type' => 'check',
 		'overridedefault' => false,
 		'section' => 'styling',
