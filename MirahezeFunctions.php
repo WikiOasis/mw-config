@@ -89,7 +89,7 @@ class MirahezeFunctions {
 				die( 'INVALID DATABASE! YOU CAN NOT USE THE DATABASE OF A DIFFERENT REALM!' . PHP_EOL );
 			}
 
-			require_once self::MEDIAWIKI_DIRECTORY . 'ErrorPages/MissingWiki.php';
+			require_once self::MEDIAWIKI_DIRECTORY . 'config/MissingWiki.php';
 		}
 
 		$this->wikiDBClusters = self::getDatabaseClusters();

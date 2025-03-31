@@ -736,6 +736,7 @@ $wgConf->settings += [
 				'userrights' => true,
 				'userrights-interwiki' => true,
 				'view-private-import-requests' => true,
+				'view-private-ssl-requests' => true,
 			],
 			'sysop' => [
 				'interwiki' => true,
@@ -1059,6 +1060,16 @@ $wgConf->settings += [
 		'default' => true,
 	],
 
+	// Cargo
+	'wgCargoDBuser' => [
+		'default' => 'cargouser2025',
+	],
+	'wgCargoFileDataColumns' => [
+		'default' => [],
+	],
+	'wgCargoPageDataColumns' => [
+		'default' => [],
+	],
 	// CentralNotice
 	'wgNoticeInfrastructure' => [
 		'default' => false,
@@ -1087,7 +1098,79 @@ $wgConf->settings += [
 		'default' => true,
 	],
 	'wgNoticeProject' => [
-		'default' => 'all',
+		'default' => 'optout',
+		'aetasantewiki' => 'all',
+		'ampgwiki' => 'all',
+		'animefootballwiki' => 'all',
+		'artwiki' => 'all',
+		'barneybunchwiki' => 'all',
+		'biketrooperswiki' => 'all',
+		'birdwiki' => 'all',
+		'bloxrpwiki' => 'all',
+		'calvoesferawiki' => 'all',
+		'cecawiki' => 'all',
+		'chidurianwikiwiki' => 'all',
+		'ctwikiwiki' => 'all',
+		'darudeman11wiki' => 'all',
+		'dhammawiki' => 'all',
+		'dominationearthwiki' => 'all',
+		'drcklinnwiki' => 'all',
+		'eberrondayswiki' => 'all',
+		'encyclospaciawiki' => 'all',
+		'fastfoodsimwiki' => 'all',
+		'foxwiki' => 'all',
+		'fracctalwiki' => 'all',
+		'germanologiewiki' => 'all',
+		'heeheepediawiki' => 'all',
+		'heritagehomewiki' => 'all',
+		'hkfoodwiki' => 'all',
+		'hypixelwiki' => 'all',
+		'independenciawiki' => 'all',
+		'instipediawiki' => 'all',
+		'jacobwpwiki' => 'all',
+		'kabachokwiki' => 'all',
+		'kakuutetudouwikiwiki' => 'all',
+		'krugstonwiki' => 'all',
+		'lambdawarswikiwiki' => 'all',
+		'libertymyselfwiki' => 'all',
+		'loginwiki' => 'all',
+		'moderntropeswiki' => 'all',
+		'monaasliwiki' => 'all',
+		'myfrictionalwikiwiki' => 'all',
+		'niramwiki' => 'all',
+		'opinionistetwiki' => 'all',
+		'parulawiki' => 'all',
+		'placeopediawiki' => 'all',
+		'popmusicwiki' => 'all',
+		'prideandfallwiki' => 'all',
+		'progrostarwiki' => 'all',
+		'projectspapowiki' => 'all',
+		'publicdomainlyricswiki' => 'all',
+		'pyrrhiawiki' => 'all',
+		'qytrinewiki' => 'all',
+		'radicalcitywiki' => 'all',
+		'rapiddromedarieswiki' => 'all',
+		'researchifaesuwiki' => 'all',
+		'rollspelsfansinwiki' => 'all',
+		'ruswikiawiki' => 'all',
+		'staffwiki' => 'all',
+		'stratagptwiki' => 'all',
+		'supermariowiki' => 'all',
+		'test2wiki' => 'all',
+		'test3wiki' => 'all',
+		'test5wiki' => 'all',
+		'testwiki' => 'all',
+		'timoeberronwiki' => 'all',
+		'toscanainstradawiki' => 'all',
+		'trainsandbuseswiki' => 'all',
+		'uamusicwiki' => 'all',
+		'ubercatoverdrivewiki' => 'all',
+		'ucpacfoundationwiki' => 'all',
+		'wikiaeveryonewiki' => 'all',
+		'wikicordwiki' => 'all',
+		'wowcomicswiki' => 'all',
+		'wutheringwaveswiki' => 'all',
+		'yudukiyukariwiki' => 'all',
 	],
 
 	// DismissableSiteNotice
@@ -1194,6 +1277,7 @@ $wgConf->settings += [
 	],
 	'wgRequestSSLUsersNotifiedOnAllRequests' => [
 		'default' => [
+			'Waki285',
 		],
 	],
 
@@ -1666,8 +1750,8 @@ if ( $wi->missing ) {
 
 if ( $cwDeleted ) {
 	if ( MW_ENTRY_POINT === 'cli' ) {
-		die("Deleted Wiki: {$wgDBname}\n");
-		wfHandleDeletedWiki();
+		echo "Deleted Wiki: {$wgDBname}\n";
+		#wfHandleDeletedWiki();
 	} else {
 		define( 'MW_FINAL_SETUP_CALLBACK', 'wfHandleDeletedWiki' );
 	}
@@ -1679,6 +1763,9 @@ function wfHandleDeletedWiki() {
 
 require_once "$IP/config/GlobalSettings.php";
 require_once "$IP/config/LocalWiki.php";
+
+$wgCargoDBname = $wgDBname . 'cargo';
+
 // Define last - Extension message files for loading extensions
 #if (file_exists(__DIR__ . '/ExtensionMessageFiles-' . $wi->version . '.php') && !defined('MW_NO_EXTENSION_MESSAGES')) {
 	#require_once __DIR__ . '/ExtensionMessageFiles-' . $wi->version . '.php';
