@@ -154,6 +154,9 @@ $wgConf->settings += [
 	'wgResourceBasePath' => [
 		'default' => '',
 	],
+	'wgEnableCanonicalServerLink' => [
+		'default' => true,
+	],
 
 	// for private wikis
 	'wgWhitelistReadRegexp' => [
@@ -1120,7 +1123,6 @@ $wgConf->settings += [
 		'fastfoodsimwiki' => 'all',
 		'foxwiki' => 'all',
 		'fracctalwiki' => 'all',
-		'germanologiewiki' => 'all',
 		'heeheepediawiki' => 'all',
 		'heritagehomewiki' => 'all',
 		'hkfoodwiki' => 'all',
@@ -1128,7 +1130,6 @@ $wgConf->settings += [
 		'independenciawiki' => 'all',
 		'instipediawiki' => 'all',
 		'jacobwpwiki' => 'all',
-		'kabachokwiki' => 'all',
 		'kakuutetudouwikiwiki' => 'all',
 		'krugstonwiki' => 'all',
 		'lambdawarswikiwiki' => 'all',
