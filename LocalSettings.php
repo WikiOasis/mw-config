@@ -115,7 +115,7 @@ $wgConf->settings += [
 		'default' => true,
 	],
 	'wgMaxUploadSize' => [
-		'default' => 1024 * 1024 * 4096,
+		'default' => 1024 * 1024 * 128,
 	],
 	'wgAllowCopyUploads' => [
 		'default' => false,
@@ -996,7 +996,7 @@ $wgConf->settings += [
 		'default' => 'metawiki',
 	],
 
-	// ConfirmEdit & Turnstile
+	// ConfirmEdit & hCaptcha
 	'wgCaptchaTriggers' => [
 		'default' => [
 			'edit' => false,
@@ -1014,8 +1014,8 @@ $wgConf->settings += [
 			'contactpage' => true,
 		],
 	],
-	'wgTurnstileSiteKey' => [
-		'default' => '0x4AAAAAAAyhNoKEWvui-Wj7',
+	'wgHCaptchaSiteKey' => [
+		'default' => 'adce63ae-507e-4d80-8f9a-9a443e3658d6',
 	],
 
 	// TimedMediaHandler

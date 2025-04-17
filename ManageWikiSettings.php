@@ -2049,7 +2049,7 @@ $wgManageWikiSettings = [
 		'requires' => [],
 	],
 	'wmgSiteNoticeOptOut' => [
-		'name' => 'Opt out of global WIkiOasis notices',
+		'name' => 'Opt out of global WikiOasis notices',
 		'from' => 'mediawiki',
 		'global' => true,
 		'type' => 'check',
@@ -3072,7 +3072,7 @@ $wgManageWikiSettings = [
 		'from' => 'mediawiki',
 		'global' => true,
 		'type' => 'skin',
-		'overridedefault' => 'vector-2022',
+		'overridedefault' => 'citizen',
 		'section' => 'styling',
 		'help' => 'Changes the visual interface to the selected skin for all users, however it can be changed through user\'s preferences, unless the skin is added to <code>$wgSkipSkins</code> in the Preferences tab.',
 		'requires' => [],
