@@ -37,6 +37,36 @@ if ($wi->isExtensionActive('SocialProfile')) {
 	#$wgSocialProfileFileBackend = 'miraheze-swift';
 }
 
+// JsonConfig
+if ( $wi->isExtensionActive( 'JsonConfig' ) ) {
+	$wgJsonConfigs = [
+		'Map.JsonConfig' => [
+			'namespace' => 486,
+			'nsName' => 'Data',
+			// page name must end in ".map", and contain at least one symbol
+			'pattern' => '/.\.map$/',
+			'license' => 'CC-BY-SA 4.0',
+			'isLocal' => false,
+		],
+		'Tabular.JsonConfig' => [
+			'namespace' => 486,
+			'nsName' => 'Data',
+			// page name must end in ".tab", and contain at least one symbol
+			'pattern' => '/.\.tab$/',
+			'license' => 'CC-BY-SA 4.0',
+			'isLocal' => false,
+		],
+	];
+
+	$wgJsonConfigs['Map.JsonConfig']['remote'] = [
+		'url' => 'https://commons.miraheze.org/w/api.php'
+	];
+
+	$wgJsonConfigs['Tabular.JsonConfig']['remote'] = [
+		'url' => 'https://commons.miraheze.org/w/api.php'
+	];
+}
+
 if ( $wi->isAnyOfExtensionsActive( 'WikibaseClient', 'WikibaseRepository' ) ) {
 	// Includes Wikibase Configuration. There is a global and per-wiki system here.
 	require_once "$IP/config/Wikibase.php";

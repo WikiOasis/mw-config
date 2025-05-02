@@ -1,5 +1,6 @@
 <?php
 wfLoadSkins( [
+	'Citizen',
 	'CologneBlue',
 	'Modern',
 	'MonoBook',
@@ -13,6 +14,7 @@ wfLoadExtensions( [
     'BetaFeatures',
     'CentralAuth',
     'CentralNotice',
+    'CFCachePurge',
     'CheckUser',
     'CreateWiki',
     'CookieWarning',

@@ -2,6 +2,9 @@ User-Agent: *
 Allow: *
 Disallow: /geoip$
 Disallow: /rest_v1/
+Disallow: /skins/
+Disallow: /extensions/
+Disallow: /resources/
 
 User-agent: bingbot
 Crawl-delay: 20

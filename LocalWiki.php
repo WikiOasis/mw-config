@@ -14,4 +14,6 @@ switch ( $wi->dbname ) {
 		wfLoadExtension('SecurePoll');
 		wfLoadExtension('RequestSSL');
 		break;
+	case 'testwiki':
+		break;
 }

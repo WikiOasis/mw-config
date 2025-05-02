@@ -3596,13 +3596,6 @@ $wgManageWikiExtensions = [
 		'requires' => [],
 		'section' => 'skins',
 	],
-	'citizen' => [
-		'name' => 'Citizen',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Skin:Citizen',
-		'conflicts' => false,
-		'requires' => [],
-		'section' => 'skins',
-	],
 	'cosmos' => [
 		'name' => 'Cosmos',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Skin:Cosmos',

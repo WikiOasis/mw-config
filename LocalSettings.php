@@ -354,6 +354,17 @@ $wgConf->settings += [
 	],
 
 	// ==================
+	// TECHNICAL SETTINGS
+	// ==================
+	
+	// Cache
+	'wgExtensionEntryPointListFiles' => [
+		'default' => [
+			'/var/www/mediawiki/config/extension-list'
+		],
+	],
+
+	// ==================
 	// EXTENSION SETTINGS
 	// ==================
 
@@ -457,7 +468,7 @@ $wgConf->settings += [
 		'default' => 'wikidb',
 	],
 	'wgCreateWikiUseJobQueue' => [
-		'default' => false,
+		'default' => true,
 	],
 	'wgCreateWikiCategories' => [
 		'default' => [
@@ -613,7 +624,7 @@ $wgConf->settings += [
 	],
 
 	// ManageWiki
-	'wgManageWiki' => [
+	'wgManageWikiModulesEnabled' => [
 		'default' => [
 			'core' => true,
 			'extensions' => true,
@@ -959,6 +970,20 @@ $wgConf->settings += [
 	],
 	'wgOAuth2PrivateKey' => [
 		'default' => '/var/www/mediawiki/config/OAuth.key',
+	],
+
+	// JsonConfig
+	'wgJsonConfigEnableLuaSupport' => [
+		'default' => true,
+	],
+	'wgJsonConfigInterwikiPrefix' => [
+		'default' => 'commons',
+	],
+	'wgJsonConfigModels' => [
+		'default' => [
+			'Map.JsonConfig' => JsonConfig\JCMapDataContent::class,
+			'Tabular.JsonConfig' => JsonConfig\JCTabularContent::class,
+		],
 	],
 
 	// Interwiki & InterwikiDispatcher
@@ -1701,6 +1726,92 @@ $wgConf->settings += [
 		'default' => false,
 	],
 
+	// WikiSEO configs
+	'wgTwitterCardType' => [
+		'default' => 'summary_large_image',
+	],
+	'wgGoogleSiteVerificationKey' => [
+		'default' => false,
+	],
+	'wgBingSiteVerificationKey' => [
+		'default' => false,
+	],
+	'wgFacebookAppId' => [
+		'default' => false,
+	],
+	'wgYandexSiteVerificationKey' => [
+		'default' => false,
+	],
+	'wgAlexaSiteVerificationKey' => [
+		'default' => false,
+	],
+	'wgPinterestSiteVerificationKey' => [
+		'default' => false,
+	],
+	'wgNaverSiteVerificationKey' => [
+		'default' => false,
+	],
+	'wgWikiSeoDefaultImage' => [
+		'default' => null,
+	],
+	'wgWikiSeoDisableLogoFallbackImage' => [
+		'default' => false,
+	],
+	'wgWikiSeoEnableAutoDescription' => [
+		'default' => true,
+	],
+	'wgWikiSeoTryCleanAutoDescription' => [
+		'default' => false,
+	],
+	'wgMetadataGenerators' => [
+		'default' => [
+			'OpenGraph',
+			'Twitter',
+			'SchemaOrg',
+		],
+	],
+	'wgTwitterSiteHandle' => [
+		'default' => '',
+	],
+	'wgWikiSeoDefaultLanguage' => [
+		'default' => '',
+	],
+
+	// DataMaps
+	'wgDataMapsEnableCreateMap' => [
+		'default' => true,
+	],
+	'wgDataMapsEnableVisualEditor' => [
+		'default' => false,
+	],
+	'wgDataMapsAllowExperimentalFeatures' => [
+		'default' => false,
+	],
+
+	// CFCachePurge
+	'wgCFCachePurgeIgnoreImgAuth' => [
+		'default' => true,
+	],
+	'wgCFCachePurgePurgeableImageHosts'=> [
+		'default' => ['static.wikioasis.org'],
+	],
+
+	// CreateWiki Defined Special Variables
+	'cwClosed' => [
+		'default' => false,
+	],
+	'cwDeleted' => [
+		'default' => false,
+	],
+	'cwExperimental' => [
+		'default' => false,
+	],
+	'cwInactive' => [
+		'default' => false,
+	],
+	'cwPrivate' => [
+		'default' => false,
+	],
 ];
 require_once "$IP/config/ManageWikiExtensions.php";
 $wi::$disabledExtensions = [
@@ -1717,6 +1828,7 @@ $wi::$disabledExtensions = [
 	'femiwiki' => 'Incompatible with MediaWiki 1.42',
 	'snapwikiskin' => 'Incompatible with MediaWiki 1.42',
 	'hawelcome' => 'Privacy issue',
+	'semanticscribunto' => 'Semantic MediaWiki currently not enabled. Contact for enable.'
 	#'wikibaserepository' => 'Currently not configured',
 	#'wikibaseclient' => 'Currently not configured',
 ];
@@ -1734,8 +1846,10 @@ require_once __DIR__ . '/ManageWikiSettings.php';
 //var_dump($wgConf->settings);
 require_once "$IP/config/Database.php";
 
-$wgUploadPath = "//$wmgUploadHostname/$wgDBname";
+$wgUploadPath = "https://$wmgUploadHostname/$wgDBname";
 $wgUploadDirectory = "/var/www/mediawiki/images/$wgDBname";
+
+
 
 if ( $cwPrivate ) {
 	$wgUploadDirectory = "/var/www/images/$wgDBname";
@@ -1768,8 +1882,14 @@ require_once "$IP/config/LocalWiki.php";
 $wgCargoDBname = $wgDBname . 'cargo';
 
 // Define last - Extension message files for loading extensions
-#if (file_exists(__DIR__ . '/ExtensionMessageFiles-' . $wi->version . '.php') && !defined('MW_NO_EXTENSION_MESSAGES')) {
-	#require_once __DIR__ . '/ExtensionMessageFiles-' . $wi->version . '.php';
-#}
+if (file_exists(__DIR__ . '/ExtensionMessageFiles-' . $wi->version . '.php') && !defined('MW_NO_EXTENSION_MESSAGES')) {
+	require_once __DIR__ . '/ExtensionMessageFiles-' . $wi->version . '.php';
+	// These are not loaded by mergeMessageFileList.php due to not being on ExtensionRegistry
+	$wgMessagesDirs['SocialProfile'] = $IP . '/extensions/SocialProfile/i18n';
+	$wgExtensionMessagesFiles['SocialProfileAlias'] = $IP . '/extensions/SocialProfile/SocialProfile.alias.php';
+	$wgMessagesDirs['SocialProfileUserProfile'] = $IP . '/extensions/SocialProfile/UserProfile/i18n';
+	$wgExtensionMessagesFiles['SocialProfileNamespaces'] = $IP . '/extensions/SocialProfile/SocialProfile.namespaces.php';
+	$wgExtensionMessagesFiles['AvatarMagic'] = $IP . '/extensions/SocialProfile/UserProfile/includes/avatar/Avatar.i18n.magic.php';
+}
 
 unset( $wi );
