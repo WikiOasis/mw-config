@@ -1345,6 +1345,17 @@ $wgManageWikiExtensions = [
 		'requires' => [],
 		'section' => 'specialpages',
 	],
+	'enhancedupload' => [
+		'name' => 'EnhancedUpload',
+		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:EnhancedUpload',
+		'conflicts' => false,
+		'requires' => [
+			'extensions' => [
+				'visualeditor',
+			],
+		],
+		'section' => 'specialpages',
+	],
 	'featuredfeeds' => [
 		'name' => 'FeaturedFeeds',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:FeaturedFeeds',
@@ -2106,6 +2117,19 @@ $wgManageWikiExtensions = [
 		'install' => [],
 		'section' => 'other',
 	],
+	'citoid' => [
+		'name' => 'Citoid',
+		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Citoid',
+		'conflicts' => false,
+		'requires' => [
+			'extensions' => [
+				'visualeditor',
+				'templatedata',
+				'cite'
+			]
+		],
+		'section' => 'other',
+	],
 	'cirrussearch' => [
 		'name' => 'CirrusSearch',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:CirrusSearch',
@@ -2378,6 +2402,13 @@ $wgManageWikiExtensions = [
 	'globaluserpage' => [
 		'name' => 'GlobalUserPage',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:GlobalUserPage',
+		'conflicts' => false,
+		'requires' => [],
+		'section' => 'other',
+	],
+	'gtag' => [
+		'name' => 'GTag',
+		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:GTag',
 		'conflicts' => false,
 		'requires' => [],
 		'section' => 'other',

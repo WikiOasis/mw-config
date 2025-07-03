@@ -72,7 +72,7 @@ if ( $wi->isAnyOfExtensionsActive( 'WikibaseClient', 'WikibaseRepository' ) ) {
 	require_once "$IP/config/Wikibase.php";
 }
 
-if ( $wi->isExtensionActive( 'StandardDialogs' ) ) {
+if ( $wi->isAnyOfExtensionsActive( 'StandardDialogs', 'EnhancedUpload' ) ) {
 	wfLoadExtension( 'OOJSPlus' );
 }
 

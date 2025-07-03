@@ -15,5 +15,10 @@ switch ( $wi->dbname ) {
 		wfLoadExtension('RequestSSL');
 		break;
 	case 'testwiki':
+		wfLoadExtension('EnhancedUpload');
+		wfLoadExtension('OOJSPlus');
+		wfLoadExtension('Citoid');
+		$wgCitoidServiceUrl = "https://en.wikipedia.org/api/rest_v1/data/citation";
+
 		break;
 }

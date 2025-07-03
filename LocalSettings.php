@@ -39,9 +39,6 @@ $wgDBtype = "mysql";
 $wgDBprefix = "";
 $wgDBssl = false;
 
-$wgMainCacheType = CACHE_MEMCACHED;
-$wgParserCacheType = CACHE_MEMCACHED;
-$wgMessageCacheType = CACHE_MEMCACHED;
 $wgMemCachedServers = [ '127.0.0.1:11211' ];
 
 $wgDiff3 = "/usr/bin/diff3";
@@ -53,6 +50,7 @@ $wgVirtualDomainsMapping['virtual-checkuser-global'] = [ 'db' => 'centralauth' ]
 $wgVirtualDomainsMapping['virtual-createwiki'] = [ 'db' => 'wikidb' ];
 $wgVirtualDomainsMapping['virtual-createwiki-central'] = [ 'db' => 'metawiki' ];
 $wgVirtualDomainsMapping['virtual-globalblocking'] = [ 'db' => 'centralauth'];
+$wgVirtualDomainsMapping['virtual-managewiki'] = [ 'db' => 'wikidb' ];
 $wgVirtualDomainsMapping['virtual-oathauth'] = [ 'db' => 'centralauth' ];
 $wgVirtualDomainsMapping['virtual-LoginNotify'] = [ 'db' => 'centralauth' ];
 $wgVirtualDomainsMapping['virtual-importdump'] = [ 'db' => 'metawiki' ];
@@ -274,7 +272,6 @@ $wgConf->settings += [
 	'wgMaxTocLevel' => [
 		'default' => 999,
 	],
-
 	// RecentChanges
 	'wgFeedLimit' => [
 		'default' => 50,
@@ -1088,6 +1085,16 @@ $wgConf->settings += [
 		'default' => true,
 	],
 
+	// UserPageEditProtection
+	'wgOnlyUserEditUserPage' => [
+                'ext-UserPageEditProtection' => true,
+	],
+
+	// Citoid
+	'wgCitoidServiceUrl' => [
+		'default' => 'https://en.wikipedia.org/api/rest_v1/data/citation',
+	],
+
 	// Cargo
 	'wgCargoDBuser' => [
 		'default' => 'cargouser2025',
@@ -1305,6 +1312,11 @@ $wgConf->settings += [
 		'default' => [
 			'Waki285',
 		],
+	],
+
+	// Comments
+	'wgCommentsDefaultAvatar' => [
+		'default' => '/extensions/SocialProfile/avatars/default_ml.gif',
 	],
 
 	// DiscordNotifications
@@ -1796,6 +1808,24 @@ $wgConf->settings += [
 		'default' => ['static.wikioasis.org'],
 	],
 
+	// GTag
+	'wgGTagAnalyticsId' => [
+		'default' => '',
+	],
+	'wgGTagAnonymizeIP' => [
+		'default' => true,
+	],
+	'wgGTagEnableTCF' => [
+		'default' => false,
+	],
+	'wgGTagHonorDNT' => [
+		'default' => true,
+	],
+	'wgGTagTrackSensitivePages' => [
+		'default' => false,
+	],
+
+
 	// CreateWiki Defined Special Variables
 	'cwClosed' => [
 		'default' => false,
@@ -1845,6 +1875,7 @@ require_once __DIR__ . '/ManageWikiSettings.php';
 
 //var_dump($wgConf->settings);
 require_once "$IP/config/Database.php";
+require_once "$IP/config/GlobalCache.php";
 
 $wgUploadPath = "https://$wmgUploadHostname/$wgDBname";
 $wgUploadDirectory = "/var/www/mediawiki/images/$wgDBname";
@@ -1890,6 +1921,14 @@ if (file_exists(__DIR__ . '/ExtensionMessageFiles-' . $wi->version . '.php') && 
 	$wgMessagesDirs['SocialProfileUserProfile'] = $IP . '/extensions/SocialProfile/UserProfile/i18n';
 	$wgExtensionMessagesFiles['SocialProfileNamespaces'] = $IP . '/extensions/SocialProfile/SocialProfile.namespaces.php';
 	$wgExtensionMessagesFiles['AvatarMagic'] = $IP . '/extensions/SocialProfile/UserProfile/includes/avatar/Avatar.i18n.magic.php';
+}
+
+$wgLocalisationCacheConf['storeClass'] = LCStoreStaticArray::class;
+$wgLocalisationCacheConf['storeDirectory'] = '/var/www/mediawiki/cache';
+$wgLocalisationCacheConf['manualRecache'] = true;
+
+if ( !file_exists( '/var/www/mediawiki/cache/en.l10n.php' ) ) {
+	$wgLocalisationCacheConf['manualRecache'] = false;
 }
 
 unset( $wi );

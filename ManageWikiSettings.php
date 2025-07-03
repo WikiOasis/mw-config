@@ -3065,6 +3065,15 @@ $wgManageWikiSettings = [
 		'help' => 'Exclude bots users from the reporting?',
 		'requires' => [],
 	],
+	'wgGTagAnalyticsId' => [
+		'name' => 'Google Analytics ID or Google Tag Manager container ID',
+		'from' => 'gtag',
+		'type' => 'text',
+		'overridedefault' => false,
+		'section' => 'socialtools',
+		'help' => 'or example \'GT-NNVDXRX5\' or \'GTM-MG9RFZQQ\'. Required.',
+		'requires' => [],
+	],
 
 	// Styling (E.G skins/logos etc)
 	'wgDefaultSkin' => [
@@ -3670,6 +3679,7 @@ $wgManageWikiSettings = [
 	'wgCitizenThemeDefault' => [
 		'name' => 'Citizen Theme Default',
 		'from' => 'citizen',
+		'global' => true,
 		'type' => 'list',
 		'options' => [
 			'auto' => 'auto',
@@ -3684,6 +3694,7 @@ $wgManageWikiSettings = [
 	'wgCitizenEnableCollapsibleSections' => [
 		'name' => 'Citizen Enable Collapsible Sections',
 		'from' => 'citizen',
+		'global' => true,
 		'type' => 'check',
 		'overridedefault' => true,
 		'section' => 'styling',
@@ -3693,6 +3704,7 @@ $wgManageWikiSettings = [
 	'wgCitizenGlobalToolsPortlet' => [
 		'name' => 'Citizen Global Tools Portlet',
 		'from' => 'citizen',
+		'global' => true,
 		'type' => 'text',
 		'overridedefault' => '',
 		'section' => 'styling',
@@ -3701,7 +3713,8 @@ $wgManageWikiSettings = [
 	],
 	'wgCitizenShowPageTools' => [
 		'name' => 'Citizen Show Page Tools',
-		'from' => 'citizen',
+                'from' => 'citizen',
+                'global' => true,
 		'type' => 'list',
 		'options' => [
 			'true' => 1,
@@ -3715,7 +3728,8 @@ $wgManageWikiSettings = [
 	],
 	'wgCitizenThemeColor' => [
 		'name' => 'Citizen Theme Color',
-		'from' => 'citizen',
+                'from' => 'citizen',
+                'global' => true,
 		'type' => 'text',
 		'overridedefault' => '#131a21',
 		'section' => 'styling',
@@ -3724,7 +3738,8 @@ $wgManageWikiSettings = [
 	],
 	'wgCitizenSearchGateway' => [
 		'name' => 'Citizen Search Gateway',
-		'from' => 'citizen',
+                'from' => 'citizen',
+                'global' => true,
 		'type' => 'list',
 		'options' => [
 			'Action API' => 'mwActionApi',
@@ -3737,7 +3752,8 @@ $wgManageWikiSettings = [
 	],
 	'wgCitizenSearchDescriptionSource' => [
 		'name' => 'Citizen Search Description Source',
-		'from' => 'citizen',
+                'from' => 'citizen',
+                'global' => true,
 		'type' => 'list',
 		'options' => [
 			'TextExtracts' => 'textextracts',
@@ -3751,7 +3767,8 @@ $wgManageWikiSettings = [
 	],
 	'wgCitizenMaxSearchResults' => [
 		'name' => 'Citizen Max Search Results',
-		'from' => 'citizen',
+                'from' => 'citizen',
+                'global' => true,
 		'type' => 'integer',
 		'minint' => 1,
 		'maxint' => 15,
@@ -3762,7 +3779,8 @@ $wgManageWikiSettings = [
 	],
 	'wgCitizenEnableCJKFonts' => [
 		'name' => 'Citizen Enable CJK fonts',
-		'from' => 'citizen',
+                'from' => 'citizen',
+                'global' => true,
 		'type' => 'check',
 		'overridedefault' => false,
 		'section' => 'styling',
@@ -3771,7 +3789,8 @@ $wgManageWikiSettings = [
 	],
 	'wgCitizenOverflowNowrapClasses' => [
 		'name' => 'Citizen Overflow No-wrap Classes',
-		'from' => 'citizen',
+                'from' => 'citizen',
+                'global' => true,
 		'type' => 'texts',
 		'overridedefault' => [
 			'citizen-table-nowrap',
