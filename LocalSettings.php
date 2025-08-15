@@ -83,6 +83,12 @@ $wgConf->settings += [
 	// limits
 	'wgMaxArticleSize' => [
 		'default' => 1024 * 2,
+		'projectherzlwiki' => 1024 * 48,
+		'smowiki' => 1024 * 10,
+	],
+	'wgAPIMaxResultSize' => [
+		'default' => 1024 * 2 * 2 * 1024,
+		'projectherzlwiki' => 1024 * 48 * 2 * 1024,
 	],
 
 	// mail
@@ -114,6 +120,8 @@ $wgConf->settings += [
 	],
 	'wgMaxUploadSize' => [
 		'default' => 1024 * 1024 * 128,
+		'wikigeniuswiki' => 1024 * 1024 * 2,
+		'founderswikiwiki' => 1024 * 1024 * 2,
 	],
 	'wgAllowCopyUploads' => [
 		'default' => false,
@@ -181,6 +189,7 @@ $wgConf->settings += [
 		'default' => [
 			'mh' => '',
 			'wo' => '',
+			'sw' => '',
 		],
 	],
 	
@@ -214,6 +223,33 @@ $wgConf->settings += [
 				],
 			],
 		],
+		'solarpunkwiki' => [
+			'wopartner' => [
+				'partner' => [
+					'src' => '//static.wikioasis.org/metawiki/5/57/Wikioasis_Partner_Footer.svg',
+					'alt' => 'WikiOasis Partner Icon',
+					'url' => '//meta.wikioasis.org/wiki/WikiOasis_Partner_Program',
+				],
+			],
+		],
+		'wikicordwiki' => [
+                        'wopartner' => [
+                                'partner' => [
+                                        'src' => '//static.wikioasis.org/metawiki/5/57/Wikioasis_Partner_Footer.svg',
+                                        'alt' => 'WikiOasis Partner Icon',
+                                        'url' => '//meta.wikioasis.org/wiki/WikiOasis_Partner_Program',
+                                ],
+                        ],
+                ],
+		'aeronauticawiki' => [
+                        'wopartner' => [
+                                'partner' => [
+                                        'src' => '//static.wikioasis.org/metawiki/5/57/Wikioasis_Partner_Footer.svg',
+                                        'alt' => 'WikiOasis Partner Icon',
+                                        'url' => '//meta.wikioasis.org/wiki/WikiOasis_Partner_Program',
+                                ],
+                        ],
+                ],
 	],
 
 	// copyright
@@ -292,6 +328,12 @@ $wgConf->settings += [
 	// for Cloudflare
 	'wgUseCdn' => [
 		'default' => true,
+	],
+	'wgCdnServers' => [
+		'default' => [
+			"100.82.132.124",
+			"152.53.112.87",
+		],
 	],
 	'wgCdnServersNoPurge' => [
 		'default' => [
@@ -670,6 +712,9 @@ $wgConf->settings += [
 			'steward' => [
 				'userrights' => true,
 			],
+			'staff' => [
+				'userrights' => true,
+			],
 			'user' => [
 				'mwoauthmanagemygrants' => true,
 				'user' => true,
@@ -714,6 +759,33 @@ $wgConf->settings += [
 				'globalgrouppermissions' => true,
 				'view-private-import-requests' => true,
 			],
+			'staff' => [
+                                'abusefilter-modify-global' => true,
+                                'handle-import-request-interwiki' => true,
+                                'handle-import-requests' => true,
+                                'createwiki' => true,
+                                'createwiki-deleterequest' => true,
+                                'centralauth-unmerge' => true,
+                                'userrights' => true,
+                                'globalblock' => true,
+                                'globalgroupmembership' => true,
+                                'globalgrouppermissions' => true,
+                                'userrights-interwiki' => true,
+				'managewiki-core' => true,
+				'managewiki-extensions' => true,
+				'managewiki-namespaces' => true,
+				'managewiki-permissions' => true,
+				'managewiki-settings' => true,
+				'managewiki-restricted' => true,
+				'noratelimit' => true,
+				'centralauth-merge' => true,
+                                'centralauth-lock' => true,
+                                'centralauth-rename' => true,
+                                'handle-pii' => true,
+                                'oathauth-disable-for-user' => true,
+                                'oathauth-verify-user' => true,
+                                'view-private-import-requests' => true,
+                        ],
 			'trustandsafety' => [
 				'userrights' => true,
 				'globalblock' => true,
@@ -969,6 +1041,23 @@ $wgConf->settings += [
 		'default' => '/var/www/mediawiki/config/OAuth.key',
 	],
 
+	// PortableInfobox
+	'wgPortableInfoboxResponsiblyOpenCollapsed' => [
+		'default' => true,
+	],
+	'wgPortableInfoboxUseFileDescriptionPage' => [
+		'default' => false,
+	],
+	'wgPortableInfoboxUseHeadings' => [
+		'default' => true,
+	],
+	'wgPortableInfoboxCacheRenderers' => [
+		'default' => true,
+	],
+	'wgPortableInfoboxCustomImageWidth' => [
+		'default' => 300,
+	],
+
 	// JsonConfig
 	'wgJsonConfigEnableLuaSupport' => [
 		'default' => true,
@@ -1010,6 +1099,12 @@ $wgConf->settings += [
 				'interwiki' => 'wo',
 				'url' => 'https://$2.wikioasis.org/wiki/$1',
 				'dbname' => '$2wiki',
+				'baseTransOnly' => true,
+			],
+			'skywiki' => [
+				/* Skywiki */
+				'interwiki' => 'sw',
+				'url' => 'https://$2.skywiki.org/wiki/$1',
 				'baseTransOnly' => true,
 			],
 		],
@@ -1091,8 +1186,8 @@ $wgConf->settings += [
 	],
 
 	// Citoid
-	'wgCitoidServiceUrl' => [
-		'default' => 'https://en.wikipedia.org/api/rest_v1/data/citation',
+	'wgCitoidFullRestbaseURL' => [
+		'default' => 'https://en.wikipedia.org/api/rest_',
 	],
 
 	// Cargo
@@ -1107,7 +1202,7 @@ $wgConf->settings += [
 	],
 	// CentralNotice
 	'wgNoticeInfrastructure' => [
-		'default' => false,
+		'default' => true,
 		'metawiki' => true,
 		'metawikibeta' => true,
 	],
@@ -1133,77 +1228,7 @@ $wgConf->settings += [
 		'default' => true,
 	],
 	'wgNoticeProject' => [
-		'default' => 'optout',
-		'aetasantewiki' => 'all',
-		'ampgwiki' => 'all',
-		'animefootballwiki' => 'all',
-		'artwiki' => 'all',
-		'barneybunchwiki' => 'all',
-		'biketrooperswiki' => 'all',
-		'birdwiki' => 'all',
-		'bloxrpwiki' => 'all',
-		'calvoesferawiki' => 'all',
-		'cecawiki' => 'all',
-		'chidurianwikiwiki' => 'all',
-		'ctwikiwiki' => 'all',
-		'darudeman11wiki' => 'all',
-		'dhammawiki' => 'all',
-		'dominationearthwiki' => 'all',
-		'drcklinnwiki' => 'all',
-		'eberrondayswiki' => 'all',
-		'encyclospaciawiki' => 'all',
-		'fastfoodsimwiki' => 'all',
-		'foxwiki' => 'all',
-		'fracctalwiki' => 'all',
-		'heeheepediawiki' => 'all',
-		'heritagehomewiki' => 'all',
-		'hkfoodwiki' => 'all',
-		'hypixelwiki' => 'all',
-		'independenciawiki' => 'all',
-		'instipediawiki' => 'all',
-		'jacobwpwiki' => 'all',
-		'kakuutetudouwikiwiki' => 'all',
-		'krugstonwiki' => 'all',
-		'lambdawarswikiwiki' => 'all',
-		'libertymyselfwiki' => 'all',
-		'loginwiki' => 'all',
-		'moderntropeswiki' => 'all',
-		'monaasliwiki' => 'all',
-		'myfrictionalwikiwiki' => 'all',
-		'niramwiki' => 'all',
-		'opinionistetwiki' => 'all',
-		'parulawiki' => 'all',
-		'placeopediawiki' => 'all',
-		'popmusicwiki' => 'all',
-		'prideandfallwiki' => 'all',
-		'progrostarwiki' => 'all',
-		'projectspapowiki' => 'all',
-		'publicdomainlyricswiki' => 'all',
-		'pyrrhiawiki' => 'all',
-		'qytrinewiki' => 'all',
-		'radicalcitywiki' => 'all',
-		'rapiddromedarieswiki' => 'all',
-		'researchifaesuwiki' => 'all',
-		'rollspelsfansinwiki' => 'all',
-		'ruswikiawiki' => 'all',
-		'staffwiki' => 'all',
-		'stratagptwiki' => 'all',
-		'supermariowiki' => 'all',
-		'test2wiki' => 'all',
-		'test3wiki' => 'all',
-		'test5wiki' => 'all',
-		'testwiki' => 'all',
-		'timoeberronwiki' => 'all',
-		'toscanainstradawiki' => 'all',
-		'trainsandbuseswiki' => 'all',
-		'uamusicwiki' => 'all',
-		'ubercatoverdrivewiki' => 'all',
-		'ucpacfoundationwiki' => 'all',
-		'wikiaeveryonewiki' => 'all',
-		'wikicordwiki' => 'all',
-		'wowcomicswiki' => 'all',
-		'wutheringwaveswiki' => 'all',
-		'yudukiyukariwiki' => 'all',
+		'default' => 'all',
 	],
 
 	// DismissableSiteNotice
@@ -1253,6 +1278,37 @@ $wgConf->settings += [
 		'default' => '*',
 	],
 	'wgTitleBlacklistBlockAutoAccountCreation' => [
+		'default' => false,
+	],
+
+	'wgKartographerDfltStyle' => [
+		'default' => '.',
+	],
+	'wgKartographerEnableMapFrame' => [
+		'default' => true,
+	],
+	'wgKartographerMapServer' => [
+		'default' => 'https://tile.openstreetmap.org',
+	],
+	'wgKartographerSrcsetScales' => [
+		'default' => [],
+	],
+	'wgKartographerStaticMapframe' => [
+		'default' => false,
+	],
+	'wgKartographerSimpleStyleMarkers' => [
+		'default' => true,
+	],
+	'wgKartographerStyles' => [
+		'default' => [
+			'osm-intl',
+			'osm',
+		],
+	],
+	'wgKartographerUseMarkerStyle' => [
+		'default' => false,
+	],
+	'wgKartographerWikivoyageMode' => [
 		'default' => false,
 	],
 
