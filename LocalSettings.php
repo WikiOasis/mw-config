@@ -615,8 +615,7 @@ $wgConf->settings += [
                 'On hold pending internal review' => 'This request has been placed on hold for internal review by another Steward. Thank you for your patience.',
             ],
         ],
-    ],
-];
+    ];
 	'wgCreateWikiDisallowedSubdomains' => [
 		'default' => [
 			'www',
