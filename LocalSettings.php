@@ -616,7 +616,6 @@ $wgConf->settings += [
             ],
         ],
     ],
-];
 	'wgCreateWikiDisallowedSubdomains' => [
 		'default' => [
 			'www',
