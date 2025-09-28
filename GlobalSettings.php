@@ -206,7 +206,7 @@ if ( $wgWordmark ) {
 	];
 }
 
-
+$wgRemovePIIAutoPrefix = 'WikiOasisGDPR';
 $wgRightsIcon = 'https://meta.wikioasis.org/' . '/resources/assets/licenses/cc-by-sa.png';
 $wgRightsText = 'Creative Commons Attribution Share Alike';
 $wgRightsUrl = 'https://creativecommons.org/licenses/by-sa/4.0/';
