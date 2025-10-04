@@ -604,7 +604,7 @@ $wgConf->settings += [
                 'Vandalism/Trolling' => 'This wiki request is a product of vandalism or trolling.',
                 'Policy: Sexual Content w/o educational value' => 'We do not permit wikis that are merely pornography hosts without educational value. Thank you for your understanding.',
                 'Policy: Hate Speech' => 'This wiki is either: directly hateful, or likely to become a hotspot for hate speech. We wish you the best in trying to find a home for this project.',
-                'Illegal content' => 'We cannot host a project of this nature, due to it being illegal in the US or Germany.',
+                'Illegal content' => 'We cannot host a project of this nature, due to it being illegal in the US.',
                 'Commercial' => 'We do not permit wikis that serve solely to promote a business, sell products, or manipulate search engine rankings.',
                 'Anarchy Wiki' => 'We do not permit wikis without clear rules and structure. This includes "anarchy wikis". We wish you the best in trying to find a home for this project.',
                 'Fork/Duplicate' => 'Wikis that duplicate other wikis, or substantial portions of them already on WikiOasis are not allowed. This includes "forks". We wish you the best in trying to find a home for your project.',
@@ -804,7 +804,7 @@ $wgConf->settings += [
                                 'oathauth-verify-user' => true,
                                 'view-private-import-requests' => true,
                         ],
-			'trustandsafety' => [
+			'safety' => [
 				'userrights' => true,
 				'globalblock' => true,
 				'globalgroupmembership' => true,
