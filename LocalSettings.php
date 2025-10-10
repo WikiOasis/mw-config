@@ -167,8 +167,8 @@ $wgConf->settings += [
 	// for private wikis
 	'wgWhitelistReadRegexp' => [
 		'default' => [
-			'/^(特別|Special):CentralAutoLogin.*/',
-			'/^(特別|Special):CentralLogin.*/',
+			'/^(Special):CentralAutoLogin.*/',
+			'/^(Special):CentralLogin.*/',
 		],
 	],
 	'wgWhitelistRead' => [
@@ -176,11 +176,7 @@ $wgConf->settings += [
 			'Special:UserLogin',
 			'Special:UserLogout',
 			'Special:CreateAccount',
-			'特別:ログイン',
-			'特別:ログアウト',
-			'特別:アカウント作成',
 			'Main Page',
-			'メインページ',
 		],
 	],
 
