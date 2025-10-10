@@ -36,6 +36,7 @@ $wgWBRepoSettings['enableEntitySearchUI'] = $wmgEnableEntitySearchUI;
 $wgWBRepoSettings['federatedPropertiesEnabled'] = $wmgFederatedPropertiesEnabled;
 $wgWBRepoSettings['formatterUrlProperty'] = $wmgFormatterUrlProperty ?: null;
 $wgWBRepoSettings['canonicalUriProperty'] = $wmgCanonicalUriProperty ?: null;
+$wgWBRepoSettings['dataRightsUrl'] = 'https://creativecommons.org/publicdomain/zero/1.0/';
 
 $wgWBRepoSettings['siteGlobalID'] = $wgDBname;
 
