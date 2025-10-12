@@ -1434,14 +1434,14 @@ $wgConf->settings += [
 		'default' => false,
 	],
 
-	// RemovePII
+	// 'RemovePII
 	'wgRemovePIIAllowedWikis' => [
 		'default' => [
 			'metawiki',
 		],
 	],
 	'wgRemovePIIAutoPrefix' => [
-		'default' => 'Deleted_User_',
+		'default' => 'WikiOasisGDPR',
 	],
 	'wgRemovePIIHashPrefixOptions' => [
 		'default' => [
