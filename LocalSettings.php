@@ -933,7 +933,7 @@ $wgConf->settings += [
                         'sysop' => [
                                 'interwiki' => true,
                         ],
-                        'trustandsafety' => [
+                        'safety' => [
                                 'centralauth-lock' => true,
                                 'centralauth-rename' => true,
                                 'globalblock' => true,
