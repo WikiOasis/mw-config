@@ -1496,7 +1496,39 @@ $wgConf->settings += [
 	'wgCommentsDefaultAvatar' => [
 		'default' => '/extensions/SocialProfile/avatars/default_ml.gif',
 	],
+	
+	// GlobalUsage
+	'wgGlobalUsageDatabase' => [
+        'cloudcraftercommonswiki' => 'cloudcraftercommonswiki',
+		'cloudcrafterwiki' => 'cloudcraftercommonswiki',
+	],
+	'wgGlobalUsageSharedRepoWiki' => [
+		'default' => false,
+		'cloudcraftercommonswiki' => 'cloudcraftercommonswiki',
+		'cloudcrafterwiki' => 'cloudcraftercommonswiki',
+	], 
 
+	// Restriction types
+    'wgRestrictionLevels' => [
+	'+cloudcrafterwiki' => [
+	        'editconsulprotected',
+            'editbureaucratprotected',
+	        'editfounderprotected',
+	        'editstaffprotected',
+			'edittemplateprotected',
+		],
+  ],
+	// Rights
+	'+wgAvailableRights' => [
+	     '+cloudcrafterwiki' => [
+	        'editconsulprotected',
+            'editbureaucratprotected',
+	        'editfounderprotected',
+	        'editstaffprotected',
+			'edittemplateprotected',
+		],
+	],
+	
 	// DiscordNotifications
 	'wgDiscordAvatarUrl' => [
 		'default' => '',
