@@ -6,6 +6,7 @@ header( 'Cache-Control: s-maxage=2678400, max-age=2678400' );
 $path = $_SERVER['REQUEST_URI'];
 $actual_link = 'https://' . $_SERVER['HTTP_HOST'] . $path;
 $encUrl = htmlspecialchars( $path );
+$encHost = htmlspecialchars( $_SERVER['HTTP_HOST'] );
 http_response_code( 404 );
 
 echo <<<EOF
@@ -120,7 +121,7 @@ p {
 <div id="message">
 <h1>ERROR</h1>
 <h2>404 &ndash; Wiki Not found</h2>
-<p style="font-style: italic">$actual_link</p>
+<p style="font-style: italic">https://$encHost$encUrl</p>
 <p>We couldn't find a wiki by that name on our platform. Check the spelling and try again</p>
 <p>Alternatively, you can view a list of our wikis <a href="https://meta.wikioasis.org/wiki/Special:WikiDiscover">here.</p>
 </div>
