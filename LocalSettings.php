@@ -1352,6 +1352,17 @@ $wgConf->settings += [
 		'default' => 'all',
 	],
 
+        // PageImages
+        'wgPageImagesNamespaces' => [
+	    'default' => [
+		NS_MAIN,		
+	    ],
+	    'countryhumanswiki' => [
+	        NS_MAIN,
+		3000
+	    ],
+	],
+
 	// DismissableSiteNotice
 	'wgDismissableSiteNoticeForAnons' => [
 		'default' => true,
