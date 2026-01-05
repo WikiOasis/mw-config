@@ -594,11 +594,8 @@ $wgConf->settings += [
 	'wgCreateWikiCannedResponses' => [
     'default' => [
         'Approval reasons' => [
-                'Perfect request' => 'Excellent! Your request provides a clear purpose and scope. Please ensure your wiki complies with the WikiOasis Content Policy at all times. Thank you for choosing WikiOasis!',
-                'Good request' => 'This is a good request. While the description could be a bit more detailed, the purpose is clear enough for approval. Please ensure your wiki always adheres to our Content Policy.',
-                'Okay request' => 'Conditionally approved. The purpose is somewhat vague, but other details suggest a valid use case. Please be advised that if the wiki deviates from its implied purpose or violates our Content Policy, it may be closed.',
-                'Categorized as private' => 'Your wiki request has been approved. Please note that based on its purpose, it has been categorized as a private wiki. Ensure it continues to comply with all aspects of our Content Policy.',
-            ],
+                'Approved' => 'Please ensure your wiki complies with the WikiOasis Content Policy at all times or it may be closed. Thank you for choosing WikiOasis!',
+	    ],
         'Decline reasons' => [
                 'Obscene/Offensive Name/Subdomain' => 'We do not permit wikis with offensive names or subdomains. Please change the name or subdomain. Thank you.',
                 'Vandalism/Trolling' => 'This wiki request is a product of vandalism or trolling.',
@@ -611,6 +608,7 @@ $wgConf->settings += [
                 'Unsuitable content' => 'We apologize, but we don\'t think this content is suitable for WikiOasis. Thank you for your understanding.',
             ],
         'On hold reasons' => [
+	            'More details needed' => 'Please describe your wiki and its topic in more detail.',
                 'On hold pending response' => 'This request is on hold pending a response from you. Please see the "Request Comments" tab and reply to the questions asked by the reviewer. Thank you.',
                 'On hold pending internal review' => 'This request has been placed on hold for internal review by another Steward. Thank you for your patience.',
             ],
