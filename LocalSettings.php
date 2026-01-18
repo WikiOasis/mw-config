@@ -1353,11 +1353,24 @@ $wgConf->settings += [
         // PageImages
         'wgPageImagesNamespaces' => [
 	    'default' => [
-		NS_MAIN,		
+		NS_MAIN,
 	    ],
 	    'countryhumanswiki' => [
 	        NS_MAIN,
 		3000
+	    ],
+ 	    'objectshowwiki' => [
+		3000,
+		3006,
+		3008,
+		3010,
+		3012,
+		3014,
+		3016,
+		3018,
+		3020,
+		3022,
+		NS_MAIN,
 	    ],
 	],
 
@@ -2064,7 +2077,7 @@ require_once "$IP/config/Database.php";
 require_once "$IP/config/GlobalCache.php";
 
 $wgUploadPath = "https://$wmgUploadHostname/$wgDBname";
-$wgUploadDirectory = "/var/www/mediawiki/images/$wgDBname";
+$wgUploadDirectory = "/var/www/publicimages/$wgDBname";
 
 
 
