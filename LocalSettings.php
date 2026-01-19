@@ -45,14 +45,14 @@ $wgDiff3 = "/usr/bin/diff3";
 
 require_once "$IP/config/GlobalExtensions.php";
 
-$wgVirtualDomainsMapping['virtual-centralauth'] = [ 'db' => 'centralauth' ];
-$wgVirtualDomainsMapping['virtual-checkuser-global'] = [ 'db' => 'centralauth' ];
+$wgVirtualDomainsMapping['virtual-centralauth'] = [ 'db' => 'wikidb' ];
+$wgVirtualDomainsMapping['virtual-checkuser-global'] = [ 'db' => 'wikidb' ];
 $wgVirtualDomainsMapping['virtual-createwiki'] = [ 'db' => 'wikidb' ];
 $wgVirtualDomainsMapping['virtual-createwiki-central'] = [ 'db' => 'metawiki' ];
-$wgVirtualDomainsMapping['virtual-globalblocking'] = [ 'db' => 'centralauth'];
+$wgVirtualDomainsMapping['virtual-globalblocking'] = [ 'db' => 'wikidb'];
 $wgVirtualDomainsMapping['virtual-managewiki'] = [ 'db' => 'wikidb' ];
-$wgVirtualDomainsMapping['virtual-oathauth'] = [ 'db' => 'centralauth' ];
-$wgVirtualDomainsMapping['virtual-LoginNotify'] = [ 'db' => 'centralauth' ];
+$wgVirtualDomainsMapping['virtual-oathauth'] = [ 'db' => 'wikidb' ];
+$wgVirtualDomainsMapping['virtual-LoginNotify'] = [ 'db' => 'wikidb' ];
 $wgVirtualDomainsMapping['virtual-importdump'] = [ 'db' => 'metawiki' ];
 $wgVirtualDomainsMapping['virtual-requestssl'] = [ 'db' => 'metawiki' ];
 
@@ -73,7 +73,13 @@ $wgConf->settings += [
 	],
 	'wgReadOnly' => [
 		'default' => false,
-	//	'default' => 'Server maintenance.',
+	//	'default' => 'Site maintenance.',
+	],
+
+	'wgCreateWikiDatabaseClusters' => [
+		'default' => [
+			'c1' => 'c1',
+		],
 	],
 
 	// =============
@@ -475,7 +481,7 @@ $wgConf->settings += [
 		'default' => 'centralauth_',
 	],
 	'wgCentralAuthDatabase' => [
-		'default' => 'centralauth',
+		'default' => 'wikidb',
 	],
 	'wgCentralAuthEnableGlobalRenameRequest' => [
 		'default' => true,
@@ -648,8 +654,8 @@ $wgConf->settings += [
 		'default' => [
 			'inactive' => 90,
 			'closed' => 30,
-			'removed' => 999,
-			'deleted' => 999,
+			'removed' => 245,
+			'deleted' => 30,
 		]
 	],
 	'wgCreateWikiEnableManageInactiveWikis' => [
@@ -1108,10 +1114,10 @@ $wgConf->settings += [
 
 	// GlobalBlocking & GlobalPreferences & GlobalUserPage & GlobalCssJs
 	'wgGlobalBlockingDatabase' => [
-		'default' => 'centralauth',
+		'default' => 'wikidb',
 	],
 	'wgGlobalPreferencesDB' => [
-		'default' => 'centralauth',
+		'default' => 'wikidb',
 	],
 	'wgGlobalUserPageAPIUrl' => [
 		'default' => 'https://meta.wikioasis.org/api.php',
@@ -1360,6 +1366,7 @@ $wgConf->settings += [
 		3000
 	    ],
  	    'objectshowwiki' => [
+		NS_MAIN,
 		3000,
 		3006,
 		3008,
@@ -1369,8 +1376,7 @@ $wgConf->settings += [
 		3016,
 		3018,
 		3020,
-		3022,
-		NS_MAIN,
+		3022
 	    ],
 	],
 
@@ -2050,6 +2056,7 @@ $wi::$disabledExtensions = [
 	'wikiforum' => '<a href="https://issue-tracker.miraheze.org/T11641">T11641</a>',
 
 	'lingo' => 'Currently broken',
+	'commentstreams' => 'Currently broken',
 
 	'chameleon' => 'Incompatible with MediaWiki 1.42',
 	'evelution' => 'Incompatible with MediaWiki 1.42',

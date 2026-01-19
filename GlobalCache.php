@@ -1,9 +1,9 @@
 <?php
 
-$wgMainCacheType = CACHE_MEMCACHED;
-$wgMessageCacheType = CACHE_MEMCACHED;
+$wgMainCacheType = 'redis';
+$wgMessageCacheType = 'redis';
 
-$wgParserCacheType = CACHE_MEMCACHED;
+$wgParserCacheType = 'redis';
 
 $wgLanguageConverterCacheType = CACHE_ACCEL;
 
