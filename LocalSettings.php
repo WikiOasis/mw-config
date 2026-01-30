@@ -62,6 +62,31 @@ $wgDebugLogGroups['MirahezeFunctions'] = "/var/log/mediawiki/mf.log";
 require_once "$IP/config/MirahezeFunctions.php";
 $wi = new MirahezeFunctions();
 
+$wmgSharedDomainPathPrefix = '';
+
+$wgScriptPath = '';
+$wgLoadScript = "$wgScriptPath/load.php";
+
+if ( ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain()
+    || getenv( 'MW_USE_SHARED_DOMAIN' )
+) {
+    $wgLoadScript = "{$wi->server}$wgScriptPath/load.php";
+    $wmgSharedDomainPathPrefix = "/$wgDBname";
+
+    $wgCanonicalServer = 'https://' . $wi->getSharedDomain();
+
+    $wgUseSiteCss = false;
+    $wgUseSiteJs = false;
+}
+
+$wgScriptPath  = "$wmgSharedDomainPathPrefix";
+$wgScript = "$wgScriptPath/index.php";
+
+$wgResourceBasePath = "$wmgSharedDomainPathPrefix";
+$wgExtensionAssetsPath = "$wgResourceBasePath/extensions";
+$wgStylePath = "$wgResourceBasePath/skins";
+$wgLocalStylePath = $wgStylePath;
+
 $wgConf->settings += [
 	// ==================
 	// MAINTENANCE THINGS
@@ -157,14 +182,8 @@ $wgConf->settings += [
 	'wgArticlePath' => [
 		'default' => '/wiki/$1',
 	],
-	'wgScriptPath' => [
-		'default' => '',
-	],
 	'wgUsePathInfo' => [
 		'default' => true,
-	],
-	'wgResourceBasePath' => [
-		'default' => '',
 	],
 	'wgEnableCanonicalServerLink' => [
 		'default' => true,

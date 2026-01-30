@@ -52,6 +52,11 @@ class MirahezeFunctions {
 		'default' => 'wikioasis.org',
 	];
 
+    private const SHARED_DOMAIN = [
+        'default' => 'auth.wikioasis.org',
+        'beta' => 'auth.wikioasis.dev',
+    ];
+
 	private const GLOBAL_DATABASE = [
 		'default' => 'wikidb',
 	];
@@ -295,6 +300,17 @@ class MirahezeFunctions {
 		}
 
 		$hostname = $_SERVER['HTTP_HOST'] ?? 'undefined';
+        if ( $hostname === 'auth.wikioasis.org' || $hostname === 'auth.wikioasis.dev' ) {
+            $requestUri = $_SERVER['REQUEST_URI'];
+            $pathBits = explode( '/', $requestUri, 3 );
+            if ( count( $pathBits ) < 3 ) {
+                trigger_error( "Invalid request URI (requestUri=" . $requestUri . "), can't determine language.\n", E_USER_ERROR );
+                exit( 1 );
+            }
+            [ , $dbname, ] = $pathBits;
+            // No validation of $dbname at this point - if it's invalid, an error will be produced
+            return $dbname;
+        }
 
 		static $database = null;
 
@@ -1209,17 +1225,23 @@ class MirahezeFunctions {
 	}
 
 	public static function onMediaWikiServices() {
-		if ( isset( $GLOBALS['globals'] ) ) {
-			foreach ( $GLOBALS['globals'] as $global => $value ) {
-				if ( !isset( $GLOBALS['wgConf']->settings["+$global"] ) &&
-					$global !== 'wgManageWikiPermissionsAdditionalRights'
-				) {
-					$GLOBALS[$global] = $value;
-				}
-			}
+        if (!isset($GLOBALS['globals']) || !is_array($GLOBALS['globals'])) {
+            return;
+        }
 
-			// Don't need a global here
-			unset( $GLOBALS['globals'] );
-		}
+        $settings = $GLOBALS['wgConf']->settings;
+        foreach ($GLOBALS['globals'] as $global => $value) {
+            if (
+                !isset($settings["+$global"]) &&
+                $global !== 'wgArticlePath' &&
+                $global !== 'wgServer' &&
+                $global !== 'wgManageWikiPermissionsAdditionalRights'
+            ) {
+                $GLOBALS[$global] = $value;
+            }
+        }
+
+        // Don't need a global here
+        unset($GLOBALS['globals']);
 	}
 }
