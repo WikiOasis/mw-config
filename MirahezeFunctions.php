@@ -400,6 +400,10 @@ class MirahezeFunctions {
 		return $primaryDomain ?? self::DEFAULT_SERVER[self::getRealm( $database )];
 	}
 
+    public function getSharedDomain(): string {
+        return self::SHARED_DOMAIN[$this->realm];
+    }
+
 	/**
 	 * @param ?string $database
 	 * @return string

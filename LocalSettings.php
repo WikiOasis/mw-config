@@ -480,6 +480,11 @@ $wgConf->settings += [
 		],
 	],
 
+    // Invalidates user sessions - do not change unless it is an emergency!
+    'wgAuthenticationTokenVersion' => [
+        'default' => '11',
+    ],
+
 	// CentralAuth
 	'wgCentralAuthAutoCreateWikis' => [
 		'default' => [
@@ -517,6 +522,12 @@ $wgConf->settings += [
 	'wgCentralAuthPreventUnattached' => [
 		'default' => true,
 	],
+    'wgCentralAuthRestrictSharedDomain' => [
+        'default' => true,
+    ],
+    'wgCentralAuthCentralWiki' => [
+        'default' => 'metawiki',
+    ],
 	'wgCentralAuthTokenCacheType' => [
 		'default' => 'redis',
 	],
@@ -2104,6 +2115,12 @@ $globals = MirahezeFunctions::getConfigGlobals();
 
 // phpcs:ignore MediaWiki.Usage.ForbiddenFunctions.extract
 extract( $globals );
+
+if ( $wmgSharedDomainPathPrefix ) {
+    $wgArticlePath = "{$wmgSharedDomainPathPrefix}/wiki/\$1";
+    $wgServer = '//' . $wi->getSharedDomain();
+}
+
 #if ($wi->dbname != "wikicordwiki") {
 	$wi->loadExtensions();
 #}
