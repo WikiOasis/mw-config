@@ -70,13 +70,17 @@ $wgLoadScript = "$wgScriptPath/load.php";
 if ( ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain()
     || getenv( 'MW_USE_SHARED_DOMAIN' )
 ) {
-    $wgLoadScript = "{$wi->server}$wgScriptPath/load.php";
     $wmgSharedDomainPathPrefix = "/$wgDBname";
+    $wgScriptPath  = "$wmgSharedDomainPathPrefix";
 
     $wgCanonicalServer = 'https://' . $wi->getSharedDomain();
+    $wgLoadScript = "{$wgCanonicalServer}$wgScriptPath/load.php";
 
     $wgUseSiteCss = false;
     $wgUseSiteJs = false;
+
+    // We use load.php directly from auth for custom domains due to CSP
+    $wgCentralAuthSul3SharedDomainRestrictions['allowedEntryPoints'] = [ 'load' ];
 }
 
 $wgScriptPath  = "$wmgSharedDomainPathPrefix";
@@ -2117,7 +2121,7 @@ $globals = MirahezeFunctions::getConfigGlobals();
 extract( $globals );
 
 if ( $wmgSharedDomainPathPrefix ) {
-    $wgArticlePath = "{$wmgSharedDomainPathPrefix}/wiki/\$1";
+    $wgArticlePath = $wmgSharedDomainPathPrefix . $wgArticlePath;
     $wgServer = '//' . $wi->getSharedDomain();
 }
 
