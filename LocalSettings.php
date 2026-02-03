@@ -62,6 +62,35 @@ $wgDebugLogGroups['MirahezeFunctions'] = "/var/log/mediawiki/mf.log";
 require_once "$IP/config/MirahezeFunctions.php";
 $wi = new MirahezeFunctions();
 
+$wmgSharedDomainPathPrefix = '';
+
+$wgScriptPath = '';
+$wgLoadScript = "$wgScriptPath/load.php";
+
+$wgCanonicalServer = $wi->server;
+
+if ( ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain() ) {
+    $wmgSharedDomainPathPrefix = "/$wgDBname";
+    $wgScriptPath  = "$wmgSharedDomainPathPrefix";
+
+    $wgCanonicalServer = 'https://' . $wi->getSharedDomain();
+    $wgLoadScript = "{$wgCanonicalServer}$wgScriptPath/load.php";
+
+    $wgUseSiteCss = false;
+    $wgUseSiteJs = false;
+
+    // We use load.php directly from auth for custom domains due to CSP
+    $wgCentralAuthSul3SharedDomainRestrictions['allowedEntryPoints'] = [ 'load' ];
+}
+
+$wgScriptPath  = "$wmgSharedDomainPathPrefix";
+$wgScript = "$wgScriptPath/index.php";
+
+$wgResourceBasePath = "$wmgSharedDomainPathPrefix";
+$wgExtensionAssetsPath = "$wgResourceBasePath/extensions";
+$wgStylePath = "$wgResourceBasePath/skins";
+$wgLocalStylePath = $wgStylePath;
+
 $wgConf->settings += [
 	// ==================
 	// MAINTENANCE THINGS
@@ -157,14 +186,8 @@ $wgConf->settings += [
 	'wgArticlePath' => [
 		'default' => '/wiki/$1',
 	],
-	'wgScriptPath' => [
-		'default' => '',
-	],
 	'wgUsePathInfo' => [
 		'default' => true,
-	],
-	'wgResourceBasePath' => [
-		'default' => '',
 	],
 	'wgEnableCanonicalServerLink' => [
 		'default' => true,
@@ -461,6 +484,11 @@ $wgConf->settings += [
 		],
 	],
 
+    // Invalidates user sessions - do not change unless it is an emergency!
+    'wgAuthenticationTokenVersion' => [
+        'default' => '2',
+    ],
+
 	// CentralAuth
 	'wgCentralAuthAutoCreateWikis' => [
 		'default' => [
@@ -498,6 +526,12 @@ $wgConf->settings += [
 	'wgCentralAuthPreventUnattached' => [
 		'default' => true,
 	],
+    'wgCentralAuthRestrictSharedDomain' => [
+        'default' => true,
+    ],
+    'wgCentralAuthCentralWiki' => [
+        'default' => 'metawiki',
+    ],
 	'wgCentralAuthTokenCacheType' => [
 		'default' => 'redis',
 	],
@@ -2085,6 +2119,12 @@ $globals = MirahezeFunctions::getConfigGlobals();
 
 // phpcs:ignore MediaWiki.Usage.ForbiddenFunctions.extract
 extract( $globals );
+
+if ( $wmgSharedDomainPathPrefix ) {
+    $wgArticlePath = $wmgSharedDomainPathPrefix . $wgArticlePath;
+    $wgServer = '//' . $wi->getSharedDomain();
+}
+
 #if ($wi->dbname != "wikicordwiki") {
 	$wi->loadExtensions();
 #}
