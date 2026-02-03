@@ -67,6 +67,8 @@ $wmgSharedDomainPathPrefix = '';
 $wgScriptPath = '';
 $wgLoadScript = "$wgScriptPath/load.php";
 
+$wgCanonicalServer = $wi->server;
+
 if ( ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain()
     || getenv( 'MW_USE_SHARED_DOMAIN' )
 ) {
@@ -486,7 +488,7 @@ $wgConf->settings += [
 
     // Invalidates user sessions - do not change unless it is an emergency!
     'wgAuthenticationTokenVersion' => [
-        'default' => '11',
+        'default' => '2',
     ],
 
 	// CentralAuth

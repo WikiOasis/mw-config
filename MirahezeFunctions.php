@@ -53,8 +53,7 @@ class MirahezeFunctions {
 	];
 
     private const SHARED_DOMAIN = [
-        'default' => 'auth.wikioasis.org',
-        'beta' => 'auth.wikioasis.dev',
+        'default' => 'auth.wikioasis.org'
     ];
 
 	private const GLOBAL_DATABASE = [
@@ -300,7 +299,7 @@ class MirahezeFunctions {
 		}
 
 		$hostname = $_SERVER['HTTP_HOST'] ?? 'undefined';
-        if ( $hostname === 'auth.wikioasis.org' || $hostname === 'auth.wikioasis.dev' ) {
+        if ( $hostname === 'auth.wikioasis.org' ) {
             $requestUri = $_SERVER['REQUEST_URI'];
             $pathBits = explode( '/', $requestUri, 3 );
             if ( count( $pathBits ) < 3 ) {
