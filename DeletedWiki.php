@@ -183,8 +183,6 @@ h1 {
         'rgba(30, 144, 255, 0.3)',    // Blue
         'rgba(30, 80, 120, 0.35)',    // Deep blue
         'rgba(45, 120, 160, 0.3)',    // Steel blue
-        'rgba(180, 160, 60, 0.25)',   // Golden
-        'rgba(200, 180, 80, 0.2)',    // Amber
         'rgba(0, 206, 209, 0.25)',    // Cyan
         'rgba(65, 105, 225, 0.2)'     // Royal blue
     ];
