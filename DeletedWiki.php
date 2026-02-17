@@ -183,6 +183,9 @@ h1 {
         'rgba(30, 144, 255, 0.3)',    // Blue
         'rgba(30, 80, 120, 0.35)',    // Deep blue
         'rgba(45, 120, 160, 0.3)',    // Steel blue
+        'rgba(32, 110, 165, 0.3)',    // Other blue
+        'rgba(30, 50, 160, 0.3)',    // Other other blue
+        'rgba(10, 30, 105, 0.3)',    // Random blue
         'rgba(0, 206, 209, 0.25)',    // Cyan
         'rgba(65, 105, 225, 0.2)'     // Royal blue
     ];
