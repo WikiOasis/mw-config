@@ -13,6 +13,8 @@ echo <<<EOF
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="https://api.dashboard.instatus.com/widget?host=status.wikioasis.org&code=3a58baa4&locale=en">
+</script>
 <link rel="icon" type="image/x-icon" href="https://static.wikioasis.org/images/metawiki/1/18/favicon.ico" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
