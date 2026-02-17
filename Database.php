@@ -8,7 +8,7 @@ $wgSQLMode = null;
 if ( class_exists( \Wikimedia\Rdbms\LBFactoryMulti::class ) ) {
     // Yoink the connection details from PrivateSettings.php
     $primaryServer = $wgDBservers[0] ?? [
-        'host' => 'localhost',
+        'host' => 'db11',
         'user' => $wgDBuser ?? null,
         'password' => $wgDBpassword ?? null,
         'type' => 'mysql',
@@ -28,10 +28,10 @@ if ( class_exists( \Wikimedia\Rdbms\LBFactoryMulti::class ) ) {
 
         'sectionLoads' => [
             'DEFAULT' => [
-                'db1' => 0,
+                'db11' => 0,
             ],
             'c1' => [
-                'db1' => 0,
+                'db11' => 0,
             ],
         ],
 
@@ -47,12 +47,12 @@ if ( class_exists( \Wikimedia\Rdbms\LBFactoryMulti::class ) ) {
         ],
 
         'hostsByName' => [
-            'db1' => $primaryServer['host'],
+            'db11' => $primaryServer['host'],
         ],
 
         'externalLoads' => [
             'echo' => [
-                'db1' => 0,
+                'db11' => 0,
             ],
         ],
 

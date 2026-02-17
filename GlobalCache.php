@@ -2,6 +2,7 @@
 
 $wgMainCacheType = 'redis';
 $wgMessageCacheType = 'redis';
+$wgCacheDirectory = '/var/www/mediawiki-staging/cache/{$wgDBname}';
 
 $wgParserCacheType = 'redis';
 
@@ -44,3 +45,5 @@ if ( PHP_SAPI === 'cli' ) {
 }
 
 $wgUseGzip = true;
+
+

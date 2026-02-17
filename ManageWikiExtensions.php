@@ -74,19 +74,6 @@ $wgManageWikiExtensions = [
 	],
 
 	// Media handlers
-	'3d' => [
-		'name' => '3d',
-		'displayname' => '3D',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:3D',
-		'conflicts' => false,
-		'requires' => [],
-		'install' => [
-			'settings' => [
-				'wgFileExtensions' => array_merge( $wi->getSettingValue( 'wgFileExtensions' ), [ 'stl' ] ),
-			],
-		],
-		'section' => 'mediahandlers',
-	],
 	'embedvideo' => [
 		'name' => 'EmbedVideo',
 		'linkPage' => 'https://github.com/StarCitizenWiki/mediawiki-extensions-EmbedVideo',
@@ -311,41 +298,6 @@ $wgManageWikiExtensions = [
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Cite',
 		'conflicts' => false,
 		'requires' => [],
-		'section' => 'parserhooks',
-	],
-	'commentstreams' => [
-		'name' => 'CommentStreams',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:CommentStreams',
-		'conflicts' => 'moderation',
-		'requires' => [],
-		'install' => [
-			'sql' => [
-				'cs_comments' => "$IP/extensions/CommentStreams/sql/mysql/cs_comments.sql",
-				'cs_replies' => "$IP/extensions/CommentStreams/sql/mysql/cs_replies.sql",
-				'cs_votes' => "$IP/extensions/CommentStreams/sql/mysql/cs_votes.sql",
-				'cs_watchlist' => "$IP/extensions/CommentStreams/sql/mysql/cs_watchlist.sql",
-			],
-			'permissions' => [
-				'user' => [
-					'permissions' => [
-						'cs-comment',
-					],
-				],
-				'csmoderator' => [
-					'permissions' => [
-						'cs-moderator-delete',
-					],
-				],
-				'bureaucrat' => [
-					'addgroups' => [
-						'csmoderator',
-					],
-					'removegroups' => [
-						'csmoderator',
-					],
-				],
-			],
-		],
 		'section' => 'parserhooks',
 	],
 	'comments' => [
@@ -842,17 +794,6 @@ $wgManageWikiExtensions = [
 		'requires' => [],
 		'section' => 'parserhooks',
 	],
-	'randomgameunit' => [
-		'name' => 'RandomGameUnit',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:RandomGameUnit',
-		'conflicts' => false,
-		'requires' => [
-			'extensions' => [
-				'socialprofile',
-			],
-		],
-		'section' => 'parserhooks',
-	],
 	'randomimage' => [
 		'name' => 'RandomImage',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:RandomImage',
@@ -1130,13 +1071,6 @@ $wgManageWikiExtensions = [
 		'name' => 'WikiTextLoggedInOut',
 		'displayname' => 'WikiText Logged In Out',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:WikiTextLoggedInOut',
-		'conflicts' => false,
-		'requires' => [],
-		'section' => 'parserhooks',
-	],
-	'youtube' => [
-		'name' => 'YouTube',
-		'linkPage' => 'https://github.com/miraheze/YouTube',
 		'conflicts' => false,
 		'requires' => [],
 		'section' => 'parserhooks',
@@ -1431,53 +1365,6 @@ $wgManageWikiExtensions = [
 		'requires' => [],
 		'section' => 'specialpages',
 	],
-	'growthexperiments' => [
-		'name' => 'GrowthExperiments',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:GrowthExperiments',
-		'conflicts' => false,
-		'requires' => [
-			'extensions' => [
-				'visualeditor',
-			],
-		],
-		'install' => [
-			'sql' => [
-				'growthexperiments_link_recommendations' => "$IP/extensions/GrowthExperiments/sql/mysql/growthexperiments_link_recommendations.sql",
-				'growthexperiments_link_submissions' => "$IP/extensions/GrowthExperiments/sql/mysql/growthexperiments_link_submissions.sql",
-				'growthexperiments_mentee_data' => "$IP/extensions/GrowthExperiments/sql/mysql/growthexperiments_mentee_data.sql",
-				'growthexperiments_mentor_mentee' => "$IP/extensions/GrowthExperiments/sql/mysql/growthexperiments_mentor_mentee.sql",
-				'growthexperiments_user_impact' => "$IP/extensions/GrowthExperiments/sql/mysql/growthexperiments_user_impact.sql"
-			],
-			'permissions' => [
-				'sysop' => [
-					'permissions' => [
-						'setmentor',
-					],
-				],
-			],
-		],
-		'section' => 'specialpages',
-	],
-	'imagerating' => [
-		'name' => 'ImageRating',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:ImageRating',
-		'conflicts' => false,
-		'requires' => [
-			'extensions' => [
-				'voteny',
-			],
-		],
-		'install' => [
-			'permissions' => [
-				'user' => [
-					'permissions' => [
-						'rateimage',
-					],
-				],
-			],
-		],
-		'section' => 'specialpages',
-	],
 	'linter' => [
 		'name' => 'Linter',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Linter',
@@ -1610,13 +1497,6 @@ $wgManageWikiExtensions = [
 		],
 		'section' => 'specialpages',
 	],
-	'orphanedtalkpages' => [
-		'name' => 'OrphanedTalkPages',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:OrphanedTalkPages',
-		'conflicts' => false,
-		'requires' => [],
-		'section' => 'specialpages',
-	],
 	'pageforms' => [
 		'name' => 'PageForms',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Page_Forms',
@@ -1690,48 +1570,6 @@ $wgManageWikiExtensions = [
 		'install' => [
 			'sql' => [
 				'pagetriage_tags' => "$IP/extensions/PageTriage/sql/mysql/tables-generated.sql",
-			],
-		],
-		'section' => 'specialpages',
-	],
-	'protectsite' => [
-		'name' => 'Protect Site',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:ProtectSite',
-		'conflicts' => false,
-		'requires' => [],
-		'install' => [
-			'permissions' => [
-				'bureaucrat' => [
-					'permissions' => [
-						'protectsite',
-					],
-				],
-			],
-		],
-		'section' => 'specialpages',
-	],
-	'quizgame' => [
-		'name' => 'QuizGame',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:QuizGame',
-		'conflicts' => false,
-		'requires' => [
-			'extensions' => [
-				'socialprofile',
-			],
-		],
-		'install' => [
-			'sql' => [
-				'quizgame_answers' => "$IP/extensions/QuizGame/sql/quizgame_answers.sql",
-				'quizgame_choice' => "$IP/extensions/QuizGame/sql/quizgame_choice.sql",
-				'quizgame_questions' => "$IP/extensions/QuizGame/sql/quizgame_questions.sql",
-				'quizgame_user_view' => "$IP/extensions/QuizGame/sql/quizgame_user_view.sql"
-			],
-			'permissions' => [
-				'sysop' => [
-					'permissions' => [
-						'quizadmin',
-					],
-				],
 			],
 		],
 		'section' => 'specialpages',
@@ -2599,7 +2437,7 @@ $wgManageWikiExtensions = [
 	'newusermessage' => [
 		'name' => 'NewUserMessage',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:NewUserMessage',
-		'conflicts' => 'flow',
+		'conflicts' => false,
 		'requires' => [],
 		'section' => 'other',
 	],
@@ -3000,63 +2838,6 @@ $wgManageWikiExtensions = [
 			],
 		],
 	],
-	'flow' => [
-		'name' => 'Flow',
-		'displayname' => 'StructuredDiscussions (Flow)',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:StructuredDiscussions',
-		'conflicts' => false,
-		'help' => 'Deprecated by WMF, who recommends DiscussionTools instead.',
-		'requires' => [
-			'permissions' => [
-				'managewiki-restricted',
-			],
-		],
-		'install' => [
-			'sql' => [
-				'flow_revision' => "$IP/extensions/Flow/sql/mysql/tables-generated.sql"
-			],
-			'namespaces' => [
-				'Topic' => [
-					'id' => 2600,
-					'searchable' => 0,
-					'subpages' => 0,
-					'protection' => '',
-					'content' => 0,
-					'aliases' => [],
-					'contentmodel' => 'flow-board',
-					'additional' => []
-				],
-			],
-			'permissions' => [
-				'*' => [
-					'permissions' => [
-						'flow-hide',
-					],
-				],
-				'user' => [
-					'permissions' => [
-						'flow-lock',
-					],
-				],
-				'sysop' => [
-					'permissions' => [
-						'flow-lock',
-						'flow-delete',
-						'flow-edit-post',
-					],
-				],
-				'flow-bot' => [
-					'permissions' => [
-						'flow-create-board',
-					],
-				],
-			],
-			'mwscript' => [
-				"$IP/extensions/Flow/maintenance/FlowCreateTemplates.php" => [],
-			],
-		],
-		'section' => 'other',
-	],
 	'semanticmediawiki' => [
 		'name' => 'SemanticMediaWiki',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:SemanticMediaWiki',
@@ -3370,7 +3151,7 @@ $wgManageWikiExtensions = [
 		'conflicts' => false,
 		'requires' => [
 			'extensions' => [
-				[ 'commentstreams', 'pageforms' ],
+				'pageforms',
 				'visualeditor',
 			],
 		],
@@ -3502,17 +3283,6 @@ $wgManageWikiExtensions = [
 			'extensions' => [
 				'wikibaserepository',
 				'universallanguageselector',
-			],
-		],
-		'section' => 'other',
-	],
-	'wikibaselocalmedia' => [
-		'name' => 'Wikibase Local Media',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Wikibase_Local_Media',
-		'conflicts' => false,
-		'requires' => [
-			'extensions' => [
-				'wikibaserepository',
 			],
 		],
 		'section' => 'other',
