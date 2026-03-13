@@ -240,7 +240,7 @@ $wgManageWikiExtensions = [
 		'name' => 'Cargo',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Cargo',
 		'help' => 'Stewards: it is recommended to not enable this extension on wikis with more than <b>50,000</b> pages. This includes all pages, <b>not</b> only content pages. Please use discretion.',
-		'conflicts' => 'semanticmediawiki',
+		'conflicts' => false,
 		'requires' => [
 			'permissions' => [
 				'managewiki-restricted',
@@ -811,6 +811,13 @@ $wgManageWikiExtensions = [
 	'rightfunctions' => [
 		'name' => 'RightFunctions',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:RightFunctions',
+		'conflicts' => false,
+		'requires' => [],
+		'section' => 'parserhooks',
+	],
+	'robloxapi' => [
+		'name' => 'RobloxAPI',
+		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:RobloxAPI',
 		'conflicts' => false,
 		'requires' => [],
 		'section' => 'parserhooks',
@@ -1549,7 +1556,7 @@ $wgManageWikiExtensions = [
 	'pageschemas' => [
 		'name' => 'Page Schemas',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Page_Schemas',
-		'conflicts' => 'semanticmediawiki',
+		'conflicts' => false,
 		'requires' => [],
 		'install' => [
 			'permissions' => [
@@ -1619,17 +1626,6 @@ $wgManageWikiExtensions = [
 		],
 		'section' => 'specialpages',
 	],
-	'semanticdrilldown' => [
-			'name' => 'SemanticDrilldown',
-			'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Semantic_Drilldown',
-			'conflicts' => false,
-			'requires' => [
-					'extensions' => [
-						'semanticmediawiki',
-					],
-			],
-			'section' => 'specialpages',
-		],
 	'simplechanges' => [
 		'name' => 'SimpleChanges',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:SimpleChanges',
@@ -1744,48 +1740,6 @@ $wgManageWikiExtensions = [
 						'urlshortener-manage-url',
 						'urlshortener-view-log',
 					],
-				],
-			],
-		],
-		'section' => 'specialpages',
-	],
-	'video' => [
-		'name' => 'Video',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Video',
-		'conflicts' => false,
-		'requires' => [],
-		'install' => [
-			'sql' => [
-				'oldvideo' => "$IP/extensions/Video/sql/oldvideo.sql",
-				'video' => "$IP/extensions/Video/sql/video.sql",
-			],
-			'permissions' => [
-				'user' => [
-					'permissions' => [
-						'addvideo',
-					],
-				],
-			],
-			'namespaces' => [
-				'Video' => [
-					'id' => 400,
-					'searchable' => 0,
-					'subpages' => 0,
-					'protection' => 'addvideo',
-					'content' => 0,
-					'aliases' => [],
-					'contentmodel' => 'wikitext',
-					'additional' => []
-				],
-				'Video_talk' => [
-					'id' => 401,
-					'searchable' => 0,
-					'subpages' => 0,
-					'protection' => '',
-					'content' => 0,
-					'aliases' => [],
-					'contentmodel' => 'wikitext',
-					'additional' => []
 				],
 			],
 		],
@@ -2838,156 +2792,6 @@ $wgManageWikiExtensions = [
 			],
 		],
 	],
-	'semanticmediawiki' => [
-		'name' => 'SemanticMediaWiki',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:SemanticMediaWiki',
-		'help' => '<br/> Permanently "experimental" and may be removed with little to no prior notice. WARNING: Disabling this extension after it\'s already been enabled will clear all SemanticMediaWiki database tables as well. <br/><b>Note: <a href="https://meta.miraheze.org/wiki/Special:MyLanguage/Stewards" target="_blank">Stewards</a>, please ensure that a member of the <a href="https://meta.miraheze.org/wiki/Special:MyLanguage/Tech:Volunteers" target="_blank">Technology team</a> is available and not mobile in order to run <a href="https://meta.miraheze.org/wiki/Tech:Semantic_MediaWiki" target="_blank">a series of commands</a> on an mwtask server after enabling this.</b>',
-		'conflicts' => false,
-		'requires' => [
-			'permissions' => [
-				'managewiki-restricted',
-			],
-		],
-		'install' => [
-			'mwscript' => [
-				"$IP/extensions/SemanticMediaWiki/maintenance/setupStore.php" => [],
-			],
-			'namespaces' => [
-				'Property' => [
-					'id' => 102,
-					'searchable' => 1,
-					'subpages' => 0,
-					'protection' => '',
-					'content' => 1,
-					'aliases' => [],
-					'contentmodel' => 'wikitext',
-					'additional' => []
-				],
-				'Property_talk' => [
-					'id' => 103,
-					'searchable' => 0,
-					'subpages' => 1,
-					'protection' => '',
-					'content' => 0,
-					'aliases' => [],
-					'contentmodel' => 'wikitext',
-					'additional' => []
-				],
-				'Concept' => [
-					'id' => 108,
-					'searchable' => 1,
-					'subpages' => 0,
-					'protection' => '',
-					'content' => 1,
-					'aliases' => [],
-					'contentmodel' => 'wikitext',
-					'additional' => []
-				],
-				'Concept_talk' => [
-					'id' => 109,
-					'searchable' => 0,
-					'subpages' => 1,
-					'protection' => '',
-					'content' => 0,
-					'aliases' => [],
-					'contentmodel' => 'wikitext',
-					'additional' => []
-				],
-				'smw/schema' => [
-					'id' => 112,
-					'searchable' => 0,
-					'subpages' => 0,
-					'protection' => '',
-					'content' => 0,
-					'aliases' => [],
-					'contentmodel' => 'smw/schema',
-					'additional' => []
-				],
-				'smw/schema_talk' => [
-					'id' => 113,
-					'searchable' => 0,
-					'subpages' => 0,
-					'protection' => '',
-					'content' => 0,
-					'aliases' => [],
-					'contentmodel' => 'wikitext',
-					'additional' => []
-				],
-				'Rule' => [
-					'id' => 114,
-					'searchable' => 0,
-					'subpages' => 0,
-					'protection' => '',
-					'content' => 0,
-					'aliases' => [],
-					'contentmodel' => 'wikitext',
-					'additional' => []
-				],
-				'Rule_talk' => [
-					'id' => 115,
-					'searchable' => 0,
-					'subpages' => 0,
-					'protection' => '',
-					'content' => 0,
-					'aliases' => [],
-					'contentmodel' => 'wikitext',
-					'additional' => []
-				],
-			],
-			'permissions' => [
-				'smwcurator' => [
-					'permissions' => [
-						'smw-schemaedit',
-						'smw-pageedit',
-						'smw-viewentityassociatedrevisionmismatch',
-						'smw-vieweditpageinfo',
-					],
-				],
-				'smweditor' => [
-					'permissions' => [
-						'smw-vieweditpageinfo',
-					],
-				],
-				'user' => [
-					'permissions' => [
-						'smw-vieweditpageinfo',
-					],
-				],
-			],
-		],
-		'remove' => [
-			'mwscript' => [
-				"$IP/extensions/SemanticMediaWiki/maintenance/setupStore.php" => [
-					'delete' => false,
-					'nochecks' => false,
-				],
-			],
-		],
-		'section' => 'other',
-	],
-	'semanticformsselect' => [
-		'name' => 'Semantic Forms Select',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Semantic_Forms_Select',
-		'conflicts' => false,
-		'requires' => [
-			'extensions' => [
-				'pageforms',
-				'semanticmediawiki',
-			],
-		],
-		'section' => 'other',
-	],
-	'semanticscribunto' => [
-		'name' => 'SemanticScribunto',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Semantic_Scribunto',
-		'conflicts' => false,
-		'requires' => [
-			'extensions' => [
-				'semanticmediawiki',
-			],
-		],
-		'section' => 'other',
-	],
 	'structurednavigation' => [
 		'name' => 'StructuredNavigation',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:StructuredNavigation',
@@ -3085,7 +2889,11 @@ $wgManageWikiExtensions = [
 		'name' => 'UnlinkedWikibase',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:UnlinkedWikibase',
 		'conflicts' => false,
-		'requires' => [],
+                'requires' => [
+                        'permissions' => [
+                                'managewiki-restricted',
+                        ],
+                ],
 		'section' => 'other',
 	],
 	'uploadslink' => [
@@ -3160,8 +2968,12 @@ $wgManageWikiExtensions = [
 	'wikibaseclient' => [
 		'name' => 'WikibaseClient',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Wikibase_Client',
-		'conflicts' => 'semanticmediawiki',
-		'requires' => [],
+		'conflicts' => false,
+                'requires' => [
+                        'permissions' => [
+                                'managewiki-restricted',
+                        ],
+                ],
 		'install' => [
 			'sql' => [
 				'wbc_entity_usage' => "$IP/extensions/Wikibase/client/sql/mysql/entity_usage.sql",
@@ -3180,9 +2992,13 @@ $wgManageWikiExtensions = [
 	'wikibaserepository' => [
 		'name' => 'WikibaseRepository',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Wikibase_Repository',
-		'conflicts' => 'semanticmediawiki',
-		'requires' => [],
-		'install' => [
+		'conflicts' => false,
+                'requires' => [
+                        'permissions' => [
+                                'managewiki-restricted',
+                        ],
+                ],
+      		'install' => [
 			'sql' => [
 				'wb_changes' => "$IP/extensions/Wikibase/repo/sql/mysql/wb_changes.sql",
 				'wb_changes_subscription' => "$IP/extensions/Wikibase/repo/sql/mysql/wb_changes_subscription.sql",
@@ -3272,7 +3088,7 @@ $wgManageWikiExtensions = [
 			'extensions' => [
 				'wikibaserepository',
 			],
-		],
+                ],
 		'section' => 'other',
 	],
 	'wikibaselexeme' => [

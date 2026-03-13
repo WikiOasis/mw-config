@@ -32,6 +32,7 @@ require_once "$IP/config/PrivateSettings.php";
 
 $wgConf->suffixes = [ 'wiki' ];
 
+$wmgUploadHostname = 'static.wikioasis.org';
 
 $wgDBtype = "mysql";
 
@@ -149,6 +150,8 @@ $wgConf->settings += [
     ],
     'wgMaxUploadSize' => [
         'default' => 1024 * 1024 * 128,
+        'wikigeniuswiki' => 1024 * 1024 * 2,
+        'founderswikiwiki' => 1024 * 1024 * 2,
     ],
     'wgAllowCopyUploads' => [
         'default' => false,
@@ -253,7 +256,7 @@ $wgConf->settings += [
         'solarpunkwiki' => [
             'wopartner' => [
                 'partner' => [
-                    'src' => '//cdn.wikioasis.org/metawiki/5/57/Wikioasis_Partner_Footer.svg',
+                    'src' => '//static.wikioasis.org/metawiki/5/57/Wikioasis_Partner_Footer.svg',
                     'alt' => 'WikiOasis Partner Icon',
                     'url' => '//meta.wikioasis.org/wiki/WikiOasis_Partner_Program',
                 ],
@@ -262,7 +265,7 @@ $wgConf->settings += [
         'wikicordwiki' => [
             'wopartner' => [
                 'partner' => [
-                    'src' => '//cdn.wikioasis.org/metawiki/5/57/Wikioasis_Partner_Footer.svg',
+                    'src' => '//static.wikioasis.org/metawiki/5/57/Wikioasis_Partner_Footer.svg',
                     'alt' => 'WikiOasis Partner Icon',
                     'url' => '//meta.wikioasis.org/wiki/WikiOasis_Partner_Program',
                 ],
@@ -271,7 +274,7 @@ $wgConf->settings += [
         'aeronauticawiki' => [
             'wopartner' => [
                 'partner' => [
-                    'src' => '//cdn.wikioasis.org/metawiki/5/57/Wikioasis_Partner_Footer.svg',
+                    'src' => '//static.wikioasis.org/metawiki/5/57/Wikioasis_Partner_Footer.svg',
                     'alt' => 'WikiOasis Partner Icon',
                     'url' => '//meta.wikioasis.org/wiki/WikiOasis_Partner_Program',
                 ],
@@ -2054,7 +2057,7 @@ $wgConf->settings += [
         'default' => true,
     ],
     'wgCFCachePurgePurgeableImageHosts'=> [
-        'default' => ['cdn.wikioasis.org'],
+        'default' => ['static.wikioasis.org'],
     ],
 
     // GTag
@@ -2130,61 +2133,48 @@ require_once __DIR__ . '/ManageWikiSettings.php';
 require_once "$IP/config/Database.php";
 require_once "$IP/config/GlobalCache.php";
 
-$wgHooks['SetupAfterCache'][] = static function () {
-    global $cwPrivate, $wgLocalFileRepo, $wgAWSRepoZones;
 
-    if ( !$cwPrivate || !is_array( $wgLocalFileRepo ) || ( $wgLocalFileRepo['backend'] ?? null ) !== "AmazonS3" ) {
-        return true;
-    }
 
-    if ( !is_array( $wgAWSRepoZones ?? null ) || !isset( $wgLocalFileRepo['zones'] ) || !is_array( $wgLocalFileRepo['zones'] ) ) {
-        return true;
-    }
+if ( $wgDBname === 'metawiki' ) {
+    $wgAWSCredentials = [
+        'key' => $wgAWSKey,
+        'secret' => $wgAWSSecret,
+        'token' => false
+    ];
+    $wgAWSRegion = 'garage';
+    $wgAWSBucketName = $wgDBname;
+    $wgAWSRepoHashLevels = 2;
+    $wgAWSRepoDeletedHashLevels = 3;
+    $wgAWSBucketTopSubdirectory = '';
+    $wgEnableUploads = true;
+    $wgFileBackends['s3'] = [
+        'name' => 'AmazonS3',
+        'class' => 'AmazonS3FileBackend',
+        'lockManager' => 'nullLockManager',
+        'endpoint' => 'http://garage21.mining-cod.ts.net:3900',
+        'use_path_style_endpoint' => true,
+        'version' => 'latest',
+        'http' => [
+            'verify' => false,  // Skip SSL verification for self-signed certs
+            'timeout' => 30,
+            'connect_timeout' => 10,
+        ],
+        // Important: Set public ACL for publicly readable files
+        'defaultAcl' => 'public-read'
+    ];
+    $wgAWSBucketDomain = 'https://cdn.wikioasis.org/$1';
+} else {
+    $wgUploadPath = "https://$wmgUploadHostname/$wgDBname";
+    $wgUploadDirectory = "/var/www/publicimages/$wgDBname"; 
+}
 
-    foreach ( $wgAWSRepoZones as $zone => $zoneInfo ) {
-        if ( !empty( $zoneInfo['isPublic'] ) && isset( $wgLocalFileRepo['zones'][$zone]['url'] ) ) {
-            unset( $wgLocalFileRepo['zones'][$zone]['url'] );
-        }
-    }
 
-    return true;
-};
-
-$wmgUploadHostname = 'cdn.wikioasis.org';
-
-// AWS stuff
-$wgAWSCredentials = [
-    'key' => $wgAWSKey,
-    'secret' => $wgAWSSecret,
-    'token' => false,
-];
-$wgAWSRegion = 'garage';
-$wgAWSBucketName = $wgDBname;
-$wgAWSRepoHashLevels = 2;
-$wgAWSRepoDeletedHashLevels = 3;
-$wgAWSBucketTopSubdirectory = '';
-$wgFileBackends['s3'] = [
-    'name' => 'AmazonS3',
-    'class' => 'AmazonS3FileBackend',
-    'lockManager' => 'nullLockManager',
-    'endpoint' => 'http://garage21.mining-cod.ts.net:3900',
-    'use_path_style_endpoint' => true,
-    'version' => 'latest',
-    'http' => [
-        'verify' => false,  // We don't use SSL lol
-        'timeout' => 30,
-        'connect_timeout' => 10,
-    ],
-    'defaultAcl' => 'public-read',
-];
-$wgAWSBucketDomain = 'https://cdn.wikioasis.org/$1';
-$wgUploadDirectory = false;
 
 if ( $cwPrivate ) {
-   $wmgUploadHostname = false;
-   $wgUploadPath = '/img_auth.php';
+    $wgUploadDirectory = "/var/www/images/$wgDBname";
+    $wgUploadPath = '/img_auth.php';
 } else {
-   $wgGroupPermissions['*']['read'] = true;
+    $wgGroupPermissions['*']['read'] = true;
 }
 
 if ( $wi->missing ) {

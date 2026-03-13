@@ -11,6 +11,7 @@ wfLoadSkins( [
 wfLoadExtensions( [
     'AbuseFilter',
     'AntiSpoof',
+    'AWS',
     'BetaFeatures',
     'CentralAuth',
     'CentralNotice',
@@ -44,6 +45,7 @@ wfLoadExtensions( [
     'Nuke',
     'OATHAuth',
     'OAuth',
+    'OOJSPlus',
     'ParserFunctions',
     //'ParserMigration',
     'QuickInstantCommons',
