@@ -147,6 +147,12 @@ $wgConf->settings += [
     'wgGenerateThumbnailOnParse' => [
         'default' => true,
     ],
+    'wgThumbnailSteps' => [
+	'default' => [20, 40, 60, 120, 250, 330, 500, 960, 1280, 1920, 3840],
+    ],
+    'wgThumbnailSetpsRatio' => [
+	'default' => 1,
+    ],
     'wgMaxUploadSize' => [
         'default' => 1024 * 1024 * 128,
     ],
@@ -898,10 +904,6 @@ $wgConf->settings += [
             ],
             'electionadmin' => [
                 'securepoll-create-poll' => true,
-            ],
-            'global-checkuser' => [
-                'checkuserglobal' => true,
-                'checkuserlogglobal' => true,
             ],
             'global-sysop' => [
                 'globalblock' => true,
@@ -2214,8 +2216,8 @@ require_once "$IP/config/LocalWiki.php";
 $wgCargoDBname = $wgDBname . 'cargo';
 
 // Define last - Extension message files for loading extensions
-if (file_exists(__DIR__ . '/ExtensionMessageFiles-' . $wi->version . '.php') && !defined('MW_NO_EXTENSION_MESSAGES')) {
-    require_once __DIR__ . '/ExtensionMessageFiles-' . $wi->version . '.php';
+if (file_exists(__DIR__ . '/ExtensionMessageFiles-1.45.php') && !defined('MW_NO_EXTENSION_MESSAGES')) {
+    require_once __DIR__ . '/ExtensionMessageFiles-1.45.php';
     // These are not loaded by mergeMessageFileList.php due to not being on ExtensionRegistry
     $wgMessagesDirs['SocialProfile'] = $IP . '/extensions/SocialProfile/i18n';
     $wgExtensionMessagesFiles['SocialProfileAlias'] = $IP . '/extensions/SocialProfile/SocialProfile.alias.php';
@@ -2223,10 +2225,9 @@ if (file_exists(__DIR__ . '/ExtensionMessageFiles-' . $wi->version . '.php') && 
     $wgExtensionMessagesFiles['SocialProfileNamespaces'] = $IP . '/extensions/SocialProfile/SocialProfile.namespaces.php';
     $wgExtensionMessagesFiles['AvatarMagic'] = $IP . '/extensions/SocialProfile/UserProfile/includes/avatar/Avatar.i18n.magic.php';
 }
-
 $wgLocalisationCacheConf['storeClass'] = LCStoreStaticArray::class;
-$wgLocalisationCacheConf['storeDirectory'] = "/var/www/mediawiki/cache/$wgDBname";
-$wgLocalisationCacheConf['manualRecache'] = false;
+$wgLocalisationCacheConf['storeDirectory'] = "/var/www/mediawiki/cache";
+$wgLocalisationCacheConf['manualRecache'] = true;
 
 if ( !file_exists( "/var/www/mediawiki/cache/en.l10n.php" ) ) {
     $wgLocalisationCacheConf['manualRecache'] = false;
