@@ -414,15 +414,21 @@ class MirahezeFunctions {
         return ( php_uname( 'n' ) === self::BETA_HOSTNAME && isset( self::MEDIAWIKI_VERSIONS['beta'] ) ) ? 'beta' : 'stable';
     }
 
+    private static function resolveMediaWikiVersion( string $version ): string {
+        return self::MEDIAWIKI_VERSIONS[$version] ?? $version;
+    }
+
     public static function getMediaWikiVersion( ?string $database = null ): string {
         $envVersion = getenv( 'MIRAHEZE_WIKI_VERSION' );
         if ( $envVersion ) {
-            return $envVersion;
+            return self::resolveMediaWikiVersion( $envVersion );
         }
 
         if ( $database ) {
-            return self::readDbListFile( 'databases', false, $database )['v']
+            $dbVersion = self::readDbListFile( 'databases', false, $database )['v']
                 ?? self::MEDIAWIKI_VERSIONS[ self::getDefaultMediaWikiVersion() ];
+
+            return self::resolveMediaWikiVersion( $dbVersion );
         }
 
         if ( PHP_SAPI === 'cli' ) {
@@ -430,22 +436,27 @@ class MirahezeFunctions {
             $version = $parts[3] ?? null;
 
             if ( $version && in_array( $version, self::MEDIAWIKI_VERSIONS, true ) ) {
-                return $version;
+                return self::resolveMediaWikiVersion( $version );
             }
         }
 
         static $version = null;
 
         self::$currentDatabase ??= self::getCurrentDatabase();
-        $version ??= self::readDbListFile( 'databases', false, self::$currentDatabase )['v'] ?? null;
+        $version ??= self::readDbListFile( 'databases', false, self::$currentDatabase )['v']
+            ?? self::MEDIAWIKI_VERSIONS[ self::getDefaultMediaWikiVersion() ];
 
-        return $version ?? self::MEDIAWIKI_VERSIONS[ self::getDefaultMediaWikiVersion() ];
+        return self::resolveMediaWikiVersion( $version );
     }
 
     public static function getMediaWiki( string $file ): string {
         global $IP;
 
-        $IP = self::MEDIAWIKI_DIRECTORY . self::getMediaWikiVersion();
+        $IP = rtrim( self::MEDIAWIKI_DIRECTORY, '/' );
+        $versionPath = $IP . '/' . self::getMediaWikiVersion();
+        if ( is_dir( $versionPath ) ) {
+            $IP = $versionPath;
+        }
 
         chdir( $IP );
         putenv( "MW_INSTALL_PATH=$IP" );
@@ -799,17 +810,22 @@ class MirahezeFunctions {
             return;
         }
 
-        $listFile = self::CACHE_DIRECTORY . '/' . $this->version . '/extension-list.php';
+        $version = self::resolveMediaWikiVersion( $this->version );
+        $listFile = self::CACHE_DIRECTORY . '/' . $version . '/extension-list.php';
         $list = @include $listFile;
         if ( $list === false ) {
-            $versionDir = self::CACHE_DIRECTORY . '/' . $this->version;
+            $versionDir = self::CACHE_DIRECTORY . '/' . $version;
             if ( !is_dir( $versionDir ) ) {
                 // Create directory since it doesn't exist
                 mkdir( $versionDir, recursive: true );
             }
 
-            $extensions = glob( self::MEDIAWIKI_DIRECTORY . $this->version . '/extensions/*/extension*.json' );
-            $skins = glob( self::MEDIAWIKI_DIRECTORY . $this->version . '/skins/*/skin.json' );
+            $basePath = rtrim( self::MEDIAWIKI_DIRECTORY, '/' );
+            $versionPath = $basePath . '/' . $version;
+            $scanPath = is_dir( $versionPath ) ? $versionPath : $basePath;
+
+            $extensions = glob( $scanPath . '/extensions/*/extension*.json' ) ?: [];
+            $skins = glob( $scanPath . '/skins/*/skin.json' ) ?: [];
             $queue = array_fill_keys( array_merge( $extensions, $skins ), true );
 
             $processor = new ExtensionProcessor();

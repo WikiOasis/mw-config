@@ -38,11 +38,10 @@ $wgDBtype = "mysql";
 $wgDBprefix = "";
 $wgDBssl = false;
 
-$wgMemCachedServers = [ '127.0.0.1:11211' ];
-
 $wgDiff3 = "/usr/bin/diff3";
 
 require_once "$IP/config/GlobalExtensions.php";
+require_once '/var/www/mediawiki/config/EventBus.php';
 
 $wgVirtualDomainsMapping['virtual-centralauth'] = [ 'db' => 'wikidb' ];
 $wgVirtualDomainsMapping['virtual-checkuser-global'] = [ 'db' => 'wikidb' ];
@@ -324,6 +323,11 @@ $wgConf->settings += [
     'wgDefaultMobileSkin' => [
         'default' => 'citizen',
     ],
+    '+wgDefaultUserOptions' => [
+        'default' => [
+            'visualeditor-newwikitext' => 0,
+        ],
+    ],
     // styling
     'wgAllowUserCss' => [
         'default' => true,
@@ -363,14 +367,13 @@ $wgConf->settings += [
         'default' => true,
     ],
 
-    // for Cloudflare
+    // for Cloudflare/Varnish
     'wgUseCdn' => [
         'default' => true,
     ],
     'wgCdnServers' => [
         'default' => [
-            "100.82.132.124",
-            "152.53.112.87",
+            "cp41.mining-cod.ts.net",
         ],
     ],
     'wgCdnServersNoPurge' => [
@@ -605,7 +608,7 @@ $wgConf->settings += [
         'default' => true,
     ],
     'wgCreateWikiCacheDirectory' => [
-        'default' => 'cw_cache',
+        'default' => '/var/www/mediawiki/cw_cache',
     ],
     'wgCreateWikiCacheType' => [
         'default' => 'redis',
@@ -710,20 +713,23 @@ $wgConf->settings += [
             #"/var/www/mediawiki/extensions/LoginNotify/sql/mysql/tables-generated.sql",
             "/var/www/mediawiki/extensions/OATHAuth/sql/mysql/tables-generated.sql",
             "/var/www/mediawiki/extensions/OAuth/schema/mysql/tables-generated.sql",
+	    "/var/www/mediawiki/extensions/MediaModeration/schema/mysql/tables-generated.sql",
             //"$IP/extensions/RottenLinks/sql/rottenlinks.sql",
             //"$IP/extensions/UrlShortener/schemas/tables-generated.sql",
         ],
     ],
-
+    'CreateWikiDeploymentGroupsDefaultDeployment' => [
+	'default' => 'stable',
+    ],
+    'wgCreateWikiDeploymentGroupsDefaultGroup' => [
+	'default' => 'stable',
+    ],
     // CheckUser
     'wgCheckUserLogLogins' => [
         'default' => true,
     ],
     'wgCheckUserSuggestedInvestigationsEnabled' => [
         'default' => true,
-    ],
-    'wgCheckUserGlobalCentralWikiId' => [
-        'default' => 'metawiki',
     ],
     // ManageWiki
     'wgManageWikiModulesEnabled' => [
@@ -964,6 +970,7 @@ $wgConf->settings += [
             'tech' => [
                 'createwiki' => true,
                 'createwiki-deleterequest' => true,
+		'deploygroups' => true,
                 'globalgroupmembership' => true,
                 'globalgrouppermissions' => true,
                 'handle-import-request-interwiki' => true,
@@ -1040,6 +1047,7 @@ $wgConf->settings += [
                 'createwiki-deleterequest',
                 'createwiki-suppressionlog',
                 'createwiki-suppressrequest',
+		'deploygroups',
                 'editincidents',
                 'editothersprofiles-private',
                 'flow-suppress',
@@ -1168,7 +1176,15 @@ $wgConf->settings += [
             'wikiseo',
         ],
     ],
-
+    // MediaModeration
+    'wgMediaModerationFrom' => [
+	'default' => 'noreply@wikioasis.org',
+    ],
+    'wgMediaModerationRecipientList' => [
+	'default' => [
+		'safety@wikioasis.org',
+	],
+    ],
     // GlobalBlocking & GlobalPreferences & GlobalUserPage & GlobalCssJs
     'wgGlobalBlockingDatabase' => [
         'default' => 'wikidb',
@@ -2074,6 +2090,10 @@ $wgConf->settings += [
     ],
     'wgGTagTrackSensitivePages' => [
         'default' => false,
+    ],
+    // VisualEditor
+    'wgVisualEditorEnableWikitext' =>  [
+	'default' => true,
     ],
 
 

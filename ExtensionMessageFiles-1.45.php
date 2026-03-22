@@ -1719,6 +1719,10 @@ $wgMessagesDirs = array (
   array (
     0 => "$IP/extensions/RobloxAPI/i18n",
   ),
+  'MediaModeration' => 
+  array (
+    0 => "$IP/extensions/MediaModeration/i18n",
+  ),
   'mwstake-component-formengine' => "$IP/extensions/OOJSPlus/vendor/mwstake/mediawiki-component-formengine/i18n",
   'SocialProfile' => "$IP/extensions/SocialProfile/i18n",
   'SocialProfileUserProfile' => "$IP/extensions/SocialProfile/UserProfile/i18n",

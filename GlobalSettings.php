@@ -35,7 +35,12 @@ if ($wi->isExtensionActive('CirrusSearch')) {
 if ($wi->isExtensionActive('SocialProfile')) {
 	require_once "$IP/extensions/SocialProfile/SocialProfile.php";
 
-	#$wgSocialProfileFileBackend = 'miraheze-swift';
+	$wgSocialProfileFileBackend = 's3';
+}
+
+if ($wi->isExtensionActive('UserProfileV2')) {
+	$wgUserProfileV2Backend = 's3';
+	$wgUserProfileGlobalUploadBaseUrl = "https://cdn.wikioasis.org/{$wgDBname}";
 }
 
 // JsonConfig
