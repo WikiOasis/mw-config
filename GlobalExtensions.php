@@ -48,7 +48,7 @@ wfLoadExtensions( [
     'OAuth',
     'OOJSPlus',
     'ParserFunctions',
-    //'ParserMigration',
+    'ParserMigration',
     'QuickInstantCommons',
     'RemovePII',
     // 'ReportIncident',

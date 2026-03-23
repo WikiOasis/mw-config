@@ -366,7 +366,13 @@ $wgConf->settings += [
     'wgUseRCPatrol' => [
         'default' => true,
     ],
-
+    // parser
+    'wgParserMigrationEnableParsoidArticlePages' => [
+	'default' => true,
+    ],
+    'wgParserMigrationEnableParsoidDiscussionTools' => [
+	'default' => true,
+    ],
     // for Cloudflare/Varnish
     'wgUseCdn' => [
         'default' => true,
@@ -374,6 +380,7 @@ $wgConf->settings += [
     'wgCdnServers' => [
         'default' => [
             "cp41.mining-cod.ts.net",
+	    "100.97.154.116",
         ],
     ],
     'wgCdnServersNoPurge' => [
