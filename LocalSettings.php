@@ -2140,9 +2140,9 @@ $wi::$disabledExtensions = [
     'femiwiki' => 'Incompatible with MediaWiki 1.42',
     'snapwikiskin' => 'Incompatible with MediaWiki 1.42',
     'hawelcome' => 'Privacy issue',
-    'semanticscribunto' => 'Semantic MediaWiki currently not enabled. Contact for enable.'
-    #'wikibaserepository' => 'Currently not configured',
-    #'wikibaseclient' => 'Currently not configured',
+    'semanticscribunto' => 'Semantic MediaWiki currently not enabled. Contact for enable.',
+    'wikibaserepository' => 'Currently broken',
+    'wikibaseclient' => 'Currently broken',
 ];
 
 $globals = MirahezeFunctions::getConfigGlobals();

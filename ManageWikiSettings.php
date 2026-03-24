@@ -304,7 +304,7 @@ $wgManageWikiSettings = [
 		'help' => 'Default timeout, 1 hour by default.',
 		'requires' => [],
 	],
-	'egApprovedRevsAutomaticApprovals' => [
+	'wgApprovedRevsAutomaticApprovals' => [
 		'name' => 'Automatically approve new revisions',
 		'from' => 'approvedrevs',
 		'type' => 'check',
@@ -313,7 +313,7 @@ $wgManageWikiSettings = [
 		'help' => 'Uncheck this box to require new revisions to be manually approved even if made by an administrator',
 		'requires' => [],
 	],
-	'egApprovedRevsBlankIfUnapproved' => [
+	'wgApprovedRevsBlankIfUnapproved' => [
 		'name' => 'Display unapproved pages as blank',
 		'from' => 'approvedrevs',
 		'type' => 'check',
@@ -322,7 +322,7 @@ $wgManageWikiSettings = [
 		'help' => 'Make pages without approved revisions show up as blank',
 		'requires' => [],
 	],
-	'egApprovedRevsBlankFileIfUnapproved' => [
+	'wgApprovedRevsBlankFileIfUnapproved' => [
 		'name' => 'Do not display unapproved images',
 		'from' => 'approvedrevs',
 		'type' => 'check',
@@ -331,7 +331,7 @@ $wgManageWikiSettings = [
 		'help' => 'Makes files without approved versions not show up when embedded',
 		'requires' => [],
 	],
-	'egApprovedRevsFileAutomaticApprovals' => [
+	'wgApprovedRevsFileAutomaticApprovals' => [
 		'name' => 'Automatically approve new files',
 		'from' => 'approvedrevs',
 		'type' => 'check',
@@ -340,7 +340,7 @@ $wgManageWikiSettings = [
 		'help' => 'Uncheck this to require new files to be manually approved even if made by an administrator',
 		'requires' => [],
 	],
-	'egApprovedRevsFileShowApproveLatest' => [
+	'wgApprovedRevsFileShowApproveLatest' => [
 		'name' => 'Show a link to approve the latest revision in Special:ApprovedRevs',
 		'from' => 'approvedrevs',
 		'type' => 'check',
@@ -349,7 +349,7 @@ $wgManageWikiSettings = [
 		'help' => 'This option makes a link show up on Special:ApprovedRevs to approve the latest revision of a file',
 		'requires' => [],
 	],
-	'egApprovedRevsShowNotApprovedMessage' => [
+	'wgApprovedRevsShowNotApprovedMessage' => [
 		'name' => 'Show not approved message',
 		'from' => 'approvedrevs',
 		'type' => 'check',
@@ -1366,6 +1366,14 @@ $wgManageWikiSettings = [
 	],
 
 	// Parser Functions
+    'wgDLPAllowUnlimitedResults' => [
+        'name' => 'Use Parsoid for page rendering',
+        'type' => 'check',
+        'overridedefault' => false,
+        'section' => 'parserfunctions',
+        'help' => 'Parsoid is a modern parser for wikitext, bringing improved accuracy to rendering',
+        'requires' => [],
+    ],
 	'wgDLPAllowUnlimitedResults' => [
 		'name' => 'DLP Allow Unlimited Results',
 		'from' => 'dynamicpagelist',
@@ -3961,7 +3969,7 @@ $wgManageWikiSettings = [
 		'help' => 'Where the dark mode toggle link should be placed.',
 		'requires' => [],
 	],
-	'egChameleonLayoutFile' => [
+	'wgChameleonLayoutFile' => [
 		'name' => 'Chameleon layout file',
 		'from' => 'chameleon',
 		'type' => 'list',
@@ -3977,7 +3985,7 @@ $wgManageWikiSettings = [
 		'help' => 'The layout to use for the Chameleon skin.',
 		'requires' => [],
 	],
-	'egChameleonEnableExternalLinkIcons' => [
+	'wgChameleonEnableExternalLinkIcons' => [
 		'name' => 'Chameleon external link icons',
 		'from' => 'chameleon',
 		'type' => 'check',

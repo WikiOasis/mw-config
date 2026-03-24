@@ -15,7 +15,7 @@ echo <<<EOF
 <head>
 <script src="https://api.dashboard.instatus.com/widget?host=status.wikioasis.org&code=3a58baa4&locale=en">
 </script>
-<link rel="icon" type="image/x-icon" href="https://static.wikioasis.org/images/metawiki/1/18/favicon.ico" />
+<link rel="icon" type="image/x-icon" href="https://cdn.wikioasis.org/images/metawiki/1/18/favicon.ico" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Under Maintenance</title>
@@ -159,12 +159,12 @@ h1 {
     }
 }
 </style>
-<link rel="shortcut icon" href="https://static.wikioasis.org/metawiki/1/18/favicon.ico" />
+<link rel="shortcut icon" href="https://cdn.wikioasis.org/metawiki/1/18/favicon.ico" />
 </head>
 <body>
 
 <div class="container">
-    <img class="logo" src="https://static.wikioasis.org/metawiki/3/38/WikiOasis_Logo.png" alt="WikiOasis Logo" />
+    <img class="logo" src="https://cdn.wikioasis.org/metawiki/3/38/WikiOasis_Logo.png" alt="WikiOasis Logo" />
     <div class="content">
         <h1>Under Maintenance</h1>
         <p class="url">{$encHost}{$encUrl}</p>

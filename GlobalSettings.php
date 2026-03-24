@@ -82,6 +82,12 @@ if ( $wi->isAnyOfExtensionsActive( 'StandardDialogs', 'EnhancedUpload' ) ) {
 	wfLoadExtension( 'OOJSPlus' );
 }
 
+if ( $wi->isExtensionActive( 'PortableInfobox' ) ) {
+    // incompatible with Parsoid, tracking in T89
+    $wgParserMigrationEnableParsoidDiscussionTools = false;
+    $wgParserMigrationEnableParsoidArticlePages = false;
+}
+
 $articlePath = str_replace( '$1', '', $wgArticlePath );
 
 $wgDiscordNotificationWikiUrl = $wi->server . $articlePath;
