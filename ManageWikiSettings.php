@@ -1366,8 +1366,17 @@ $wgManageWikiSettings = [
 	],
 
 	// Parser Functions
-    'wgDLPAllowUnlimitedResults' => [
-        'name' => 'Use Parsoid for page rendering',
+    'wgParserMigrationEnableParsoidDiscussionTools' => [
+        'name' => 'Use Parsoid for discussiontools rendering',
+        'from' => 'discussiontools',
+        'type' => 'check',
+        'overridedefault' => false,
+        'section' => 'parserfunctions',
+        'help' => 'Parsoid is a modern parser for wikitext, bringing improved accuracy to rendering',
+        'requires' => [],
+    ],
+    'wgParserMigrationEnableParsoidArticlePages' => [
+        'name' => 'Use Parsoid for article rendering',
         'type' => 'check',
         'overridedefault' => false,
         'section' => 'parserfunctions',
