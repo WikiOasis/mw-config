@@ -368,10 +368,10 @@ $wgConf->settings += [
     ],
     // parser
     'wgParserMigrationEnableParsoidArticlePages' => [
-	'default' => true,
+	    'default' => false,
     ],
     'wgParserMigrationEnableParsoidDiscussionTools' => [
-	'default' => true,
+	    'default' => false,
     ],
     // for Cloudflare/Varnish
     'wgUseCdn' => [
