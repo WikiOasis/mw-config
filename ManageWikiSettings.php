@@ -1377,6 +1377,7 @@ $wgManageWikiSettings = [
     ],
     'wgParserMigrationEnableParsoidArticlePages' => [
         'name' => 'Use Parsoid for article rendering',
+        'from' => 'mediawiki',
         'type' => 'check',
         'overridedefault' => false,
         'section' => 'parserfunctions',
