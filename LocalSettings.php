@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 /**
  * LocalSettings.php
  * Production LocalSettings file for WikiOasis
@@ -977,7 +980,6 @@ $wgConf->settings += [
             'tech' => [
                 'createwiki' => true,
                 'createwiki-deleterequest' => true,
-		'deploygroups' => true,
                 'globalgroupmembership' => true,
                 'globalgrouppermissions' => true,
                 'handle-import-request-interwiki' => true,
@@ -1054,7 +1056,6 @@ $wgConf->settings += [
                 'createwiki-deleterequest',
                 'createwiki-suppressionlog',
                 'createwiki-suppressrequest',
-		'deploygroups',
                 'editincidents',
                 'editothersprofiles-private',
                 'flow-suppress',
@@ -2084,7 +2085,7 @@ $wgConf->settings += [
 
     // GTag
     'wgGTagAnalyticsId' => [
-        'default' => '',
+        'default' => 'G-NL7M72FBFT',
     ],
     'wgGTagAnonymizeIP' => [
         'default' => true,
