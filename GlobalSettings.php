@@ -175,12 +175,11 @@ $wgDataDump = [
 			'delete' => 'delete-dump',
 		],
 	],
-
-	/*'managewiki_backup' => [
+	'managewiki_backup' => [
 		'file_ending' => '.json',
 		'generate' => [
 			'type' => 'mwscript',
-			'script' => "$IP/extensions/WikiOasisMagic/maintenance/generateManageWikiBackup.php",
+			'script' => "$IP/extensions/MirahezeMagic/maintenance/generateManageWikiBackup.php",
 			'options' => [
 				'--filename',
 				'${filename}'
@@ -192,7 +191,7 @@ $wgDataDump = [
 			'generate' => 'generate-dump',
 			'delete' => 'delete-dump',
 		],
-	],*/
+	],
 ];
 
 // $wgLogos
