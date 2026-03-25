@@ -31,6 +31,7 @@ wfLoadExtensions( [
     'GlobalBlocking',
     'GlobalCssJs',
     'GlobalPreferences',
+    'GTag',
     //'GlobalNewFiles',
     'ImportDump',
     'Interwiki',
