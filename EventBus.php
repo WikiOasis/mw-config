@@ -133,7 +133,7 @@ $wgEventStreams = [
 			],
 		],
 	],
-        '/^mediawiki\\.job\\..+/' => [
+    '/^mediawiki\\.job\\..+/' => [
 		'schema_title' => 'mediawiki/job',
 		'destination_event_service' => 'eventgate',
 		'canary_events_enabled' => false,
