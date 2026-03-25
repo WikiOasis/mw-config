@@ -2,7 +2,7 @@
 
 $wgMainCacheType = 'redis';
 $wgMessageCacheType = 'redis';
-$wgCacheDirectory = '/var/www/mediawiki-staging/cache/{$wgDBname}';
+$wgCacheDirectory = '/var/www/mediawiki/cache/{$wgDBname}';
 
 $wgParserCacheType = 'redis';
 
