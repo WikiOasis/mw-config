@@ -2217,13 +2217,25 @@ if ( $cwPrivate ) {
    $wgGroupPermissions['*']['read'] = true;
 }
 
+<?php
 if ( $wi->missing ) {
-    if ( MW_ENTRY_POINT === 'cli') {
-        die("Unknown wiki.");
+    if ( MW_ENTRY_POINT === 'cli' ) {
+        die( 'Unknown wiki.' );
     } else {
-        require_once '/var/www/mediawiki/config/MissingWiki.php';
+        $host = '';
+        if ( PHP_SAPI !== 'cli' ) {
+            $host = $_SERVER['HTTP_HOST'] ?? $_SERVER['HTTP_X_FORWARDED_HOST'] ?? $_SERVER['SERVER_NAME'] ?? '';
+        }
+        $host = strtolower( trim( preg_replace( '/:\d+$/', '', $host ) ) );
+
+        if ( $host !== '' && preg_match( '/(^|\.)skywiki\.org$/', $host ) ) {
+            require_once '/var/www/mediawiki/config/MissingSkyWiki.php';
+        } else {
+            require_once '/var/www/mediawiki/config/MissingWiki.php';
+        }
     }
 }
+
 
 if ( $cwDeleted ) {
     if ( MW_ENTRY_POINT === 'cli' ) {
