@@ -43,7 +43,7 @@ wfLoadExtensions( [
     //'MatomoAnalytics',
     //'MobileDetect',
     //'MultiPurge',
-    //'NativeSvgHandler',
+    'NativeSvgHandler',
     'Nuke',
     'OATHAuth',
     'OAuth',

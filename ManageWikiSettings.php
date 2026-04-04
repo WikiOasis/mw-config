@@ -3127,7 +3127,7 @@ $wgManageWikiSettings = [
 		'from' => 'mediawiki',
 		'global' => true,
 		'type' => 'text',
-		'overridedefault' => "https://$wmgUploadHostname/metawiki/3/38/WikiOasis_Logo.png",
+		'overridedefault' => "https://cdn.wikioasis.org/metawiki/3/38/WikiOasis_Logo.png",
 		'section' => 'styling',
 		'help' => 'This will replace WikiOasis\' default logo. See <a href="https://meta.miraheze.org/wiki/ManageWiki#How_do_I_change_my_logo.2Ffavicon.3F">this link</a> for how you can change it. Also sets the value of <code>$wgLogos[\'1x\']</code>.',
 		'requires' => [],
