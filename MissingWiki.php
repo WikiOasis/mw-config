@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 header( 'Content-Type: text/html; charset=utf-8' );
 header( 'Cache-Control: s-maxage=2678400, max-age=2678400' );
 
@@ -228,5 +230,14 @@ h1 {
 </body>
 </html>
 EOF;
+
+try {
+    MediaWikiServices::allowGlobalInstance();
+    $dataStore = MediaWikiServices::getInstance()->get( 'CreateWikiDataStore' );
+    $dataStore->syncCache();
+} catch ( Throwable $ex ) {
+    // Intentionally left empty
+}
+
 die( 1 );
 
