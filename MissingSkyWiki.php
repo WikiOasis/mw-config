@@ -166,8 +166,8 @@ h1 {
     <div class="content">
         <h1>Wiki Missing</h1>
         <p class="url">{$encHost}{$encUrl}</p>
-        <p class="description">This SkyWiki wiki has not yet been migrated to WikiOasis. The bureaucrats of this wiki
-         can request a wiki migration by emailing stewards@wikioasis.org.</p>
+        <p class="description">This SkyWiki wiki has not yet been migrated to WikiOasis, or is missing. The bureaucrats
+         of this wiki can request a wiki migration by emailing stewards@wikioasis.org.</p>
         <div class="buttons">
             <a href="https://meta.wikioasis.org/" class="btn">Go home</a>
             <a href="https://discord.gg/GrrTcsVC2x" class="btn">Discord</a>

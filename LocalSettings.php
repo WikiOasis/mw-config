@@ -2217,7 +2217,6 @@ if ( $cwPrivate ) {
    $wgGroupPermissions['*']['read'] = true;
 }
 
-<?php
 if ( $wi->missing ) {
     if ( MW_ENTRY_POINT === 'cli' ) {
         die( 'Unknown wiki.' );
