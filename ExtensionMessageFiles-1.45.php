@@ -259,6 +259,10 @@ $wgExtensionMessagesFiles = array (
 );
 
 $wgMessagesDirs = array (
+  'Pulse' => 
+  array (
+    0 => "$IP/extensions/Pulse/i18n",
+  ),
   'SystemGifts' => 
   array (
     0 => "$IP/extensions/SocialProfile/SystemGifts/i18n",

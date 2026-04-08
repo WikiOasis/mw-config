@@ -286,7 +286,26 @@ $wgConf->settings += [
             ],
         ],
     ],
-
+    // Pulse
+    'wgPulseFunnelEndpoint' => [
+	'default' => 'http://100.112.156.2:8042/ingest',
+    ],
+    'wgPulseConnectTimeout' => [
+	'default' => 3,
+    ],
+    'wgPulseRequestTimeout' => [
+	'default' => 7,
+    ],
+    'wgPulseEventStreams' => [
+	'default' => [
+		'mediawiki-job' => [
+			'group' => 'mediawiki',
+			'type' => 'job',
+			'version' => '1.0.0',
+			'stream' => 'mediawiki/job/1.0.0',
+		],
+	],
+    ],
     // copyright
     'wgRightsPage' => [
         'default' => '',
@@ -2142,6 +2161,15 @@ $wi::$disabledExtensions = [
     'snapwikiskin' => 'Incompatible with MediaWiki 1.42',
     'hawelcome' => 'Privacy issue',
     'semanticscribunto' => 'Semantic MediaWiki currently not enabled. Contact for enable.',
+    
+    'articleplaceholder' => 'Depends on wikibase',
+    'interwikisorting' => 'Depends on wikibase',
+    'propertysuggester' => 'Depends on wikibase',
+    'unlinkedwikibase' => 'Depends on wikibase',
+    'wikibaseedtf' => 'Depends on wikibase',
+    'wikibaselexeme' => 'Depends on wikibase',
+    'wikibasequalityconstraints' => 'Depends on wikibase',
+
     'wikibaserepository' => 'Currently broken',
     'wikibaseclient' => 'Currently broken',
 ];
@@ -2177,6 +2205,42 @@ $wgHooks['SetupAfterCache'][] = static function () {
         }
     }
 
+    return true;
+};
+
+// observability
+\Sentry\init([
+    'dsn' => $sentryDSN,
+    'environment' => defined('MW_ENV') ? MW_ENV : 'production',
+    'release' => $wgVersion ?? null,
+    'traces_sample_rate' => 0.1,
+]);
+
+register_shutdown_function( function() {
+    $error = error_get_last();
+    if ( $error && in_array( $error['type'], [ E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ] ) ) {
+        \Sentry\captureMessage( $error['message'], \Sentry\Severity::fatal() );
+    }
+} );
+
+$wgHooks['LogException'][] = function( Throwable $e, bool $suppressed ) {
+    if ( !$suppressed ) {
+        \Sentry\captureException( $e );
+    }
+    return true;
+};
+
+$wgHooks['UserGetRights'][] = function( $user ) {
+    if ( $user && $user->isRegistered() ) {
+        \Sentry\configureScope( function( \Sentry\State\Scope $scope ) use ( $user ) {
+            $scope->setUser( [ 'id' => $user->getId(), 'username' => $user->getName() ] );
+        } );
+    }
+    return true;
+};
+
+$wgHooks['BeforePageDisplay'][] = function( OutputPage $out, Skin $skin ) {
+    $out->addHeadItems( '<script src="https://js.sentry-cdn.com/8d12d310c7d40b6b4d8c8989e36a7b5a.min.js" crossorigin="anonymous"></script>' );
     return true;
 };
 

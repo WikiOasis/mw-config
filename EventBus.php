@@ -152,16 +152,6 @@ $wgEventRelayerConfig = [
 	],
 ];
 
-// Keep default job queue backend unchanged. To route specific job types to Kafka,
-// add them here.
-$wgKafkaBackedJobTypes = [];
-foreach ( $wgKafkaBackedJobTypes as $jobType ) {
-	$wgJobTypeConf[$jobType] = [
-		'class' => JobQueueEventBus::class,
-		'readOnlyReason' => false,
-	];
-}
-
 $wgEventBusEnableRunJobAPI =
 	wfHostname() === 'mwtask11' ||
 	wfHostname() === 'staging11';

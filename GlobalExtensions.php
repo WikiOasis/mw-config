@@ -31,7 +31,7 @@ wfLoadExtensions( [
     'GlobalBlocking',
     'GlobalCssJs',
     'GlobalPreferences',
-    'GTag',
+//     'GTag',
     //'GlobalNewFiles',
     'ImportDump',
     'Interwiki',
@@ -63,7 +63,7 @@ wfLoadExtensions( [
     //'WebAuthn',
     'WikiDiscover',
     'WikiEditor',
-	'WikiOasisMagic',
+    'WikiOasisMagic',
     'cldr',
 ] );
 

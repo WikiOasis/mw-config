@@ -1154,8 +1154,7 @@ $wgManageWikiExtensions = [
 		'requires' => [],
 		'install' => [
 			'sql' => [
-				'moderation' => "$IP/extensions/Moderation/sql/patch-moderation.sql",
-				'moderation_block' => "$IP/extensions/Moderation/sql/patch-moderation_block.sql"
+				'moderation' => "$IP/extensions/Moderation/sql/mysql/tables-generated.sql",
 			],
 			'permissions' => [
 				'automoderated' => [
@@ -3005,12 +3004,9 @@ $wgManageWikiExtensions = [
 				'wb_items_per_site' => "$IP/extensions/Wikibase/repo/sql/mysql/wb_items_per_site.sql",
 				'wb_id_counters' => "$IP/extensions/Wikibase/repo/sql/mysql/wb_id_counters.sql",
 				'wbt_item_terms' => "$IP/extensions/Wikibase/repo/sql/mysql/term_store.sql",
-				'wbt_term_in_lang' => "$IP/extensions/Wikibase/repo/sql/mysql/term_store.sql",
-				'wbt_text_in_lang' => "$IP/extensions/Wikibase/repo/sql/mysql/term_store.sql",
 				'wbt_text' => "$IP/extensions/Wikibase/repo/sql/mysql/term_store.sql",
 				'wbt_type' => "$IP/extensions/Wikibase/repo/sql/mysql/term_store.sql",
 				'wb_property_info' => "$IP/extensions/Wikibase/repo/sql/mysql/wb_property_info.sql",
-				'wbt_property_terms' => "$IP/extensions/Wikibase/repo/sql/mysql/term_store.sql",
 			],
 			'permissions' => [
 				'*' => [

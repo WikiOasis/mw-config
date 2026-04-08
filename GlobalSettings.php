@@ -299,3 +299,4 @@ if ($wgConf->get('wgRightsIcon', $wi->dbname)) {
 		'alt' => $wgConf->get('wgRightsText', $wi->dbname),
 	];
 }
+
