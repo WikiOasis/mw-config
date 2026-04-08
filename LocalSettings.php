@@ -2209,6 +2209,7 @@ $wgFileBackends['s3'] = [
 ];
 $wgAWSBucketDomain = 'https://cdn.wikioasis.org/$1';
 $wgUploadDirectory = false;
+$wgTmpDirectory = '/var/www/mediawiki/cache';
 
 if ( $cwPrivate ) {
    $wmgUploadHostname = false;
