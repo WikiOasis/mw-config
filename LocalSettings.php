@@ -14,6 +14,7 @@ use MediaWiki\MediaWikiServices;
 
 // Inject sentry
 
+require_once "$IP/config/PrivateSettings.php";
 \Sentry\init([
     'dsn' => $sentryDSN,
     'environment' => defined('MW_ENV') ? MW_ENV : 'production',
@@ -69,7 +70,7 @@ ini_set( 'xdebug.var_display_max_children', - 1 );
 ini_set( 'xdebug.var_display_max_data', - 1 );
 ini_set( 'xdebug.var_display_max_depth', - 1 );
 
-require_once "$IP/config/PrivateSettings.php";
+
 
 $wgConf->suffixes = [ 'wiki' ];
 
