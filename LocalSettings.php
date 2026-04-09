@@ -11,6 +11,44 @@ use MediaWiki\MediaWikiServices;
  * @var mixed $wgConf
  */
 
+
+// Inject sentry
+
+\Sentry\init([
+    'dsn' => $sentryDSN,
+    'environment' => defined('MW_ENV') ? MW_ENV : 'production',
+    'release' => $wgVersion ?? null,
+    'traces_sample_rate' => 0.1,
+]);
+
+register_shutdown_function( function() {
+    $error = error_get_last();
+    if ( $error && in_array( $error['type'], [ E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ] ) ) {
+        \Sentry\captureMessage( $error['message'], \Sentry\Severity::fatal() );
+    }
+} );
+
+$wgHooks['LogException'][] = function( Throwable $e, bool $suppressed ) {
+    if ( !$suppressed ) {
+        \Sentry\captureException( $e );
+    }
+    return true;
+};
+
+$wgHooks['UserGetRights'][] = function( $user ) {
+    if ( $user && $user->isRegistered() ) {
+        \Sentry\configureScope( function( \Sentry\State\Scope $scope ) use ( $user ) {
+            $scope->setUser( [ 'id' => $user->getId(), 'username' => $user->getName() ] );
+        } );
+    }
+    return true;
+};
+
+$wgHooks['BeforePageDisplay'][] = function( OutputPage $out, Skin $skin ) {
+    $out->addHeadItems( '<script src="https://js.sentry-cdn.com/8d12d310c7d40b6b4d8c8989e36a7b5a.min.js" crossorigin="anonymous"></script>' );
+    return true;
+};
+
 if ( !defined( 'MEDIAWIKI' ) ) {
     die( 'Not an entry point.' );
 }
@@ -2192,41 +2230,6 @@ $wgHooks['SetupAfterCache'][] = static function () {
     return true;
 };
 
-// observability
-\Sentry\init([
-    'dsn' => $sentryDSN,
-    'environment' => defined('MW_ENV') ? MW_ENV : 'production',
-    'release' => $wgVersion ?? null,
-    'traces_sample_rate' => 0.1,
-]);
-
-register_shutdown_function( function() {
-    $error = error_get_last();
-    if ( $error && in_array( $error['type'], [ E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ] ) ) {
-        \Sentry\captureMessage( $error['message'], \Sentry\Severity::fatal() );
-    }
-} );
-
-$wgHooks['LogException'][] = function( Throwable $e, bool $suppressed ) {
-    if ( !$suppressed ) {
-        \Sentry\captureException( $e );
-    }
-    return true;
-};
-
-$wgHooks['UserGetRights'][] = function( $user ) {
-    if ( $user && $user->isRegistered() ) {
-        \Sentry\configureScope( function( \Sentry\State\Scope $scope ) use ( $user ) {
-            $scope->setUser( [ 'id' => $user->getId(), 'username' => $user->getName() ] );
-        } );
-    }
-    return true;
-};
-
-$wgHooks['BeforePageDisplay'][] = function( OutputPage $out, Skin $skin ) {
-    $out->addHeadItems( '<script src="https://js.sentry-cdn.com/8d12d310c7d40b6b4d8c8989e36a7b5a.min.js" crossorigin="anonymous"></script>' );
-    return true;
-};
 
 $wmgUploadHostname = 'cdn.wikioasis.org';
 

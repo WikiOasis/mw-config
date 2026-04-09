@@ -231,6 +231,7 @@ h1 {
 </html>
 EOF;
 
+// Sync databases.php just in case wiki is missing due to it being outdated
 try {
     MediaWikiServices::allowGlobalInstance();
     $dataStore = MediaWikiServices::getInstance()->get( 'CreateWikiDataStore' );

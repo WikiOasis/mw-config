@@ -516,7 +516,7 @@ class MirahezeFunctions {
             ];
 
             self::$activeExtensions ??= self::getActiveExtensions();
-            $globals = self::getConfigForCaching();
+            self::$activeExtensions ??= self::getActiveExtensions( useConfigCache: false );
 
             $confCacheObject = [
                 'mtime' => $confActualMtime,
@@ -707,7 +707,7 @@ class MirahezeFunctions {
         return $cacheArray['settings'][$setting] ?? $wgConf->get( $setting, $wiki );
     }
 
-    public static function getActiveExtensions(): array {
+    public static function getActiveExtensions( bool $useConfigCache = true ): array {
         global $wgDBname, $wgManageWikiExtensions;
 
         $confCacheFileName = "config-$wgDBname.php";
@@ -722,10 +722,12 @@ class MirahezeFunctions {
         );
 
         static $extensions = null;
-        $extensions ??= self::readFromCache(
-            self::CACHE_DIRECTORY . "/$confCacheFileName",
-            'extensions', $confActualMtime
-        );
+        if ( $useConfigCache ) {
+            $extensions ??= self::readFromCache(
+                self::CACHE_DIRECTORY . "/$confCacheFileName",
+                'extensions', $confActualMtime
+            );
+        }
 
         if ( $extensions ) {
             return $extensions;
