@@ -3003,8 +3003,6 @@ $wgManageWikiExtensions = [
 				'wb_changes_subscription' => "$IP/extensions/Wikibase/repo/sql/mysql/wb_changes_subscription.sql",
 				'wb_items_per_site' => "$IP/extensions/Wikibase/repo/sql/mysql/wb_items_per_site.sql",
 				'wb_id_counters' => "$IP/extensions/Wikibase/repo/sql/mysql/wb_id_counters.sql",
-				'wbt_item_terms' => "$IP/extensions/Wikibase/repo/sql/mysql/term_store.sql",
-				'wbt_text' => "$IP/extensions/Wikibase/repo/sql/mysql/term_store.sql",
 				'wbt_type' => "$IP/extensions/Wikibase/repo/sql/mysql/term_store.sql",
 				'wb_property_info' => "$IP/extensions/Wikibase/repo/sql/mysql/wb_property_info.sql",
 			],

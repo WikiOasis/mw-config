@@ -747,12 +747,6 @@ $wgConf->settings += [
             //"$IP/extensions/UrlShortener/schemas/tables-generated.sql",
         ],
     ],
-    'CreateWikiDeploymentGroupsDefaultDeployment' => [
-	'default' => 'stable',
-    ],
-    'wgCreateWikiDeploymentGroupsDefaultGroup' => [
-	'default' => 'stable',
-    ],
     // CheckUser
     'wgCheckUserLogLogins' => [
         'default' => true,
@@ -2161,17 +2155,6 @@ $wi::$disabledExtensions = [
     'snapwikiskin' => 'Incompatible with MediaWiki 1.42',
     'hawelcome' => 'Privacy issue',
     'semanticscribunto' => 'Semantic MediaWiki currently not enabled. Contact for enable.',
-    
-    'articleplaceholder' => 'Depends on wikibase',
-    'interwikisorting' => 'Depends on wikibase',
-    'propertysuggester' => 'Depends on wikibase',
-    'unlinkedwikibase' => 'Depends on wikibase',
-    'wikibaseedtf' => 'Depends on wikibase',
-    'wikibaselexeme' => 'Depends on wikibase',
-    'wikibasequalityconstraints' => 'Depends on wikibase',
-
-    'wikibaserepository' => 'Currently broken',
-    'wikibaseclient' => 'Currently broken',
 ];
 
 $globals = MirahezeFunctions::getConfigGlobals();
