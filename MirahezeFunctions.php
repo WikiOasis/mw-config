@@ -516,6 +516,7 @@ class MirahezeFunctions {
             ];
 
             self::$activeExtensions ??= self::getActiveExtensions();
+            $globals = self::getConfigForCaching();
             self::$activeExtensions ??= self::getActiveExtensions( useConfigCache: false );
 
             $confCacheObject = [
