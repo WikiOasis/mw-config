@@ -12,21 +12,9 @@ use MediaWiki\MediaWikiServices;
  */
 
 
-// Inject sentry
-require_once "$IP/config/PrivateSettings.php";
-\Sentry\init([
-    'dsn' => $sentryDSN,
-    'environment' => defined('MW_ENV') ? MW_ENV : 'production',
-    'release' => $wgVersion ?? null,
-    'traces_sample_rate' => 0.1,
-]);
 
-register_shutdown_function( function() {
-    $error = error_get_last();
-    if ( $error && in_array( $error['type'], [ E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ] ) ) {
-        \Sentry\captureMessage( $error['message'], \Sentry\Severity::fatal() );
-    }
-} );
+
+
 
 if ( !defined( 'MEDIAWIKI' ) ) {
     die( 'Not an entry point.' );
@@ -48,7 +36,7 @@ ini_set( 'xdebug.var_display_max_children', - 1 );
 ini_set( 'xdebug.var_display_max_data', - 1 );
 ini_set( 'xdebug.var_display_max_depth', - 1 );
 
-
+require_once "$IP/config/PrivateSettings.php";
 
 $wgConf->suffixes = [ 'wiki' ];
 
@@ -2176,7 +2164,21 @@ $wi::$disabledExtensions = [
 ];
 
 $globals = MirahezeFunctions::getConfigGlobals();
-// inject the rest here
+// inject sentry
+\Sentry\init([
+    'dsn' => $sentryDSN,
+    'environment' => defined('MW_ENV') ? MW_ENV : 'production',
+    'release' => $wgVersion ?? null,
+    'traces_sample_rate' => 0.1,
+]);
+
+register_shutdown_function( function() {
+    $error = error_get_last();
+    if ( $error && in_array( $error['type'], [ E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ] ) ) {
+        \Sentry\captureMessage( $error['message'], \Sentry\Severity::fatal() );
+    }
+} );
+
 $wgHooks['LogException'][] = function( Throwable $e, bool $suppressed ) {
     if ( !$suppressed ) {
         \Sentry\captureException( $e );
