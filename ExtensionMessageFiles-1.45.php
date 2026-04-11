@@ -71,7 +71,7 @@ $wgExtensionMessagesFiles = array (
   'EditcountAliases' => "$IP/extensions/Editcount/Editcount.alias.php",
   'SecurePollAlias' => "$IP/extensions/SecurePoll/SecurePoll.alias.php",
   'SecurePollNamespaces' => "$IP/extensions/SecurePoll/SecurePoll.namespaces.php",
-  'RequestCustomDomainAliases' => "$IP/extensions/RequestSSL/RequestCustomDomainAliases.php",
+  'RequestCustomDomainAliases' => "$IP/extensions/RequestCustomDomain/RequestCustomDomainAliases.php",
   'ApprovedRevsAlias' => "$IP/extensions/ApprovedRevs/ApprovedRevs.alias.php",
   'ApprovedRevsMagic' => "$IP/extensions/ApprovedRevs/ApprovedRevs.i18n.magic.php",
   'ArraysMagic' => "$IP/extensions/Arrays/Arrays.i18n.magic.php",
@@ -757,7 +757,7 @@ $wgMessagesDirs = array (
   ),
   'RequestCustomDomain' => 
   array (
-    0 => "$IP/extensions/RequestSSL/i18n",
+    0 => "$IP/extensions/RequestCustomDomain/i18n",
   ),
   '3D' => 
   array (

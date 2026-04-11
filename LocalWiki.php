@@ -12,7 +12,7 @@ use MediaWiki\User\User;
 switch ( $wi->dbname ) {
 	case 'metawiki':
 		wfLoadExtension('SecurePoll');
-		wfLoadExtension('RequestSSL');
+		wfLoadExtension('RequestCustomDomain');
 		break;
 	case 'testwiki':
 		wfLoadExtension('EnhancedUpload');
