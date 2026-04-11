@@ -26,7 +26,7 @@ wfLoadExtensions( [
     'DismissableSiteNotice',
     'Echo',
     //'EventBus',
-    //'EventLogging',
+    'EventLogging',
     //'EventStreamConfig',
     'GlobalBlocking',
     'GlobalCssJs',
