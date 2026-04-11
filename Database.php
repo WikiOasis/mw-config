@@ -8,7 +8,7 @@ $wgSQLMode = null;
 if ( class_exists( \Wikimedia\Rdbms\LBFactoryMulti::class ) ) {
     // Yoink the connection details from PrivateSettings.php
     $primaryServer = $wgDBservers[0] ?? [
-        'host' => 'db11',
+        'host' => '10.0.1.103',
         'user' => $wgDBuser ?? null,
         'password' => $wgDBpassword ?? null,
         'type' => 'mysql',

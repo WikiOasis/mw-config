@@ -49,7 +49,6 @@ $wgDBssl = false;
 $wgDiff3 = "/usr/bin/diff3";
 
 require_once "$IP/config/GlobalExtensions.php";
-require_once '/var/www/mediawiki/config/EventBus.php';
 
 $wgVirtualDomainsMapping['virtual-centralauth'] = [ 'db' => 'wikidb' ];
 $wgVirtualDomainsMapping['virtual-checkuser-global'] = [ 'db' => 'wikidb' ];
@@ -290,26 +289,6 @@ $wgConf->settings += [
                 ],
             ],
         ],
-    ],
-    // Pulse
-    'wgPulseFunnelEndpoint' => [
-	'default' => 'http://100.112.156.2:8042/ingest',
-    ],
-    'wgPulseConnectTimeout' => [
-	'default' => 3,
-    ],
-    'wgPulseRequestTimeout' => [
-	'default' => 7,
-    ],
-    'wgPulseEventStreams' => [
-	'default' => [
-		'mediawiki-job' => [
-			'group' => 'mediawiki',
-			'type' => 'job',
-			'version' => '1.0.0',
-			'stream' => 'mediawiki/job/1.0.0',
-		],
-	],
     ],
     // copyright
     'wgRightsPage' => [
