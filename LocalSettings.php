@@ -12,10 +12,6 @@ use MediaWiki\MediaWikiServices;
  */
 
 
-
-
-
-
 if ( !defined( 'MEDIAWIKI' ) ) {
     die( 'Not an entry point.' );
 }
@@ -40,15 +36,12 @@ require_once "$IP/config/PrivateSettings.php";
 
 $wgConf->suffixes = [ 'wiki' ];
 
-
 $wgDBtype = "mysql";
 
 $wgDBprefix = "";
 $wgDBssl = false;
 
 $wgDiff3 = "/usr/bin/diff3";
-
-require_once "$IP/config/GlobalExtensions.php";
 
 $wgVirtualDomainsMapping['virtual-centralauth'] = [ 'db' => 'wikidb' ];
 $wgVirtualDomainsMapping['virtual-checkuser-global'] = [ 'db' => 'wikidb' ];
@@ -65,6 +58,8 @@ $wgVirtualDomainsMapping['virtual-interwiki-interlanguage'] = [ 'db' => 'metawik
 
 $wgDebugLogGroups['MirahezeFunctions'] = "/var/log/mediawiki/mf.log";
 require_once "$IP/config/MirahezeFunctions.php";
+require_once "$IP/config/GlobalExtensions.php";
+
 $wi = new MirahezeFunctions();
 // $wgReadOnly = ( PHP_SAPI === 'cli' ) ? null : 'This wiki is currently being upgraded to a newer software version. Please check back in a couple of hours.';
 
@@ -626,6 +621,9 @@ $wgConf->settings += [
     ],
     'wgCreateWikiCacheType' => [
         'default' => 'redis',
+    ],
+    'wgCreateWikiShowBiographicalOption' => [
+		'default' => true,
     ],
     'wgCreateWikiDatabaseSuffix' => [
         'default' => 'wiki',
