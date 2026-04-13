@@ -22,6 +22,10 @@ if ( $wi->isExtensionActive( 'chameleon' ) ) {
 	wfLoadExtension( 'Bootstrap' );
 }
 
+if ($wi->isExtensionActive('QuickInstantCommons')) {
+    $wgQuickInstantCommonsUserAgentInfo = 'https://wikioasis.com; tech@wikioasis.org';
+}
+
 if ($wi->isExtensionActive('CirrusSearch')) {
 	wfLoadExtension('Elastica');
 	$wgSearchType = 'CirrusSearch';
