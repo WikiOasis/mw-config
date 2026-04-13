@@ -39,11 +39,11 @@ if ($wi->isExtensionActive('CirrusSearch')) {
 if ($wi->isExtensionActive('SocialProfile')) {
 	require_once "$IP/extensions/SocialProfile/SocialProfile.php";
 
-	$wgSocialProfileFileBackend = 's3';
+	$wgSocialProfileFileBackend = 'AmazonS3';
 }
 
 if ($wi->isExtensionActive('UserProfileV2')) {
-	$wgUserProfileV2Backend = 's3';
+	$wgUserProfileV2Backend = 'AmazonS3';
 	$wgUserProfileGlobalUploadBaseUrl = "https://cdn.wikioasis.org/{$wgDBname}";
 }
 
