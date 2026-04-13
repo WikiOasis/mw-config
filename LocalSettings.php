@@ -1582,6 +1582,35 @@ $wgConf->settings += [
         ],
     ],
 
+    // WikiOasisMagic
+    'wgWikiOasisMagicReportsBlockAlertKeywords' => [
+	'default' => [
+	    'underage',
+	    'under age',
+	    'under 13',
+            'threat',
+            'threats',
+	    'death threats',
+	    'death threat',
+            'cp',
+	    'child pornography',
+	    'images of children',
+	    'images of minors',
+	    'suicide',
+            'kms',
+            'kys',
+	    'kill me',
+	    'kill themselves',
+	    'kill themselfs',
+	    'kill themself',
+	    'murder',
+	    'terrorist',
+	    'terrorism',
+	    'bomb threat',
+	    'bomb hoax',
+	],
+    ],
+
     // Comments
     'wgCommentsDefaultAvatar' => [
         'default' => '/extensions/SocialProfile/avatars/default_ml.gif',
