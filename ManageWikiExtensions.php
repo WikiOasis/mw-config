@@ -1601,6 +1601,26 @@ $wgManageWikiExtensions = [
 		],
 		'section' => 'specialpages',
 	],
+    'refreshspecial' => [
+        'name' => 'RefreshSpecial',
+        'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:RefreshSpecial',
+        'conflicts' => false,
+        'requires' => [
+            'permissions' => [
+                'managewiki-restricted',
+            ],
+        ],
+        'install' => [
+            'permissions' => [
+                'sysop' => [
+                    'permissions' => [
+                        'refreshspecial',
+                    ],
+                ],
+            ],
+        ],
+        'section' => 'specialpages',
+    ],
 	'report' => [
 		'name' => 'Report',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Report',
