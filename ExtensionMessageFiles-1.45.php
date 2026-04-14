@@ -256,9 +256,14 @@ $wgExtensionMessagesFiles = array (
   'TweekiMagic' => "$IP/skins/Tweeki/Tweeki.i18n.magic.php",
   'CosmosAliases' => "$IP/skins/Cosmos/CosmosAliases.php",
   'CosmosMagic' => "$IP/skins/Cosmos/CosmosMagic.php",
+  'RefreshSpecial' => "$IP/extensions/RefreshSpecial/RefreshSpecial.alias.php",
 );
 
 $wgMessagesDirs = array (
+  'RefreshSpecial' =>
+  array (
+    0 => "$IP/extensions/RefreshSpecial/i18n",
+  ),
   'Pulse' => 
   array (
     0 => "$IP/extensions/Pulse/i18n",
