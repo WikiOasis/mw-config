@@ -2268,6 +2268,14 @@ $wgFileBackends['s3'] = [
     'defaultAcl' => 'public-read',
 ];
 $wgAWSBucketDomain = 'https://cdn.wikioasis.org/$1';
+
+// Global containers shared across all wikis (SocialProfile avatars/awards, UserProfileV2 avatars)
+$wgFileBackends['s3']['containerPaths'] = [
+	'avatars'    => 'global/avatars',
+	'awards'     => 'global/awards',
+	'upv2avatars' => 'global/upv2avatars',
+];
+
 $wgUploadDirectory = false;
 $wgTmpDirectory = '/var/www/mediawiki/cache';
 
