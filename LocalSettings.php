@@ -754,7 +754,11 @@ $wgConf->settings += [
         'default' => true,
     ],
     'wgManageWikiPermissionsAdditionalAddGroups' => [
-        'default' => [],
+        'default' => [
+            'bureaucrat' => [
+                  'temporary-account-viewer'
+	    ],
+        ],
     ],
     'wgManageWikiPermissionsAdditionalRights' => [
         'default' => [
@@ -1025,8 +1029,11 @@ $wgConf->settings += [
         ],
     ],
     'wgManageWikiPermissionsAdditionalRemoveGroups' => [
-        'default' => [],
-
+        'default' => [
+            'bureaucrat' => [
+                  'temporary-account-viewer'
+            ],
+        ],
     ],
     'wgManageWikiPermissionsDisallowedRights' => [
         'default' => [
@@ -1217,6 +1224,27 @@ $wgConf->settings += [
         'default' => [
             'wiki' => 'metawiki',
             'source' => 'metawiki',
+        ],
+    ],
+
+    // Temporary accounts
+    'wgAutoCreateTempUser' => [
+        'default' => [
+            'enabled' => true,
+            'known' => false,
+            'actions' => ['edit'],
+            'genPattern' => '~$1',
+            'matchPattern' => null,
+            'reservedPattern' => '~$1',
+            'serialProvider' => [
+                'type' => 'local',
+                'useYear' => true,
+            ],
+            'serialMapping' => [
+                'type' => 'readable-numeric',
+            ],
+            'expireAfterDays' => 90,
+            'notifyBeforeExpirationDays' => 10,
         ],
     ],
 

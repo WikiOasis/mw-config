@@ -47,3 +47,10 @@ if ( PHP_SAPI === 'cli' ) {
 $wgUseGzip = true;
 
 
+$wgManageWikiServers = [
+      'mwtask11:80',
+      'mw11:80',
+      'mw12:80',
+      'mw41:80',
+      'mw42:80',
+];
