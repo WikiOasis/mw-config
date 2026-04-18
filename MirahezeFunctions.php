@@ -814,7 +814,7 @@ class MirahezeFunctions {
         }
 
         $version = self::resolveMediaWikiVersion( $this->version );
-        $listFile = self::CACHE_DIRECTORY . '/' . $version . '/extension-list.php';
+        $listFile = self::CACHE_DIRECTORY . '/extension-list.php';
         $list = @include $listFile;
         if ( $list === false ) {
             $versionDir = self::CACHE_DIRECTORY . '/' . $version;

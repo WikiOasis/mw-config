@@ -2187,8 +2187,6 @@ $wi::$disabledExtensions = [
     'wikiforum' => '<a href="https://issue-tracker.miraheze.org/T11641">T11641</a>',
 
     'lingo' => 'Currently broken',
-    'commentstreams' => 'Currently broken',
-
     'chameleon' => 'Incompatible with MediaWiki 1.42',
     'evelution' => 'Incompatible with MediaWiki 1.42',
     'eveskin' => 'Incompatible with MediaWiki 1.42',

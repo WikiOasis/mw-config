@@ -336,6 +336,42 @@ $wgManageWikiExtensions = [
 		],
 		'section' => 'parserhooks',
 	],
+	'commentstreams' => [
+		'name' => 'CommentStreams',
+		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:CommentStreams',
+		'conflicts' => 'moderation',
+		'requires' => [],
+		'install' => [
+			'sql' => [
+				'cs_associated_pages' => 'extensions/CommentStreams/sql/mysql/cs_associated_pages.sql',
+				'cs_comments' => 'extensions/CommentStreams/sql/mysql/cs_comments.sql',
+				'cs_replies' => 'extensions/CommentStreams/sql/mysql/cs_replies.sql',
+				'cs_votes' => 'extensions/CommentStreams/sql/mysql/cs_votes.sql',
+				'cs_watchlist' => 'extensions/CommentStreams/sql/mysql/cs_watchlist.sql',
+			],
+			'permissions' => [
+				'user' => [
+					'permissions' => [
+						'cs-comment',
+					],
+				],
+				'csmoderator' => [
+					'permissions' => [
+						'cs-moderator-delete',
+					],
+				],
+				'bureaucrat' => [
+					'addgroups' => [
+						'csmoderator',
+					],
+					'removegroups' => [
+						'csmoderator',
+					],
+				],
+			],
+		],
+		'section' => 'parserhooks',
+	],
 	'countdownclock' => [
 		'name' => 'CountDownClock',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:CountDownClock',
