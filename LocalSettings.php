@@ -85,6 +85,9 @@ $wgStylePath = "$wgResourceBasePath/skins";
 $wgLocalStylePath = $wgStylePath;
 
 $wgConf->settings += [
+    'wgAuthenticationTokenVersion' => [
+        'default' => '1',
+    ],
     // ==================
     // MAINTENANCE THINGS
     // ==================
