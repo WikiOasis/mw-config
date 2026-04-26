@@ -55,7 +55,7 @@ if ( $wi->isExtensionActive( 'chameleon' ) ) {
 }
 
 if ($wi->isExtensionActive('QuickInstantCommons')) {
-    $wgQuickInstantCommonsUserAgentInfo = 'https://wikioasis.com; tech@wikioasis.org';
+    $wgQuickInstantCommonsUserAgentInfo = 'https://wikioasis.org; tech@wikioasis.org';
 }
 
 if ($wi->isExtensionActive('CirrusSearch')) {
