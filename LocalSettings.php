@@ -42,7 +42,6 @@ $wgDBprefix = "";
 $wgDBssl = false;
 
 $wgDiff3 = "/usr/bin/diff3";
-
 $wgVirtualDomainsMapping['virtual-centralauth'] = [ 'db' => 'wikidb' ];
 $wgVirtualDomainsMapping['virtual-checkuser-global'] = [ 'db' => 'wikidb' ];
 $wgVirtualDomainsMapping['virtual-createwiki'] = [ 'db' => 'wikidb' ];
@@ -380,12 +379,14 @@ $wgConf->settings += [
     ],
     'wgCdnServers' => [
         'default' => [
-            "cp41.mining-cod.ts.net",
-	    "100.97.154.116",
+            "10.0.4.104",
         ],
     ],
     'wgCdnServersNoPurge' => [
         'default' => [
+	    // in house cp servers
+	    "100.97.154.116", // cp41
+	    "100.72.177.98", // cp21
             // IPv4 addresses
 	    "127.0.0.1",
             "103.21.244.0/22",
@@ -1237,7 +1238,7 @@ $wgConf->settings += [
             'matchPattern' => null,
             'reservedPattern' => '~$1',
             'serialProvider' => [
-                'type' => 'local',
+                'type' => 'centralauth',
                 'useYear' => true,
             ],
             'serialMapping' => [
@@ -1341,6 +1342,9 @@ $wgConf->settings += [
     ],
     'wgInterwikiCentralDB' => [
         'default' => 'metawiki',
+    ],
+    'wgInterwikiMagic' => [
+	'default' => false,
     ],
 
     // ConfirmEdit & hCaptcha
