@@ -48,6 +48,8 @@ if ( $wmgSharedDomainPathPrefix ) {
 
     $wgCheckUserClientHintsEnabled = true;
     $wgCheckUserAlwaysSetClientHintHeaders = true;
+} else {
+    $wgCentralAuthCookieDomain = '.' . MirahezeFunctions::getDefaultServer();
 }
 
 if ( $wi->isExtensionActive( 'chameleon' ) ) {
