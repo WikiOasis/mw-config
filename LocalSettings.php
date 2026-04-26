@@ -2277,9 +2277,9 @@ if ( $wmgSharedDomainPathPrefix ) {
     $wgServer = '//' . $wi->getSharedDomain();
 }
 
-#if ($wi->dbname != "wikicordwiki") {
-$wi->loadExtensions();
-#}
+if ( !$wmgSharedDomainPathPrefix ) {
+    $wi->loadExtensions();
+}
 require_once __DIR__ . '/ManageWikiNamespaces.php';
 require_once __DIR__ . '/ManageWikiSettings.php';
 
