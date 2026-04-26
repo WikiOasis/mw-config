@@ -41,15 +41,13 @@ $wgCentralAuthSharedDomainCallback = static fn ( $dbname ) =>
 "https://{$wi->getSharedDomain()}/$dbname";
 
 if ( $wmgSharedDomainPathPrefix ) {
-    $wgCentralAuthCookieDomain = '';
+    $wgCentralAuthCookieDomain = '.' . MirahezeFunctions::getDefaultServer();
     $wgCookiePrefix = 'auth';
     $wgSessionName = 'authSession';
     $wgWebAuthnNewCredsDisabled = false;
 
     $wgCheckUserClientHintsEnabled = true;
     $wgCheckUserAlwaysSetClientHintHeaders = true;
-} else {
-    $wgCentralAuthCookieDomain = '.' . MirahezeFunctions::getDefaultServer();
 }
 
 if ( $wi->isExtensionActive( 'chameleon' ) ) {
