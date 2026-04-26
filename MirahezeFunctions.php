@@ -49,6 +49,11 @@ class MirahezeFunctions {
         'beta' => 'betaoasis.xyz',
     ];
 
+    private const SHARED_DOMAIN = [
+        'default' => 'accounts.wikioasis.org',
+        'beta' => 'accounts.betaoasis.xyz',
+    ];
+
     private const GLOBAL_DATABASE = [
         'default' => 'wikidb',
         'beta' => 'wikdbbeta',
@@ -276,6 +281,17 @@ class MirahezeFunctions {
         }
 
         $hostname = $_SERVER['HTTP_HOST'] ?? 'undefined';
+        if ( in_array( $hostname, self::SHARED_DOMAIN, true ) ) {
+            $requestUri = $_SERVER['REQUEST_URI'];
+            $pathBits = explode( '/', $requestUri, 3 );
+            if ( count( $pathBits ) < 3 ) {
+                trigger_error( "Invalid request URI (requestUri=" . $requestUri . "), can't determine language.\n", E_USER_ERROR );
+                exit( 1 );
+            }
+            [ , $dbname, ] = $pathBits;
+            // No validation of $dbname at this point - if it's invalid, an error will be produced
+            return $dbname;
+        }
 
         static $database = null;
         $database ??= self::readDbListFile( 'databases', true, 'https://' . $hostname, true );
@@ -356,6 +372,10 @@ class MirahezeFunctions {
     public static function getPrimaryDomain( string $database ): string {
         $primaryDomain = self::readDbListFile( 'databases', false, $database )['d'] ?? null;
         return $primaryDomain ?? self::DEFAULT_SERVER[self::getRealm( $database )];
+    }
+
+    public function getSharedDomain(): string {
+        return self::SHARED_DOMAIN[$this->realm];
     }
 
     public static function getDefaultServer( ?string $database = null ): string {
@@ -1113,6 +1133,8 @@ class MirahezeFunctions {
         foreach ( $GLOBALS['globals'] as $global => $value ) {
             if (
                 !isset( $settings["+$global"] ) &&
+                $global !== 'wgArticlePath' &&
+                $global !== 'wgServer' &&
                 $global !== 'wgManageWikiPermissionsAdditionalRights'
             ) {
                 $GLOBALS[$global] = $value;

@@ -30,7 +30,9 @@ $wgDplSettings['queryCacheTime'] = 120;
 
 $wgSearchSuggestCacheExpiry = 10800;
 
-$wgEnableSidebarCache = true;
+if ( !$wmgSharedDomainPathPrefix ) {
+    $wgEnableSidebarCache = true;
+}
 
 $wgUseLocalMessageCache = true;
 $wgInvalidateCacheOnLocalSettingsChange = false;

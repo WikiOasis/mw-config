@@ -18,6 +18,40 @@ $wgHooks['CreateWikiPhpBuilder'][] = 'MirahezeFunctions::onCreateWikiPhpBuilder'
 $wgHooks['CreateWikiPhpGenerateDatabaseList'][] = 'MirahezeFunctions::onGenerateDatabaseLists';
 $wgHooks['CreateWikiDataFactoryBuilder'][] = 'MirahezeFunctions::onCreateWikiDataFactoryBuilder';
 
+wfLoadExtensions( [
+    'CentralAuth',
+    'GlobalPreferences',
+    'GlobalBlocking',
+    'RemovePII',
+] );
+
+// Only allow users with global accounts to login
+$wgCentralAuthStrict = true;
+$wgCentralAuthEnableSul3 = true;
+
+$wgCentralAuthAutoLoginWikis = $wmgCentralAuthAutoLoginWikis;
+
+if ( isset( $wgAuthManagerAutoConfig['primaryauth'][LocalPasswordPrimaryAuthenticationProvider::class] ) ) {
+    $wgAuthManagerAutoConfig['primaryauth'][LocalPasswordPrimaryAuthenticationProvider::class]['args'][0]['loginOnly'] = true;
+}
+
+$wgPasswordConfig['null'] = [ 'class' => InvalidPassword::class ];
+
+$wgLoginNotifyUseCentralId = true;
+$wgWebAuthnNewCredsDisabled = true;
+$wgCentralAuthSharedDomainCallback = static fn ( $dbname ) =>
+"https://{$wi->getSharedDomain()}/$dbname";
+
+if ( $wmgSharedDomainPathPrefix ) {
+    $wgCentralAuthCookieDomain = '';
+    $wgCookiePrefix = 'auth';
+    $wgSessionName = 'authSession';
+    $wgWebAuthnNewCredsDisabled = false;
+
+    $wgCheckUserClientHintsEnabled = true;
+    $wgCheckUserAlwaysSetClientHintHeaders = true;
+}
+
 if ( $wi->isExtensionActive( 'chameleon' ) ) {
 	wfLoadExtension( 'Bootstrap' );
 }

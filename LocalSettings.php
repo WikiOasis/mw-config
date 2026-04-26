@@ -62,6 +62,28 @@ require_once "$IP/config/GlobalExtensions.php";
 $wi = new MirahezeFunctions();
 // $wgReadOnly = ( PHP_SAPI === 'cli' ) ? null : 'This wiki is currently being upgraded to a newer software version. Please check back in a couple of hours.';
 
+$wmgSharedDomainPathPrefix = '';
+
+if ( ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain()
+    || getenv( 'MW_USE_SHARED_DOMAIN' )
+) {
+    $wgLoadScript = "{$wi->server}/load.php";
+    $wmgSharedDomainPathPrefix = "/$wgDBname";
+
+    $wgCanonicalServer = 'https://' . $wi->getSharedDomain();
+
+    $wgUseSiteCss = false;
+    $wgUseSiteJs = false;
+}
+
+$wgScriptPath = $wmgSharedDomainPathPrefix;
+$wgScript = "$wgScriptPath/index.php";
+
+$wgResourceBasePath = $wmgSharedDomainPathPrefix;
+$wgExtensionAssetsPath = "$wgResourceBasePath/extensions";
+$wgStylePath = "$wgResourceBasePath/skins";
+$wgLocalStylePath = $wgStylePath;
+
 $wgConf->settings += [
     // ==================
     // MAINTENANCE THINGS
@@ -184,14 +206,8 @@ $wgConf->settings += [
     'wgArticlePath' => [
         'default' => '/wiki/$1',
     ],
-    'wgScriptPath' => [
-        'default' => '',
-    ],
     'wgUsePathInfo' => [
         'default' => true,
-    ],
-    'wgResourceBasePath' => [
-        'default' => '',
     ],
     'wgEnableCanonicalServerLink' => [
         'default' => true,
@@ -540,7 +556,14 @@ $wgConf->settings += [
     'wgCentralAuthOldNameAntiSpoofWiki' => [
         'default' => 'metawiki',
     ],
+    'wgCentralAuthCentralWiki' => [
+        'default' => 'metawiki',
+        'beta' => 'metawikibeta',
+    ],
     'wgCentralAuthPreventUnattached' => [
+        'default' => true,
+    ],
+    'wgCentralAuthRestrictSharedDomain' => [
         'default' => true,
     ],
     'wgCentralAuthTokenCacheType' => [
@@ -738,6 +761,12 @@ $wgConf->settings += [
     'wgCheckUserSuggestedInvestigationsEnabled' => [
         'default' => true,
     ],
+
+    // WebAuthn
+    'wgWebAuthnLimitPasskeysToRoaming' => [
+        'default' => true,
+    ],
+
     // ManageWiki
     'wgManageWikiModulesEnabled' => [
         'default' => [
@@ -2239,6 +2268,12 @@ $wgHooks['BeforePageDisplay'][] = function( OutputPage $out, Skin $skin ) {
 
 // phpcs:ignore MediaWiki.Usage.ForbiddenFunctions.extract
 extract( $globals );
+
+if ( $wmgSharedDomainPathPrefix ) {
+    $wgArticlePath = "{$wmgSharedDomainPathPrefix}/wiki/\$1";
+    $wgServer = '//' . $wi->getSharedDomain();
+}
+
 #if ($wi->dbname != "wikicordwiki") {
 $wi->loadExtensions();
 #}
