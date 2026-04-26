@@ -29,8 +29,6 @@ wfLoadExtensions( [
 $wgCentralAuthStrict = true;
 $wgCentralAuthEnableSul3 = true;
 
-$wgCentralAuthAutoLoginWikis = $wmgCentralAuthAutoLoginWikis;
-
 if ( isset( $wgAuthManagerAutoConfig['primaryauth'][LocalPasswordPrimaryAuthenticationProvider::class] ) ) {
     $wgAuthManagerAutoConfig['primaryauth'][LocalPasswordPrimaryAuthenticationProvider::class]['args'][0]['loginOnly'] = true;
 }
