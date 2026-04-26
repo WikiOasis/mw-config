@@ -60,7 +60,7 @@ wfLoadExtensions( [
     // 'StopForumSpam',
     'TitleBlacklist',
     'TorBlock',
-    'WebAuthn',
+    // 'WebAuthn',
     'WikiDiscover',
     'WikiEditor',
     'WikiOasisMagic',
