@@ -2173,6 +2173,11 @@ $wgConf->settings += [
         'default' => ['cdn.wikioasis.org'],
     ],
 
+    // Echo
+    'wgEchoCrossWikiNotifications' => [
+        'default' => true,
+    ],
+
     // GTag
     'wgGTagAnalyticsId' => [
         'default' => 'G-NL7M72FBFT',
