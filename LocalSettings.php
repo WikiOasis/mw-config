@@ -1417,7 +1417,7 @@ $wgConf->settings += [
         'default' => true,
     ],
     'wgEchoUseCrossWikiBetaFeature' => [
-        'default' => true,
+        'default' => false,
     ],
     'wgEchoMentionStatusNotifications' => [
         'default' => true,
@@ -2171,11 +2171,6 @@ $wgConf->settings += [
     ],
     'wgCFCachePurgePurgeableImageHosts'=> [
         'default' => ['cdn.wikioasis.org'],
-    ],
-
-    // Echo
-    'wgEchoCrossWikiNotifications' => [
-        'default' => true,
     ],
 
     // GTag
