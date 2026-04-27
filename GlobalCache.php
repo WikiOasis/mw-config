@@ -48,6 +48,14 @@ if ( PHP_SAPI === 'cli' ) {
 
 $wgUseGzip = true;
 
+$wgParsoidCacheConfig = [
+    'StashType' => null,
+    // store for 24h
+    'StashDuration' => 24 * 60 * 60,
+    // cache all
+    'CacheThresholdTime' => 0.0,
+    'WarmParsoidParserCache' => true,
+];
 
 $wgManageWikiServers = [
       'mwtask11:80',
