@@ -53,7 +53,7 @@ $wgParsoidCacheConfig = [
     // store for 24h
     'StashDuration' => 24 * 60 * 60,
     // cache all
-    'CacheThresholdTime' => 0.0,
+    'CacheThresholdTime' => 0.5,
     'WarmParsoidParserCache' => true,
 ];
 
