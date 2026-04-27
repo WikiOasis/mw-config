@@ -1413,6 +1413,9 @@ $wgConf->settings += [
     'wgEchoCrossWikiNotifications' => [
         'default' => true,
     ],
+    'wgEchoSharedTrackingDB' => [
+        'default' => 'wikidb',
+    ],
     'wgEchoUseJobQueue' => [
         'default' => true,
     ],
