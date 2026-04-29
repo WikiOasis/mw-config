@@ -56,7 +56,7 @@ class MirahezeFunctions {
 
     private const GLOBAL_DATABASE = [
         'default' => 'wikidb',
-        'beta' => 'wikdbbeta',
+        'beta' => 'wikidbbeta',
     ];
 
     private const MEDIAWIKI_DIRECTORY = '/var/www/mediawiki';
