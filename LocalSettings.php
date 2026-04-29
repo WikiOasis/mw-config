@@ -507,7 +507,7 @@ $wgConf->settings += [
     ],
     'wgAbuseFilterCentralDB' => [
         'default' => 'metawiki',
-        'mirabeta' => 'metawikibeta',
+        'beta' => 'metawikibeta',
     ],
     'wgAbuseFilterIsCentral' => [
         'default' => false,
@@ -1229,6 +1229,7 @@ $wgConf->settings += [
     ],
     'wgGlobalUserPageDBname' => [
         'default' => 'metawiki',
+        'beta' => 'metawikibeta',
     ],
     'wgUseGlobalSiteCssJs' => [
         'default' => true,
