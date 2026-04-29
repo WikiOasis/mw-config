@@ -35,7 +35,7 @@ class MirahezeFunctions {
         ],
     ];
 
-    private const BETA_HOSTNAME = 'test151';
+    private const BETA_HOSTNAME = 'staging11';
 
     public const CACHE_DIRECTORY = '/var/www/mediawiki/cw_cache';
 
