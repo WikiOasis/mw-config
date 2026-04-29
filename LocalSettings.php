@@ -822,9 +822,6 @@ $wgConf->settings += [
             'member' => [
                 'read' => true,
             ],
-            'staff' => [
-                'userrights' => true,
-            ],
             'steward' => [
                 'userrights' => true,
             ],
@@ -957,29 +954,6 @@ $wgConf->settings += [
             'global-sysop' => [
                 'globalblock' => true,
                 'centralauth-rename' => true,
-            ],
-            'staff' => [
-                'abusefilter-modify-global' => true,
-                'centralauth-lock' => true,
-                'centralauth-rename' => true,
-                'centralauth-suppress' => true,
-                'createwiki' => true,
-                'createwiki-deleterequest' => true,
-                'globalblock' => true,
-                'handle-import-request-interwiki' => true,
-                'handle-import-requests' => true,
-                'managewiki-core' => true,
-                'managewiki-extensions' => true,
-                'managewiki-namespaces' => true,
-                'managewiki-permissions' => true,
-                'managewiki-restricted' => true,
-                'managewiki-settings' => true,
-                'noratelimit' => true,
-                'oathauth-disable-for-user' => true,
-                'oathauth-verify-user' => true,
-                'userrights' => true,
-                'userrights-interwiki' => true,
-                'view-private-import-requests' => true,
             ],
             'steward' => [
                 'abusefilter-modify-global' => true,
@@ -1194,7 +1168,6 @@ $wgConf->settings += [
             'smwadministrator',
             'oversight',
             'steward',
-            'staff',
             'suppress',
             'tech',
             'safety',
