@@ -15,12 +15,13 @@ if ( class_exists( \Wikimedia\Rdbms\LBFactoryMulti::class ) ) {
         'flags' => DBO_DEFAULT,
     ];
 
-    $wgDBserver   = $primaryServer['host'];
     $wgDBtype     = $primaryServer['type'] ?? 'mysql';
     $wgDBuser     = $primaryServer['user'] ?? null;
     $wgDBpassword = $primaryServer['password'] ?? null;
 
     if ( php_uname( 'n' ) === 'staging11' ) {
+        $wgDBserver = '10.0.1.106';
+
         // Staging database configuration — db12 (10.0.1.106) handles all sections
         $wgLBFactoryConf = [
             'class' => \Wikimedia\Rdbms\LBFactoryMulti::class,
