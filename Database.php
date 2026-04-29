@@ -65,6 +65,8 @@ if ( class_exists( \Wikimedia\Rdbms\LBFactoryMulti::class ) ) {
             ],
         ];
     } else {
+        $wgDBserver = $primaryServer['host'];
+
         // Production database configuration
         $wgLBFactoryConf = [
             'class' => \Wikimedia\Rdbms\LBFactoryMulti::class,
