@@ -20,7 +20,7 @@ if ( class_exists( \Wikimedia\Rdbms\LBFactoryMulti::class ) ) {
     $wgDBpassword = $primaryServer['password'] ?? null;
 
     if ( php_uname( 'n' ) === 'staging11' ) {
-        $wgDBserver = '10.0.1.106';
+        $wgDBserver = 'db12';
 
         // Staging database configuration — db12 (10.0.1.106) handles all sections
         $wgLBFactoryConf = [
@@ -50,7 +50,7 @@ if ( class_exists( \Wikimedia\Rdbms\LBFactoryMulti::class ) ) {
             ],
 
             'hostsByName' => [
-                'db12' => '10.0.1.106',
+                'db12' => 'db12',
             ],
 
             'externalLoads' => [
