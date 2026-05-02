@@ -1225,9 +1225,10 @@ $wgConf->settings += [
         'default' => 'wikidb',
     ],
 	'wgGlobalUsageSharedRepoWiki' => [
-		'govnpbetawiki' => 'govnpbetawiki',
-		'govnpdevwiki' => 'govnpbetawiki',
-	    'govnpediabetawiki' => 'govnpbetawiki',
+		'govnpcommonsbetawiki' => 'govnpcommonsbetawiki',
+		'govnpdevwiki' => 'govnpcommonsbetawiki',
+		'govnpdevwiki' => 'govnpcommonsbetawiki',
+	    'govnpediabetawiki' => 'govnpcommonsbetawiki',
 	],
 	'wgGlobalUsagePurgeBacklinks' => [
 		'default' => true,
