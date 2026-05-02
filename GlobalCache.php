@@ -54,7 +54,7 @@ $wgParsoidCacheConfig = [
     'StashDuration' => 24 * 60 * 60,
     // cache all
     'CacheThresholdTime' => 0.5,
-    'WarmParsoidParserCache' => true,
+    'WarmParsoidParserCache' => false,
 ];
 
 $wgManageWikiServers = [

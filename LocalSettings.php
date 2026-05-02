@@ -546,6 +546,9 @@ $wgConf->settings += [
             'loginwiki',
             'metawiki',
         ],
+	'beta' => [
+	    'metawikibeta',
+	],
     ],
     'wgCentralAuthAutoMigrate' => [
         'default' => true,
@@ -561,6 +564,7 @@ $wgConf->settings += [
     ],
     'wgCentralAuthDatabase' => [
         'default' => 'wikidb',
+	'beta' => 'wikidbbeta',
     ],
     'wgCentralAuthEnableGlobalRenameRequest' => [
         'default' => true,
@@ -573,6 +577,7 @@ $wgConf->settings += [
     ],
     'wgCentralAuthOldNameAntiSpoofWiki' => [
         'default' => 'metawiki',
+	'beta' => 'metawikibeta',
     ],
     'wgCentralAuthCentralWiki' => [
         'default' => 'metawiki',
@@ -597,6 +602,7 @@ $wgConf->settings += [
     // CreateWiki
     'wgCreateWikiDatabase' => [
         'default' => 'wikidb',
+ 	'beta' => 'wikidbbeta',
     ],
     'wgCreateWikiUseJobQueue' => [
         'default' => true,
@@ -673,9 +679,11 @@ $wgConf->settings += [
     'wgCreateWikiDisableRESTAPI' => [
         'default' => true,
         'metawiki' => false,
+	'metawikibeta' => false,
     ],
     'wgCreateWikiGlobalWiki' => [
         'default' => 'metawiki',
+	'beta' => 'metawikibeta',
     ],
     'wgCreateWikiEmailNotifications' => [
         'default' => true,
@@ -1220,9 +1228,11 @@ $wgConf->settings += [
     // GlobalBlocking & GlobalPreferences & GlobalUserPage & GlobalCssJs
     'wgGlobalBlockingDatabase' => [
         'default' => 'wikidb',
+	'beta' => 'wikidbbeta',
     ],
     'wgGlobalPreferencesDB' => [
         'default' => 'wikidb',
+	'beta' => 'wikidbbeta',
     ],
     'wgGlobalUserPageAPIUrl' => [
         'default' => 'https://meta.wikioasis.org/api.php',
@@ -1241,12 +1251,22 @@ $wgConf->settings += [
                 'loadScript' => '//meta.wikioasis.org/load.php',
             ],
         ],
+	'beta' => [
+	    'metawikibeta' => [
+		'apiScript' => '//meta.betaoasis.xyz/api.php',
+		'loadScript' => '//meta.betaoasis.xyz/load.php',
+	    ],
+	],
     ],
     'wgGlobalCssJsConfig' => [
         'default' => [
             'wiki' => 'metawiki',
             'source' => 'metawiki',
         ],
+	'beta' => [
+	    'wiki' => 'metawikibeta',
+	    'source' => 'metawikibeta',
+	],
     ],
 
     // Temporary accounts
@@ -1273,6 +1293,7 @@ $wgConf->settings += [
     // OAuth
     'wgMWOAuthCentralWiki' => [
         'default' => 'metawiki',
+	'beta' => 'metawikibeta',
     ],
     'wgOAuth2GrantExpirationInterval' => [
         'default' => 'PT4H',
@@ -1363,6 +1384,7 @@ $wgConf->settings += [
     ],
     'wgInterwikiCentralDB' => [
         'default' => 'metawiki',
+	'default' => 'metawikibeta',
     ],
     'wgInterwikiMagic' => [
 	'default' => false,
@@ -1404,6 +1426,7 @@ $wgConf->settings += [
     ],
     'wgEchoSharedTrackingDB' => [
         'default' => 'wikidb',
+	'beta' => 'wikidbbeta',
     ],
     'wgEchoUseJobQueue' => [
         'default' => true,
@@ -1461,6 +1484,7 @@ $wgConf->settings += [
     ],
     'wgCentralDBname' => [
         'default' => 'metawiki',
+	'beta' => 'metawikibeta',
     ],
     'wgCentralHost' => [
         'default' => 'https://meta.wikioasis.org',
@@ -1587,6 +1611,7 @@ $wgConf->settings += [
     'wgRemovePIIAllowedWikis' => [
         'default' => [
             'metawiki',
+	    'metawikibeta',
         ],
     ],
     'wgRemovePIIAutoPrefix' => [
@@ -1605,6 +1630,7 @@ $wgConf->settings += [
     // ImportDump
     'wgImportDumpCentralWiki' => [
         'default' => 'metawiki',
+	'beta' => 'metawikibeta',
     ],
     'wgImportDumpEnableAutomatedJob' => [
         'default' => true,
