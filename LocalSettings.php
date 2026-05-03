@@ -1226,7 +1226,7 @@ $wgConf->settings += [
 		'safety@wikioasis.org',
 	],
     ],
-    // GlobalBlocking & GlobalPreferences & GlobalUserPage & GlobalCssJs
+    // GlobalBlocking & GlobalPreferences & GlobalUserPage & GlobalCssJs & GlobalUsage
     'wgGlobalBlockingDatabase' => [
         'default' => 'wikidb',
 	'beta' => 'wikidbbeta',
@@ -1235,6 +1235,15 @@ $wgConf->settings += [
         'default' => 'wikidb',
 	'beta' => 'wikidbbeta',
     ],
+	'wgGlobalUsageSharedRepoWiki' => [
+		'govnpcommonsbetawiki' => 'govnpcommonsbetawiki',
+		'govnpdevwiki' => 'govnpcommonsbetawiki',
+	    'govnpbetawiki' => 'govnpcommonsbetawiki',
+	    'govnpediabetawiki' => 'govnpcommonsbetawiki',
+	],
+	'wgGlobalUsagePurgeBacklinks' => [
+		'default' => true,
+	],
     'wgGlobalUserPageAPIUrl' => [
         'default' => 'https://meta.wikioasis.org/api.php',
     ],
