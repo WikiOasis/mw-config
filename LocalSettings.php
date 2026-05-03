@@ -1227,7 +1227,7 @@ $wgConf->settings += [
 	'wgGlobalUsageSharedRepoWiki' => [
 		'govnpcommonsbetawiki' => 'govnpcommonsbetawiki',
 		'govnpdevwiki' => 'govnpcommonsbetawiki',
-		'govnpdevwiki' => 'govnpcommonsbetawiki',
+	    'govnpbetawiki' => 'govnpcommonsbetawiki',
 	    'govnpediabetawiki' => 'govnpcommonsbetawiki',
 	],
 	'wgGlobalUsagePurgeBacklinks' => [
