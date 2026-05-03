@@ -977,6 +977,7 @@ $wgConf->settings += [
             'global-sysop' => [
                 'globalblock' => true,
                 'centralauth-rename' => true,
+				'createwiki' => true,
             ],
             'steward' => [
                 'abusefilter-modify-global' => true,
