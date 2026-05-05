@@ -2253,8 +2253,6 @@ $wi::$disabledExtensions = [
 
     'chameleon' => 'Incompatible with MediaWiki 1.45',
     'snapwikiskin' => 'Incompatible with MediaWiki 1.45',
-    'editsimilar' => 'Incompatible with MediaWiki 1.45',
-    'video' => 'Incompatible with MediaWiki 1.45',
 
     'hawelcome' => 'Privacy issue',
     'semanticscribunto' => 'Semantic MediaWiki currently not enabled. Contact for enable.',
