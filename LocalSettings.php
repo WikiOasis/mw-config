@@ -1235,15 +1235,6 @@ $wgConf->settings += [
         'default' => 'wikidb',
 	'beta' => 'wikidbbeta',
     ],
-	'wgGlobalUsageSharedRepoWiki' => [
-		'govnpcommonsbetawiki' => 'govnpcommonsbetawiki',
-		'govnpdevwiki' => 'govnpcommonsbetawiki',
-	    'govnpbetawiki' => 'govnpcommonsbetawiki',
-	    'govnpediabetawiki' => 'govnpcommonsbetawiki',
-	],
-	'wgGlobalUsagePurgeBacklinks' => [
-		'default' => true,
-	],
     'wgGlobalUserPageAPIUrl' => [
         'default' => 'https://meta.wikioasis.org/api.php',
     ],
