@@ -960,14 +960,6 @@ $wgConf->settings += [
                 'user' => true,
             ],
         ],
-		'+govnpdevwiki' => [
-			'extendedconfirmed' => [
-				'extendedconfirmed' => true,
-			],
-			'templateeditor' => [
-				'templateeditor' => true,
-			],
-		],
         '+metawiki' => [
             'checkuser' => [
                 'abusefilter-privatedetails' => true,
