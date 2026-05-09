@@ -156,6 +156,9 @@ $wgConf->settings += [
         'default' => 1024 * 2 * 2 * 1024,
         'projectherzlwiki' => 1024 * 48 * 2 * 1024,
     ],
+    'wgHTTPTimeout' => [
+        'default' => 3,
+    ],
 
     // mail
     'wgEnableEmail' => [
