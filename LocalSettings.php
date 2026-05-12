@@ -784,6 +784,9 @@ $wgConf->settings += [
         ],
     ],
     // CheckUser
+	'wgCheckUserForceSummary' => [
+        'default' => true,
+    ],
     'wgCheckUserLogLogins' => [
         'default' => true,
     ],
