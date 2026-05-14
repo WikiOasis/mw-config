@@ -61,10 +61,10 @@ if ( PHP_SAPI !== 'cli' ) {
 	$_sentryParserSpan = null;
 
 	$sentryStartPhaseSpan = function ( string $op, string $desc ) use ( $sentryTx ) {
-		\Sentry\SentrySdk::getCurrentHub()->setSpan( $sentryTx );
-		return \Sentry\startSpan(
-			( new \Sentry\Tracing\SpanContext() )->setOp( $op )->setDescription( $desc )
-		);
+		$ctx = ( new \Sentry\Tracing\SpanContext() )->setOp( $op )->setDescription( $desc );
+		$span = $sentryTx->startChild( $ctx );
+		\Sentry\SentrySdk::getCurrentHub()->setSpan( $span );
+		return $span;
 	};
 
 	$_sentryPhaseSpan = $sentryStartPhaseSpan( 'mediawiki.bootstrap', 'LocalSettings + autoload' );
@@ -98,12 +98,11 @@ if ( PHP_SAPI !== 'cli' ) {
 	$wgHooks['ParserBeforeInternalParse'][] = function ( $parser ) use ( &$_sentryParserSpan, &$_sentryPhaseSpan ) {
 		$title = $parser->getTitle();
 		if ( $title && $_sentryPhaseSpan ) {
-			\Sentry\SentrySdk::getCurrentHub()->setSpan( $_sentryPhaseSpan );
-			$_sentryParserSpan = \Sentry\startSpan(
-				( new \Sentry\Tracing\SpanContext() )
-					->setOp( 'mediawiki.parse' )
-					->setDescription( $title->getPrefixedText() )
-			);
+			$ctx = ( new \Sentry\Tracing\SpanContext() )
+				->setOp( 'mediawiki.parse' )
+				->setDescription( $title->getPrefixedText() );
+			$_sentryParserSpan = $_sentryPhaseSpan->startChild( $ctx );
+			\Sentry\SentrySdk::getCurrentHub()->setSpan( $_sentryParserSpan );
 		}
 		return true;
 	};
