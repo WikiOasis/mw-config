@@ -2307,7 +2307,7 @@ $wgMWLoggerDefaultSpi = [
             // Breadcrumbs attach to any subsequent exception captured in the same request.
             'sentry-crumbs' => [
                 'class' => \Sentry\Monolog\BreadcrumbHandler::class,
-                'args'  => [ \Sentry\SentrySdk::getCurrentHub(), \Monolog\Level::Info ],
+                'args'  => [ \Sentry\SentrySdk::getCurrentHub(), \Monolog\Logger::INFO ],
             ],
             'stderr' => [
                 'class'     => \Monolog\Handler\StreamHandler::class,
