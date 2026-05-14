@@ -2272,6 +2272,7 @@ $globals = MirahezeFunctions::getConfigGlobals();
     'dsn'                 => $sentryDSN,
     'environment'         => defined( 'MW_ENV' ) ? MW_ENV : 'production',
     'release'             => $wgVersion ?? null,
+    'enable_logs'         => true,
     'traces_sample_rate'  => 0.25,
     'profiles_sample_rate' => 0.5,
     'attach_stacktrace'   => true,
