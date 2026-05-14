@@ -2279,16 +2279,18 @@ $globals = MirahezeFunctions::getConfigGlobals();
     'max_breadcrumbs'     => 100,
 ] );
 
-// Monolog SPI — MediaWiki log channels at WARNING+ flow to Sentry via the current hub.
-// DEBUG/INFO stay local (stderr). Set $wgMWLoggerDefaultSpi before MediaWiki bootstraps.
+// Monolog SPI — two Sentry handlers per channel, both resolved after \Sentry\init():
+//   sentry-logs   → Sentry Logs (WARNING+, searchable in the Logs explorer)
+//   sentry-crumbs → breadcrumbs attached to future exceptions (INFO+)
+//   stderr        → local debug output (DEBUG+)
 $wgMWLoggerDefaultSpi = [
     'class' => \MediaWiki\Logger\MonologSpi::class,
     'args'  => [ [
         'loggers' => [
-            'exception' => [ 'handlers' => [ 'sentry', 'stderr' ], 'processors' => [ 'psr' ] ],
-            'error'     => [ 'handlers' => [ 'sentry', 'stderr' ], 'processors' => [ 'psr' ] ],
-            'DBError'   => [ 'handlers' => [ 'sentry', 'stderr' ], 'processors' => [ 'psr' ] ],
-            '@default'  => [ 'handlers' => [ 'sentry', 'stderr' ], 'processors' => [ 'psr' ] ],
+            'exception' => [ 'handlers' => [ 'sentry-logs', 'sentry-crumbs', 'stderr' ], 'processors' => [ 'psr' ] ],
+            'error'     => [ 'handlers' => [ 'sentry-logs', 'sentry-crumbs', 'stderr' ], 'processors' => [ 'psr' ] ],
+            'DBError'   => [ 'handlers' => [ 'sentry-logs', 'sentry-crumbs', 'stderr' ], 'processors' => [ 'psr' ] ],
+            '@default'  => [ 'handlers' => [ 'sentry-logs', 'sentry-crumbs', 'stderr' ], 'processors' => [ 'psr' ] ],
         ],
         'processors' => [
             'psr' => [
@@ -2297,10 +2299,15 @@ $wgMWLoggerDefaultSpi = [
             ],
         ],
         'handlers' => [
-            // Hub is resolved here — \Sentry\init() runs before this config block.
-            'sentry' => [
-                'class' => \Sentry\Monolog\Handler::class,
-                'args'  => [ \Sentry\SentrySdk::getCurrentHub(), \Monolog\Logger::WARNING ],
+            // Requires sentry/sentry >= 4.12 and enable_logs => true in \Sentry\init().
+            'sentry-logs' => [
+                'class' => \Sentry\Monolog\LogsHandler::class,
+                'args'  => [ \Sentry\Logs\LogLevel::warning() ],
+            ],
+            // Breadcrumbs attach to any subsequent exception captured in the same request.
+            'sentry-crumbs' => [
+                'class' => \Sentry\Monolog\BreadcrumbHandler::class,
+                'args'  => [ \Sentry\SentrySdk::getCurrentHub(), \Monolog\Level::Info ],
             ],
             'stderr' => [
                 'class'     => \Monolog\Handler\StreamHandler::class,
