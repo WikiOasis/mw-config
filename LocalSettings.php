@@ -2296,10 +2296,10 @@ $wgMWLoggerDefaultSpi = [
             ],
         ],
         'handlers' => [
-            // null hub → uses the hub initialised by \Sentry\init() above
+            // Hub is resolved here — \Sentry\init() runs before this config block.
             'sentry' => [
                 'class' => \Sentry\Monolog\Handler::class,
-                'args'  => [ null, \Monolog\Logger::WARNING ],
+                'args'  => [ \Sentry\SentrySdk::getCurrentHub(), \Monolog\Logger::WARNING ],
             ],
             'stderr' => [
                 'class'     => \Monolog\Handler\StreamHandler::class,
