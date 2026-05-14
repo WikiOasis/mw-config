@@ -2265,38 +2265,100 @@ $wi::$disabledExtensions = [
 ];
 
 $globals = MirahezeFunctions::getConfigGlobals();
-// inject sentry
-\Sentry\init([
-    'dsn' => $sentryDSN,
-    'environment' => defined('MW_ENV') ? MW_ENV : 'production',
-    'release' => $wgVersion ?? null,
-    'traces_sample_rate' => 0.1,
-]);
+// Sentry — routed through Relay for buffering, rate-limiting, and scrubbing.
+// In PrivateSettings.php set $sentryDSN to your Relay endpoint:
+//   http://<public-key>@<relay-host>:3000/<project-id>
+\Sentry\init( [
+    'dsn'                 => $sentryDSN,
+    'environment'         => defined( 'MW_ENV' ) ? MW_ENV : 'production',
+    'release'             => $wgVersion ?? null,
+    'traces_sample_rate'  => 0.2,
+    'profiles_sample_rate' => 0.2, // requires the `excimer` PHP extension on the server
+    'attach_stacktrace'   => true,
+    'max_breadcrumbs'     => 100,
+] );
 
-register_shutdown_function( function() {
-    $error = error_get_last();
-    if ( $error && in_array( $error['type'], [ E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ] ) ) {
-        \Sentry\captureMessage( $error['message'], \Sentry\Severity::fatal() );
-    }
-} );
+// Monolog SPI — MediaWiki log channels at WARNING+ flow to Sentry via the current hub.
+// DEBUG/INFO stay local (stderr). Set $wgMWLoggerDefaultSpi before MediaWiki bootstraps.
+$wgMWLoggerDefaultSpi = [
+    'class' => \MediaWiki\Logger\MonologSpi::class,
+    'args'  => [ [
+        'loggers' => [
+            'exception' => [ 'handlers' => [ 'sentry', 'stderr' ], 'processors' => [ 'psr' ] ],
+            'error'     => [ 'handlers' => [ 'sentry', 'stderr' ], 'processors' => [ 'psr' ] ],
+            'DBError'   => [ 'handlers' => [ 'sentry', 'stderr' ], 'processors' => [ 'psr' ] ],
+            '@default'  => [ 'handlers' => [ 'sentry', 'stderr' ], 'processors' => [ 'psr' ] ],
+        ],
+        'processors' => [
+            'psr' => [
+                'class' => \Monolog\Processor\PsrLogMessageProcessor::class,
+                'args'  => [],
+            ],
+        ],
+        'handlers' => [
+            // null hub → uses the hub initialised by \Sentry\init() above
+            'sentry' => [
+                'class' => \Sentry\Monolog\Handler::class,
+                'args'  => [ null, \Monolog\Logger::WARNING ],
+            ],
+            'stderr' => [
+                'class'     => \Monolog\Handler\StreamHandler::class,
+                'args'      => [ 'php://stderr', \Monolog\Logger::DEBUG ],
+                'formatter' => 'line',
+            ],
+        ],
+        'formatters' => [
+            'line' => [
+                'class' => \Monolog\Formatter\LineFormatter::class,
+                'args'  => [ null, null, true, true ],
+            ],
+        ],
+    ] ],
+];
 
-$wgHooks['LogException'][] = function( Throwable $e, bool $suppressed ) {
+// Wrap each web request in a Sentry performance transaction for traces + profiling.
+// CLI runs (maintenance scripts) skip transaction wrapping but still capture fatal errors.
+if ( PHP_SAPI !== 'cli' ) {
+    $sentryTxCtx = new \Sentry\Tracing\TransactionContext();
+    $sentryTxCtx->setName( ( $_SERVER['REQUEST_METHOD'] ?? 'GET' ) . ' ' . strtok( $_SERVER['REQUEST_URI'] ?? '/', '?' ) );
+    $sentryTxCtx->setOp( 'http.server' );
+    $sentryTx = \Sentry\startTransaction( $sentryTxCtx );
+    \Sentry\SentrySdk::getCurrentHub()->setSpan( $sentryTx );
+
+    register_shutdown_function( static function () use ( $sentryTx ) {
+        $error = error_get_last();
+        if ( $error && in_array( $error['type'], [ E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ], true ) ) {
+            \Sentry\captureMessage( $error['message'], \Sentry\Severity::fatal() );
+        }
+        $sentryTx->setHttpStatus( http_response_code() ?: 200 );
+        $sentryTx->finish();
+    } );
+} else {
+    register_shutdown_function( static function () {
+        $error = error_get_last();
+        if ( $error && in_array( $error['type'], [ E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ], true ) ) {
+            \Sentry\captureMessage( $error['message'], \Sentry\Severity::fatal() );
+        }
+    } );
+}
+
+$wgHooks['LogException'][] = function ( Throwable $e, bool $suppressed ) {
     if ( !$suppressed ) {
         \Sentry\captureException( $e );
     }
     return true;
 };
 
-$wgHooks['UserGetRights'][] = function( $user ) {
+$wgHooks['UserGetRights'][] = function ( $user ) {
     if ( $user && $user->isRegistered() ) {
-        \Sentry\configureScope( function( \Sentry\State\Scope $scope ) use ( $user ) {
+        \Sentry\configureScope( function ( \Sentry\State\Scope $scope ) use ( $user ) {
             $scope->setUser( [ 'id' => $user->getId(), 'username' => $user->getName() ] );
         } );
     }
     return true;
 };
 
-$wgHooks['BeforePageDisplay'][] = function( OutputPage $out, Skin $skin ) {
+$wgHooks['BeforePageDisplay'][] = function ( OutputPage $out, Skin $skin ) {
     $out->addHeadItems( '<script src="https://js.sentry-cdn.com/8d12d310c7d40b6b4d8c8989e36a7b5a.min.js" crossorigin="anonymous"></script>' );
     return true;
 };
