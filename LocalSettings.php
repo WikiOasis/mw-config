@@ -2302,7 +2302,7 @@ $wgMWLoggerDefaultSpi = [
             // Requires sentry/sentry >= 4.12 and enable_logs => true in \Sentry\init().
             'sentry-logs' => [
                 'class' => \Sentry\Monolog\LogsHandler::class,
-                'args'  => [ \Sentry\Logs\LogLevel::warning() ],
+                'args'  => [ \Sentry\Logs\LogLevel::warn() ],
             ],
             // Breadcrumbs attach to any subsequent exception captured in the same request.
             'sentry-crumbs' => [
