@@ -2274,7 +2274,7 @@ $globals = MirahezeFunctions::getConfigGlobals();
     'release'             => $wgVersion ?? null,
     'enable_logs'         => true,
     'traces_sample_rate'  => 0.25,
-    'profiles_sample_rate' => 0.5,
+    'profiles_sample_rate' => 1,
     'attach_stacktrace'   => true,
     'max_breadcrumbs'     => 100,
 ] );
