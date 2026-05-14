@@ -2332,6 +2332,9 @@ if ( PHP_SAPI !== 'cli' ) {
         }
         $sentryTx->setHttpStatus( http_response_code() ?: 200 );
         $sentryTx->finish();
+        // SDK's own shutdown flush runs before ours (FIFO), so we flush again here
+        // to ensure the just-finished transaction is actually sent to Relay.
+        \Sentry\flush();
     } );
 } else {
     register_shutdown_function( static function () {
@@ -2339,6 +2342,7 @@ if ( PHP_SAPI !== 'cli' ) {
         if ( $error && in_array( $error['type'], [ E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ], true ) ) {
             \Sentry\captureMessage( $error['message'], \Sentry\Severity::fatal() );
         }
+        \Sentry\flush();
     } );
 }
 
