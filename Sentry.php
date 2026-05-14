@@ -167,6 +167,6 @@ $wgHooks['UserGetRights'][] = function ( $user ) {
 };
 
 $wgHooks['BeforePageDisplay'][] = function ( OutputPage $out, Skin $skin ) {
-	$out->addHeadItems( '<script src="https://js.sentry-cdn.com/8d12d310c7d40b6b4d8c8989e36a7b5a.min.js" crossorigin="anonymous"></script>' );
+	$out->addHeadItem( 'sentry-js', '<script src="https://js.sentry-cdn.com/8d12d310c7d40b6b4d8c8989e36a7b5a.min.js" crossorigin="anonymous"></script>' );
 	return true;
 };
