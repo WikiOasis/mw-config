@@ -1577,7 +1577,7 @@ $wgConf->settings += [
         'default' => [
             'global' => [
                 'type' => 'url',
-                'src' => 'https://meta.wikioasis.org/w/index.php?title=Global_title_blacklist&action=raw',
+                'src' => 'https://meta.wikioasis.org/index.php?title=Global_title_blacklist&action=raw',
             ],
             'local' => [
                 'type' => 'localpage',
@@ -2272,8 +2272,8 @@ $globals = MirahezeFunctions::getConfigGlobals();
     'dsn'                 => $sentryDSN,
     'environment'         => defined( 'MW_ENV' ) ? MW_ENV : 'production',
     'release'             => $wgVersion ?? null,
-    'traces_sample_rate'  => 0.2,
-    'profiles_sample_rate' => 1,
+    'traces_sample_rate'  => 0.25,
+    'profiles_sample_rate' => 0.5,
     'attach_stacktrace'   => true,
     'max_breadcrumbs'     => 100,
 ] );
