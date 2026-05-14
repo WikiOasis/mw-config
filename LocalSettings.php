@@ -2334,15 +2334,21 @@ if ( PHP_SAPI !== 'cli' ) {
     \Sentry\SentrySdk::getCurrentHub()->setSpan( $sentryTx );
 
     register_shutdown_function( static function () use ( $sentryTx ) {
-        $error = error_get_last();
-        if ( $error && in_array( $error['type'], [ E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ], true ) ) {
-            \Sentry\captureMessage( $error['message'], \Sentry\Severity::fatal() );
+        try {
+            $error = error_get_last();
+            if ( $error && in_array( $error['type'], [ E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ], true ) ) {
+                \Sentry\captureMessage( $error['message'], \Sentry\Severity::fatal() );
+            }
+            if ( method_exists( $sentryTx, 'setHttpStatus' ) ) {
+                $sentryTx->setHttpStatus( http_response_code() ?: 200 );
+            }
+        } finally {
+            // Always finalise — profiler attaches data on finish().
+            // Re-flush because the SDK's own shutdown flush runs first (FIFO)
+            // and would miss this just-finished transaction+profile.
+            $sentryTx->finish();
+            \Sentry\flush();
         }
-        $sentryTx->setHttpStatus( http_response_code() ?: 200 );
-        $sentryTx->finish();
-        // SDK's own shutdown flush runs before ours (FIFO), so we flush again here
-        // to ensure the just-finished transaction is actually sent to Relay.
-        \Sentry\flush();
     } );
 } else {
     register_shutdown_function( static function () {
