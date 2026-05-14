@@ -2273,7 +2273,7 @@ $globals = MirahezeFunctions::getConfigGlobals();
     'environment'         => defined( 'MW_ENV' ) ? MW_ENV : 'production',
     'release'             => $wgVersion ?? null,
     'traces_sample_rate'  => 0.2,
-    'profiles_sample_rate' => 0.2, // requires the `excimer` PHP extension on the server
+    'profiles_sample_rate' => 1,
     'attach_stacktrace'   => true,
     'max_breadcrumbs'     => 100,
 ] );
