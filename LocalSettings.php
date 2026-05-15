@@ -491,6 +491,12 @@ $wgConf->settings += [
         ],
     ],
 
+    // Performance tuning
+    'wgCategoryPagingLimit' => [
+        'default' => 200,
+        'italianbrainrotwiki' => 50,
+    ],
+
     // ==================
     // EXTENSION SETTINGS
     // ==================
