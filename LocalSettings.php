@@ -497,6 +497,7 @@ $wgConf->settings += [
         'italianbrainrotwiki' => 50,
     ],
 
+
     // ==================
     // EXTENSION SETTINGS
     // ==================
@@ -2342,6 +2343,32 @@ $wgFileBackends['s3'] = [
     'defaultAcl' => 'public-read',
 ];
 $wgAWSBucketDomain = 'https://cdn.wikioasis.org/$1';
+
+$wmgR2PilotWikis = ['metawiki'];
+
+if ( in_array( $wgDBname, $wmgR2PilotWikis ) ) {
+    $wgAWSCredentials = [
+        'key' => $wgR2Key,
+        'secret' => $wgR2Secret,
+        'token' => false,
+    ];
+    $wgAWSRegion = 'auto';
+    $wgFileBackends['s3'] = [
+        'name' => 'AmazonS3',
+        'class' => 'AmazonS3FileBackend',
+        'lockManager' => 'nullLockManager',
+        'endpoint' => $wgR2Endpoint,
+        'use_path_style_endpoint' => true,
+        'version' => 'latest',
+        'http' => [
+            'verify' => true,
+            'timeout' => 30,
+            'connect_timeout' => 10,
+        ],
+        'defaultAcl' => 'public-read',
+    ];
+    $wgAWSBucketDomain = 'https://media.wikioasis.org/$1';
+}
 
 // Global containers shared across all wikis (SocialProfile avatars/awards, UserProfileV2 avatars)
 $wgFileBackends['s3']['containerPaths'] = [
