@@ -2353,6 +2353,8 @@ if ( in_array( $wgDBname, $wmgR2PilotWikis ) ) {
         'token' => false,
     ];
     $wgAWSRegion = 'auto';
+    $wgAWSBucketName = 'wikioasis-media';
+    $wgAWSBucketTopSubdirectory = $wgDBname;
     $wgFileBackends['s3'] = [
         'name' => 'AmazonS3',
         'class' => 'AmazonS3FileBackend',
