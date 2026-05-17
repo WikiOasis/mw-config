@@ -2369,7 +2369,7 @@ if ( in_array( $wgDBname, $wmgR2PilotWikis ) ) {
         ],
         'defaultAcl' => 'public-read',
     ];
-    $wgAWSBucketDomain = "https://media.wikioasis.org/$wgDBname";
+    $wgAWSBucketDomain = "https://media.wikioasis.org/";
 }
 
 // Global containers shared across all wikis (SocialProfile avatars/awards, UserProfileV2 avatars)
