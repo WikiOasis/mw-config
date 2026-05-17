@@ -990,6 +990,7 @@ $wgConf->settings += [
                 'globalblock' => true,
                 'centralauth-rename' => true,
 				'createwiki' => true,
+				'centralauth-lock' => true,
             ],
             'steward' => [
                 'abusefilter-modify-global' => true,
