@@ -2344,7 +2344,7 @@ $wgFileBackends['s3'] = [
 ];
 $wgAWSBucketDomain = 'https://cdn.wikioasis.org/$1';
 
-$wmgR2PilotWikis = ['metawiki'];
+$wmgR2PilotWikis = ['metawiki', 'aeronauticawiki'];
 
 if ( in_array( $wgDBname, $wmgR2PilotWikis ) ) {
     $wgAWSCredentials = [
