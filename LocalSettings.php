@@ -2315,7 +2315,7 @@ $wgHooks['SetupAfterCache'][] = static function () {
 };
 
 
-$wmgUploadHostname = 'cdn.wikioasis.org';
+$wmgUploadHostname = 'media.wikioasis.org';
 
 // R2 storage for all wikis
 $wgAWSCredentials = [
@@ -2342,7 +2342,7 @@ $wgFileBackends['s3'] = [
     ],
     'defaultAcl' => 'public-read',
 ];
-$wgAWSBucketDomain = "https://media.wikioasis.org";
+$wgAWSBucketDomain = "https://cdn.wikioasis.org";
 
 // Global containers shared across all wikis (SocialProfile avatars/awards, UserProfileV2 avatars)
 $wgFileBackends['s3']['containerPaths'] = [
