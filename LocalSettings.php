@@ -2317,60 +2317,32 @@ $wgHooks['SetupAfterCache'][] = static function () {
 
 $wmgUploadHostname = 'cdn.wikioasis.org';
 
-// AWS stuff
+// R2 storage for all wikis
 $wgAWSCredentials = [
-    'key' => $wgAWSKey,
-    'secret' => $wgAWSSecret,
+    'key' => $wgR2Key,
+    'secret' => $wgR2Secret,
     'token' => false,
 ];
-$wgAWSRegion = 'garage';
-$wgAWSBucketName = $wgDBname;
+$wgAWSRegion = 'auto';
+$wgAWSBucketName = 'wikioasis-media';
 $wgAWSRepoHashLevels = 2;
 $wgAWSRepoDeletedHashLevels = 3;
-$wgAWSBucketTopSubdirectory = '';
+$wgAWSBucketTopSubdirectory = '/' . $wgDBname;
 $wgFileBackends['s3'] = [
     'name' => 'AmazonS3',
     'class' => 'AmazonS3FileBackend',
     'lockManager' => 'nullLockManager',
-    'endpoint' => 'http://garage21.mining-cod.ts.net:3900',
+    'endpoint' => $wgR2Endpoint,
     'use_path_style_endpoint' => true,
     'version' => 'latest',
     'http' => [
-        'verify' => false,  // We don't use SSL lol
+        'verify' => true,
         'timeout' => 30,
         'connect_timeout' => 10,
     ],
     'defaultAcl' => 'public-read',
 ];
-$wgAWSBucketDomain = 'https://cdn.wikioasis.org/$1';
-
-$wmgR2PilotWikis = ['metawiki', 'aeronauticawiki', 'italianbrainrotwiki'];
-
-if ( in_array( $wgDBname, $wmgR2PilotWikis ) ) {
-    $wgAWSCredentials = [
-        'key' => $wgR2Key,
-        'secret' => $wgR2Secret,
-        'token' => false,
-    ];
-    $wgAWSRegion = 'auto';
-    $wgAWSBucketName = 'wikioasis-media';
-    $wgAWSBucketTopSubdirectory = '/' . $wgDBname;
-    $wgFileBackends['s3'] = [
-        'name' => 'AmazonS3',
-        'class' => 'AmazonS3FileBackend',
-        'lockManager' => 'nullLockManager',
-        'endpoint' => $wgR2Endpoint,
-        'use_path_style_endpoint' => true,
-        'version' => 'latest',
-        'http' => [
-            'verify' => true,
-            'timeout' => 30,
-            'connect_timeout' => 10,
-        ],
-        'defaultAcl' => 'public-read',
-    ];
-    $wgAWSBucketDomain = "https://media.wikioasis.org";
-}
+$wgAWSBucketDomain = "https://media.wikioasis.org";
 
 // Global containers shared across all wikis (SocialProfile avatars/awards, UserProfileV2 avatars)
 $wgFileBackends['s3']['containerPaths'] = [
