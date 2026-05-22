@@ -2232,7 +2232,12 @@ $wgConf->settings += [
     ],
     // VisualEditor
     'wgVisualEditorEnableWikitext' =>  [
-	'default' => true,
+	    'default' => true,
+    ],
+
+    // QuickInstantCommons
+    'wgQuickInstantCommonsUserAgentInfo' => [
+        'default' => "https://wikioasis.org/; tech@wikioasis.org;"
     ],
 
 
