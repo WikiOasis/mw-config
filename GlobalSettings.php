@@ -18,6 +18,14 @@ $wgHooks['CreateWikiPhpBuilder'][] = 'MirahezeFunctions::onCreateWikiPhpBuilder'
 $wgHooks['CreateWikiPhpGenerateDatabaseList'][] = 'MirahezeFunctions::onGenerateDatabaseLists';
 $wgHooks['CreateWikiDataFactoryBuilder'][] = 'MirahezeFunctions::onCreateWikiDataFactoryBuilder';
 
+// ManageWiki hooks for primary-domain, article-path, and version selection.
+$wgHooks['ManageWikiCoreAddFormFields'][] = 'MirahezeFunctions::onManageWikiCoreAddFormFields';
+$wgHooks['ManageWikiCoreFormSubmission'][] = 'MirahezeFunctions::onManageWikiCoreFormSubmission';
+
+// Multiversion: inject wikiVersions.php overrides into the CreateWiki cache.
+require_once '/srv/mediawiki/config/MultiVersion.php';
+$wgHooks['CreateWikiPhpBuilder'][] = 'WikiFarmMultiVersion::onCreateWikiPhpBuilder';
+
 wfLoadExtensions( [
     'CentralAuth',
     'GlobalPreferences',

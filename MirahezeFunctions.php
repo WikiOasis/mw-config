@@ -37,7 +37,9 @@ class MirahezeFunctions {
 
     private const BETA_HOSTNAME = 'staging11';
 
-    public const CACHE_DIRECTORY = '/var/www/mediawiki/cw_cache';
+    public const CACHE_DIRECTORY = '/srv/mediawiki/cw_cache';
+
+    private const CONFIG_DIRECTORY = '/srv/mediawiki/config';
 
     private const CENTRAL_DATABASE = [
         'default' => 'metawiki',
@@ -59,7 +61,7 @@ class MirahezeFunctions {
         'beta' => 'wikidbbeta',
     ];
 
-    private const MEDIAWIKI_DIRECTORY = '/var/www/mediawiki';
+    private const MEDIAWIKI_DIRECTORY = '/srv/mediawiki/versions';
 
     public const MEDIAWIKI_VERSIONS = [
         'alpha' => '1.45',
@@ -83,7 +85,7 @@ class MirahezeFunctions {
                 exit( 2 );
             }
 
-            require_once self::MEDIAWIKI_DIRECTORY . '/config/MissingWiki.php';
+            require_once self::CONFIG_DIRECTORY . '/MissingWiki.php';
         }
 
         $this->wikiDBClusters = self::getDatabaseClusters();
@@ -167,7 +169,7 @@ class MirahezeFunctions {
                         MW_ENTRY_POINT !== 'cli' &&
                         in_array( $data['c'] ?? null, $wgDatabaseClustersMaintenance, true )
                     ) {
-                        require_once self::MEDIAWIKI_DIRECTORY . '/config/DatabaseMaintenance.php';
+                        require_once self::CONFIG_DIRECTORY . '/DatabaseMaintenance.php';
                     }
 
                     return true;
@@ -445,6 +447,11 @@ class MirahezeFunctions {
         }
 
         if ( $database ) {
+            // Check wikiVersions.php first (written by ManageWiki version selector)
+            $wikiVersions = @include self::CONFIG_DIRECTORY . '/wikiVersions.php';
+            if ( is_array( $wikiVersions ) && isset( $wikiVersions[$database] ) ) {
+                return self::resolveMediaWikiVersion( $wikiVersions[$database] );
+            }
             $dbVersion = self::readDbListFile( 'databases', false, $database )['v']
                 ?? self::MEDIAWIKI_VERSIONS[ self::getDefaultMediaWikiVersion() ];
 
@@ -453,7 +460,10 @@ class MirahezeFunctions {
 
         if ( PHP_SAPI === 'cli' ) {
             $parts = explode( '/', $_SERVER['SCRIPT_NAME'] );
-            $version = $parts[3] ?? null;
+            // MEDIAWIKI_DIRECTORY = /srv/mediawiki/versions → 3 non-empty segments
+            // version lives one level deeper: /srv/mediawiki/versions/<version>/...
+            $mwDirDepth = count( array_filter( explode( '/', self::MEDIAWIKI_DIRECTORY ) ) );
+            $version = $parts[ $mwDirDepth + 1 ] ?? null;
 
             if ( $version && in_array( $version, self::MEDIAWIKI_VERSIONS, true ) ) {
                 return self::resolveMediaWikiVersion( $version );
@@ -463,6 +473,16 @@ class MirahezeFunctions {
         static $version = null;
 
         self::$currentDatabase ??= self::getCurrentDatabase();
+
+        // Check wikiVersions.php first (written by ManageWiki version selector)
+        if ( $version === null ) {
+            $wikiVersions = @include self::CONFIG_DIRECTORY . '/wikiVersions.php';
+            if ( is_array( $wikiVersions ) && isset( $wikiVersions[ self::$currentDatabase ] ) ) {
+                $version = $wikiVersions[ self::$currentDatabase ];
+                return self::resolveMediaWikiVersion( $version );
+            }
+        }
+
         $version ??= self::readDbListFile( 'databases', false, self::$currentDatabase )['v']
             ?? self::MEDIAWIKI_VERSIONS[ self::getDefaultMediaWikiVersion() ];
 
@@ -1017,7 +1037,7 @@ class MirahezeFunctions {
         $versions = array_unique( array_filter(
             self::MEDIAWIKI_VERSIONS,
             static fn ( string $version ): bool => $mwVersion === $version ||
-                is_dir( self::MEDIAWIKI_DIRECTORY . $version )
+                is_dir( self::MEDIAWIKI_DIRECTORY . '/' . $version )
         ) );
 
         asort( $versions );
@@ -1076,7 +1096,7 @@ class MirahezeFunctions {
         $version = self::getMediaWikiVersion( $dbname );
         $mediawikiVersion = $formData['mediawiki-version'] ?? $version;
         $mwCore = $moduleFactory->core( $dbname );
-        if ( $mediawikiVersion !== $version && is_dir( self::MEDIAWIKI_DIRECTORY . $mediawikiVersion ) ) {
+        if ( $mediawikiVersion !== $version && is_dir( self::MEDIAWIKI_DIRECTORY . '/' . $mediawikiVersion ) ) {
             $mwCore->setExtraFieldData(
                 'mediawiki-version', $mediawikiVersion, default: $version
             );

@@ -487,7 +487,7 @@ $wgConf->settings += [
     // Cache
     'wgExtensionEntryPointListFiles' => [
         'default' => [
-            '/var/www/mediawiki/config/extension-list'
+            "/srv/mediawiki/config/extension-list"
         ],
     ],
 
@@ -675,7 +675,7 @@ $wgConf->settings += [
         'default' => true,
     ],
     'wgCreateWikiCacheDirectory' => [
-        'default' => '/var/www/mediawiki/cw_cache',
+        'default' => '/srv/mediawiki/cw_cache',
     ],
     'wgCreateWikiCacheType' => [
         'default' => 'redis',
@@ -773,19 +773,19 @@ $wgConf->settings += [
     ],
     'wgCreateWikiSQLFiles' => [
         'default' => [
-            "/var/www/mediawiki/maintenance/tables-generated.sql",
-            "/var/www/mediawiki/extensions/AbuseFilter/db_patches/mysql/tables-generated.sql",
-            "/var/www/mediawiki/extensions/AntiSpoof/sql/mysql/tables-generated.sql",
-            "/var/www/mediawiki/extensions/BetaFeatures/sql/tables-generated.sql",
-            "/var/www/mediawiki/extensions/CheckUser/schema/mysql/tables-generated.sql",
-            "/var/www/mediawiki/extensions/CentralNotice/sql/mysql/tables-generated.sql",
-            "/var/www/mediawiki/extensions/DataDump/sql/data_dump.sql",
-            "/var/www/mediawiki/extensions/Echo/sql/mysql/tables-generated.sql",
-            "/var/www/mediawiki/extensions/GlobalBlocking/sql/mysql/tables-generated-global_block_whitelist.sql",
-            #"/var/www/mediawiki/extensions/LoginNotify/sql/mysql/tables-generated.sql",
-            "/var/www/mediawiki/extensions/OATHAuth/sql/mysql/tables-generated.sql",
-            "/var/www/mediawiki/extensions/OAuth/schema/mysql/tables-generated.sql",
-	    "/var/www/mediawiki/extensions/MediaModeration/schema/mysql/tables-generated.sql",
+            "$IP/maintenance/tables-generated.sql",
+            "$IP/extensions/AbuseFilter/db_patches/mysql/tables-generated.sql",
+            "$IP/extensions/AntiSpoof/sql/mysql/tables-generated.sql",
+            "$IP/extensions/BetaFeatures/sql/tables-generated.sql",
+            "$IP/extensions/CheckUser/schema/mysql/tables-generated.sql",
+            "$IP/extensions/CentralNotice/sql/mysql/tables-generated.sql",
+            "$IP/extensions/DataDump/sql/data_dump.sql",
+            "$IP/extensions/Echo/sql/mysql/tables-generated.sql",
+            "$IP/extensions/GlobalBlocking/sql/mysql/tables-generated-global_block_whitelist.sql",
+            #"$IP/extensions/LoginNotify/sql/mysql/tables-generated.sql",
+            "$IP/extensions/OATHAuth/sql/mysql/tables-generated.sql",
+            "$IP/extensions/OAuth/schema/mysql/tables-generated.sql",
+	    "$IP/extensions/MediaModeration/schema/mysql/tables-generated.sql",
             //"$IP/extensions/RottenLinks/sql/rottenlinks.sql",
             //"$IP/extensions/UrlShortener/schemas/tables-generated.sql",
         ],
@@ -817,7 +817,7 @@ $wgConf->settings += [
         ],
     ],
     'wgManageWikiCacheDirectory' => [
-        'default' => '/var/www/mediawiki/cw_cache',
+        'default' => '/srv/mediawiki/cw_cache',
     ],
     'wgManageWikiUseCustomDomains' => [
         'default' => true,
@@ -1331,10 +1331,10 @@ $wgConf->settings += [
         'default' => true,
     ],
     'wgOAuth2PublicKey' => [
-        'default' => '/var/www/mediawiki/config/OAuth.key.pub',
+        'default' => '/srv/mediawiki/config/OAuth.key.pub',
     ],
     'wgOAuth2PrivateKey' => [
-        'default' => '/var/www/mediawiki/config/OAuth.key',
+        'default' => '/srv/mediawiki/config/OAuth.key',
     ],
 
     // PortableInfobox
@@ -2357,7 +2357,7 @@ $wgFileBackends['s3']['containerPaths'] = [
 ];
 
 $wgUploadDirectory = false;
-$wgTmpDirectory = '/var/www/mediawiki/cache';
+$wgTmpDirectory = '/srv/mediawiki/cache';
 
 if ( $cwPrivate ) {
    $wmgUploadHostname = false;
@@ -2377,9 +2377,9 @@ if ( $wi->missing ) {
         $host = strtolower( trim( preg_replace( '/:\d+$/', '', $host ) ) );
 
         if ( $host !== '' && preg_match( '/(^|\.)skywiki\.org$/', $host ) ) {
-            require_once '/var/www/mediawiki/config/MissingSkyWiki.php';
+            require_once '/srv/mediawiki/config/MissingSkyWiki.php';
         } else {
-            require_once '/var/www/mediawiki/config/MissingWiki.php';
+            require_once '/srv/mediawiki/config/MissingWiki.php';
         }
     }
 }
@@ -2395,7 +2395,7 @@ if ( $cwDeleted ) {
 }
 
 function wfHandleDeletedWiki() {
-    require_once '/var/www/mediawiki/config/DeletedWiki.php';
+    require_once '/srv/mediawiki/config/DeletedWiki.php';
 }
 
 require_once "$IP/config/GlobalSettings.php";
@@ -2404,8 +2404,9 @@ require_once "$IP/config/LocalWiki.php";
 $wgCargoDBname = $wgDBname . 'cargo';
 
 // Define last - Extension message files for loading extensions
-if (file_exists(__DIR__ . '/ExtensionMessageFiles-1.45.php') && !defined('MW_NO_EXTENSION_MESSAGES')) {
-    require_once __DIR__ . '/ExtensionMessageFiles-1.45.php';
+$_mwVersion = MirahezeFunctions::getMediaWikiVersion();
+if (file_exists(__DIR__ . "/ExtensionMessageFiles-{$_mwVersion}.php") && !defined('MW_NO_EXTENSION_MESSAGES')) {
+    require_once __DIR__ . "/ExtensionMessageFiles-{$_mwVersion}.php";
     // These are not loaded by mergeMessageFileList.php due to not being on ExtensionRegistry
     $wgMessagesDirs['SocialProfile'] = $IP . '/extensions/SocialProfile/i18n';
     $wgExtensionMessagesFiles['SocialProfileAlias'] = $IP . '/extensions/SocialProfile/SocialProfile.alias.php';
@@ -2413,11 +2414,12 @@ if (file_exists(__DIR__ . '/ExtensionMessageFiles-1.45.php') && !defined('MW_NO_
     $wgExtensionMessagesFiles['SocialProfileNamespaces'] = $IP . '/extensions/SocialProfile/SocialProfile.namespaces.php';
     $wgExtensionMessagesFiles['AvatarMagic'] = $IP . '/extensions/SocialProfile/UserProfile/includes/avatar/Avatar.i18n.magic.php';
 }
+// Use a per-version subdirectory so multiple MW versions can coexist.
 $wgLocalisationCacheConf['storeClass'] = LCStoreStaticArray::class;
-$wgLocalisationCacheConf['storeDirectory'] = "/var/www/mediawiki/cache";
+$wgLocalisationCacheConf['storeDirectory'] = "/srv/mediawiki/cache/" . MirahezeFunctions::getMediaWikiVersion();
 $wgLocalisationCacheConf['manualRecache'] = true;
 
-if ( !file_exists( "/var/www/mediawiki/cache/en.l10n.php" ) ) {
+if ( !file_exists( $wgLocalisationCacheConf['storeDirectory'] . '/en.l10n.php' ) ) {
     $wgLocalisationCacheConf['manualRecache'] = false;
 }
 
