@@ -14,17 +14,15 @@ if (!defined('MEDIAWIKI')) {
 	die('Not an entry point.');
 }
 
-$wgHooks['CreateWikiPhpBuilder'][] = 'MirahezeFunctions::onCreateWikiPhpBuilder';
-$wgHooks['CreateWikiPhpGenerateDatabaseList'][] = 'MirahezeFunctions::onGenerateDatabaseLists';
-$wgHooks['CreateWikiDataFactoryBuilder'][] = 'MirahezeFunctions::onCreateWikiDataFactoryBuilder';
+// Populates databases.php with per-wiki data including 'v' (version), 'd' (domain), etc.
+$wgHooks['CreateWikiGenerateDatabaseLists'][] = 'MirahezeFunctions::onGenerateDatabaseLists';
 
 // ManageWiki hooks for primary-domain, article-path, and version selection.
 $wgHooks['ManageWikiCoreAddFormFields'][] = 'MirahezeFunctions::onManageWikiCoreAddFormFields';
 $wgHooks['ManageWikiCoreFormSubmission'][] = 'MirahezeFunctions::onManageWikiCoreFormSubmission';
 
-// Multiversion: inject wikiVersions.php overrides into the CreateWiki cache.
+// Load MultiVersion helpers (setWikiVersion used by onManageWikiCoreFormSubmission).
 require_once '/srv/mediawiki/config/MultiVersion.php';
-$wgHooks['CreateWikiPhpBuilder'][] = 'WikiFarmMultiVersion::onCreateWikiPhpBuilder';
 
 wfLoadExtensions( [
     'CentralAuth',
