@@ -16,10 +16,9 @@ $wgObjectCaches['parsercache-multiwrite'] = [
         1 => [
             'class' => SqlBagOStuff::class,
             'cluster' => 'pc1',
-            'dbname' => 'pc1',
+            'dbname' => 'parsercache',
             'purgePeriod' => 0,
-            'tableName' => 'parsercache',
-            'shards' => 256,
+            'tableName' => 'objectcache',
             'reportDupes' => false,
         ],
     ],

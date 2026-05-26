@@ -62,7 +62,7 @@ if ( class_exists( \Wikimedia\Rdbms\LBFactoryMulti::class ) ) {
 
         'externalTemplateOverrides' => [
             'pc1' => [
-                'dbname' => 'pc1',
+                'dbname' => 'parsercache',
             ],
         ],
 
