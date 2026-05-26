@@ -4,13 +4,34 @@ $wgMainCacheType = 'redis';
 $wgMessageCacheType = 'redis';
 $wgCacheDirectory = '/var/www/mediawiki/cache/{$wgDBname}';
 
-$wgParserCacheType = 'redis';
+// ParserCache: write to Redis first (fast, memory-bounded via volatile-lru eviction),
+// then replicate to SQL (durable, full TTL). Reads check Redis first, fall back to SQL.
+// MultiWriteBagOStuff sends the same TTL to both backends; configure Redis with
+// maxmemory-policy: volatile-lru so it evicts parser cache entries under memory pressure
+// while the SQL backend retains them for the full $wgParserCacheExpireTime.
+$wgObjectCaches['parsercache-multiwrite'] = [
+    'class' => MultiWriteBagOStuff::class,
+    'caches' => [
+        0 => $wgObjectCaches['redis'],
+        1 => [
+            'class' => SqlBagOStuff::class,
+            'cluster' => 'pc1',
+            'dbname' => 'pc1',
+            'purgePeriod' => 0,
+            'tableName' => 'parsercache',
+            'shards' => 256,
+            'reportDupes' => false,
+        ],
+    ],
+];
+
+$wgParserCacheType = 'parsercache-multiwrite';
 
 $wgLanguageConverterCacheType = CACHE_ACCEL;
 
 $wgQueryCacheLimit = 5000;
 
-// 15 days
+// 15 days — SQL backend retains for the full duration; Redis evicts earlier via LRU
 $wgParserCacheExpireTime = 86400 * 15;
 
 // 10 days
@@ -58,9 +79,9 @@ $wgParsoidCacheConfig = [
 ];
 
 $wgManageWikiServers = [
-      'mwtask11:80',
-      'mw11:80',
-      'mw12:80',
-      'mw41:80',
-      'mw42:80',
+      'task-us-east-011:80',
+      'mw-us-east-011:80',
+      'mw-us-east-012:80',
+      'mw-us-east-021:80',
+      'mw-us-east-022:80',
 ];
