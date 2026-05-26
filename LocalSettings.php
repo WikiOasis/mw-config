@@ -2357,7 +2357,7 @@ $wgFileBackends['s3']['containerPaths'] = [
 	'awards'     => 'wikioasis-media/awards',
 	'upv2avatars' => 'wikioasis-media/upv2avatars',
     "{$wgDBname}-avatars" => 'wikioasis-media/avatars',
-    "{$wgDBname}-avatars" => 'wikioasis-media/upv2avatars',
+    "{$wgDBname}-upv2avatars" => 'wikioasis-media/upv2avatars',
 ];
 
 $wgUploadDirectory = false;
