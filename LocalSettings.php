@@ -2353,9 +2353,9 @@ $wgAWSBucketDomain = "https://cdn.wikioasis.org";
 
 // Global containers shared across all wikis (SocialProfile avatars/awards, UserProfileV2 avatars)
 $wgFileBackends['s3']['containerPaths'] = [
-	'avatars' => "{$wgDBname}/avatars",
-	'awards' => "{$wgDBname}/awards",
-	'upv2avatars' => "{$wgDBname}/upv2avatars/avatars",
+	'avatars' => "avatars",
+	'awards' => "awards",
+	'upv2avatars' => "upv2avatars",
 ];
 
 $wgUploadDirectory = false;
