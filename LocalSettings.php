@@ -2355,7 +2355,7 @@ $wgAWSBucketDomain = "https://cdn.wikioasis.org";
 $wgFileBackends['s3']['containerPaths'] = [
 	'avatars' => "{$wgDBname}/avatars",
 	'awards' => "{$wgDBname}/awards",
-	'upv2avatars' => "{$wgDBname}/upv2avatars",
+	'upv2avatars' => "{$wgDBname}/upv2avatars/avatars",
 ];
 
 $wgUploadDirectory = false;
