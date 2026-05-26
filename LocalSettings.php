@@ -82,7 +82,7 @@ $wmgSharedDomainPathPrefix = '';
 if ( ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain()
     || getenv( 'MW_USE_SHARED_DOMAIN' )
 ) {
-    $wgLoadScript = "{$wi->server}/load.php";
+    $wgLoadScript = "{$wi->server}/w/load.php";
     $wmgSharedDomainPathPrefix = "/$wgDBname";
 
     $wgCanonicalServer = 'https://' . $wi->getSharedDomain();
@@ -91,10 +91,10 @@ if ( ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain()
     $wgUseSiteJs = false;
 }
 
-$wgScriptPath = $wmgSharedDomainPathPrefix;
+$wgScriptPath = $wmgSharedDomainPathPrefix ?: '/w';
 $wgScript = "$wgScriptPath/index.php";
 
-$wgResourceBasePath = $wmgSharedDomainPathPrefix;
+$wgResourceBasePath = ( $wmgSharedDomainPathPrefix ?: '' ) . '/versions/' . $wi->version;
 $wgExtensionAssetsPath = "$wgResourceBasePath/extensions";
 $wgStylePath = "$wgResourceBasePath/skins";
 $wgLocalStylePath = $wgStylePath;
@@ -1258,7 +1258,7 @@ $wgConf->settings += [
 		'default' => true,
 	],
     'wgGlobalUserPageAPIUrl' => [
-        'default' => 'https://meta.wikioasis.org/api.php',
+        'default' => 'https://meta.wikioasis.org/w/api.php',
     ],
     'wgGlobalUserPageDBname' => [
         'default' => 'metawiki',
@@ -1270,14 +1270,14 @@ $wgConf->settings += [
     '+wgResourceLoaderSources' => [
         'default' => [
             'metawiki' => [
-                'apiScript' => '//meta.wikioasis.org/api.php',
-                'loadScript' => '//meta.wikioasis.org/load.php',
+                'apiScript' => '//meta.wikioasis.org/w/api.php',
+                'loadScript' => '//meta.wikioasis.org/w/load.php',
             ],
         ],
 	'beta' => [
 	    'metawikibeta' => [
-		'apiScript' => '//meta.betaoasis.xyz/api.php',
-		'loadScript' => '//meta.betaoasis.xyz/load.php',
+		'apiScript' => '//meta.betaoasis.xyz/w/api.php',
+		'loadScript' => '//meta.betaoasis.xyz/w/load.php',
 	    ],
 	],
     ],
@@ -1570,7 +1570,7 @@ $wgConf->settings += [
         'default' => [
             'spam' => [
                 'files' => [
-                    "https://meta.wikioasis.org/index.php?title=Spam_blacklist&action=raw&sb_ver=1"
+                    "https://meta.wikioasis.org/w/index.php?title=Spam_blacklist&action=raw&sb_ver=1"
                 ],
             ],
         ]
@@ -1584,7 +1584,7 @@ $wgConf->settings += [
         'default' => [
             'global' => [
                 'type' => 'url',
-                'src' => 'https://meta.wikioasis.org/index.php?title=Global_title_blacklist&action=raw',
+                'src' => 'https://meta.wikioasis.org/w/index.php?title=Global_title_blacklist&action=raw',
             ],
             'local' => [
                 'type' => 'localpage',
@@ -2361,7 +2361,7 @@ $wgTmpDirectory = '/srv/mediawiki/cache';
 
 if ( $cwPrivate ) {
    $wmgUploadHostname = false;
-   $wgUploadPath = '/img_auth.php';
+   $wgUploadPath = '/w/img_auth.php';
 } else {
    $wgGroupPermissions['*']['read'] = true;
 }

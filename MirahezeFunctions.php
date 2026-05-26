@@ -2,7 +2,6 @@
 
 use MediaWiki\Config\SiteConfiguration;
 use MediaWiki\Context\IContextSource;
-use MediaWiki\JobQueue\Jobs\CdnPurgeJob;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Registration\ExtensionProcessor;
 use MediaWiki\Registration\ExtensionRegistry;
@@ -29,6 +28,7 @@ class MirahezeFunctions {
     private const ALLOWED_DOMAINS = [
         'default' => [
             'wikioasis.org',
+            'skywiki.org',
         ],
         'beta' => [
             'betaoasis.xyz',
@@ -1051,30 +1051,6 @@ class MirahezeFunctions {
             'section' => 'main',
         ];
 
-        $mwSettings = $moduleFactory->settings( $dbname );
-        $setList = $mwSettings->listAll();
-        $formDescriptor['article-path'] = [
-            'label-message' => 'miraheze-label-managewiki-article-path',
-            'type' => 'select',
-            'options-messages' => [
-                'miraheze-label-managewiki-article-path-wiki' => '/wiki/$1',
-                'miraheze-label-managewiki-article-path-root' => '/$1',
-            ],
-            'default' => $setList['wgArticlePath'] ?? '/wiki/$1',
-            'disabled' => !$context->getAuthority()->isAllowed( 'managewiki-restricted' ),
-            'cssclass' => 'ext-managewiki-infuse',
-            'section' => 'main',
-        ];
-
-        $formDescriptor['mainpage-is-domain-root'] = [
-            'label-message' => 'miraheze-label-managewiki-mainpage-is-domain-root',
-            'type' => 'check',
-            'default' => $setList['wgMainPageIsDomainRoot'] ?? false,
-            'disabled' => !$context->getAuthority()->isAllowed( 'managewiki-restricted' ),
-            'cssclass' => 'ext-managewiki-infuse',
-            'section' => 'main',
-        ];
-
         $formDescriptor['mediawiki-version'] = [
             'label-message' => 'miraheze-label-managewiki-mediawiki-version',
             'type' => 'select',
@@ -1110,39 +1086,6 @@ class MirahezeFunctions {
         if ( $primaryDomain !== $domain ) {
             $mwCore->setExtraFieldData(
                 'primary-domain', $primaryDomain, default: $domain
-            );
-        }
-
-        $mwSettings = $moduleFactory->settings( $dbname );
-        $articlePath = $mwSettings->list( 'wgArticlePath' ) ?? '/wiki/$1';
-        if ( $formData['article-path'] !== $articlePath ) {
-            $mwSettings->modify( [ 'wgArticlePath' => $formData['article-path'] ], default: '/wiki/$1' );
-            $mwSettings->commit();
-
-            $mwCore->trackChange( 'article-path', $articlePath, $formData['article-path'] );
-
-            $server = self::getServer();
-            $jobQueueGroupFactory = MediaWikiServices::getInstance()->getJobQueueGroupFactory();
-            $jobQueueGroupFactory->makeJobQueueGroup( $dbname )->push(
-                new CdnPurgeJob( [
-                    'urls' => [
-                        $server . '/wiki/',
-                        $server . '/wiki',
-                        $server . '/',
-                        $server,
-                    ],
-                ] )
-            );
-        }
-
-        $mainPageIsDomainRoot = $mwSettings->list( 'wgMainPageIsDomainRoot' ) ?? false;
-        if ( $formData['mainpage-is-domain-root'] !== $mainPageIsDomainRoot ) {
-            $mwSettings->modify( [ 'wgMainPageIsDomainRoot' => $formData['mainpage-is-domain-root'] ], default: false );
-            $mwSettings->commit();
-
-            $mwCore->trackChange( 'mainpage-is-domain-root',
-                $mainPageIsDomainRoot,
-                $formData['mainpage-is-domain-root']
             );
         }
     }
