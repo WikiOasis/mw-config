@@ -2360,7 +2360,7 @@ $wgFileBackends['s3']['containerPaths'] = [
     "{$wgDBname}-upv2avatars" => 'wikioasis-media/upv2avatars',
 ];
 $wgUserProfileV2UseGlobalAvatars = true;
-$wgUserProfileGlobalUploadBaseUrl = "https://cdn.wikioasis.org/upv2avatars/"
+$wgUserProfileGlobalUploadBaseUrl = "https://cdn.wikioasis.org/upv2avatars/";
 
 $wgUploadDirectory = false;
 $wgTmpDirectory = '/var/www/mediawiki/cache';
