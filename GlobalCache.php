@@ -12,11 +12,11 @@ $wgCacheDirectory = '/var/www/mediawiki/cache/{$wgDBname}';
 $wgObjectCaches['parsercache-multiwrite'] = [
     'class' => MultiWriteBagOStuff::class,
     'caches' => [
-        0 => $wgObjectCaches['redis'],
-        1 => [
+//        0 => $wgObjectCaches['redis'],
+        0 => [
             'class' => SqlBagOStuff::class,
             'cluster' => 'pc1',
-            'dbname' => 'parsercache',
+            'dbDomain' => 'parsercache',
             'purgePeriod' => 0,
             'tableName' => 'objectcache',
             'reportDupes' => false,
@@ -64,6 +64,22 @@ $wgCdnMatchParameterOrder = false;
 if ( PHP_SAPI === 'cli' ) {
         // APC not available in CLI mode
         $wgLanguageConverterCacheType = CACHE_NONE;
+
+        // Suppress DEBUG/INFO log noise in CLI scripts; errors and warnings still reach stderr
+        $wgMWLoggerDefaultSpi = [
+            'class' => \MediaWiki\Logger\MonologSpi::class,
+            'args' => [[
+                'loggers' => [
+                    '@default' => [ 'handlers' => [ 'stderr' ] ],
+                ],
+                'handlers' => [
+                    'stderr' => [
+                        'class' => \Monolog\Handler\StreamHandler::class,
+                        'args'  => [ 'php://stderr', \Monolog\Logger::ERROR ],
+                    ],
+                ],
+            ]],
+        ];
 }
 
 $wgUseGzip = true;
@@ -73,8 +89,8 @@ $wgParsoidCacheConfig = [
     // store for 24h
     'StashDuration' => 24 * 60 * 60,
     // cache all
-    'CacheThresholdTime' => 0.5,
-    'WarmParsoidParserCache' => false,
+    'CacheThresholdTime' => 0.0,
+    'WarmParsoidParserCache' => true,
 ];
 
 $wgManageWikiServers = [
