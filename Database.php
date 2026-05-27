@@ -72,3 +72,5 @@ if ( class_exists( \Wikimedia\Rdbms\LBFactoryMulti::class ) ) {
         ],
     ];
 }
+
+$wgDatabaseClustersMaintenance = ['c1'];
