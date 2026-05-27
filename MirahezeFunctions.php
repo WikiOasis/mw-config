@@ -161,11 +161,11 @@ class MirahezeFunctions {
             $databases = array_filter(
                 $databases,
                 static function ( array $data, string $key ): true {
-                    global $wgDBname, $wgDatabaseClustersMaintenance;
+                    global $wgDatabaseClustersMaintenance;
 
                     if (
-                        $wgDBname &&
-                        $key === $wgDBname &&
+                        self::$currentDatabase &&
+                        $key === self::$currentDatabase &&
                         MW_ENTRY_POINT !== 'cli' &&
                         in_array( $data['c'] ?? null, $wgDatabaseClustersMaintenance, true )
                     ) {
