@@ -100,3 +100,10 @@ $wgManageWikiServers = [
       'mw-us-east-021:80',
       'mw-us-east-022:80',
 ];
+
+$wgJobTypeConf['default'] = [
+    'class' => 'JobQueueRedis',
+    'redisServer' => 'redis-us-east-012.ovvin.wonet:6379',
+    'redisConfig' => [],
+    'daemonized' => true,
+];
