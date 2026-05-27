@@ -67,8 +67,8 @@ if ( class_exists( \Wikimedia\Rdbms\LBFactoryMulti::class ) ) {
         ],
 
         'readOnlyBySection' => [
-            // 'DEFAULT' => 'Maintenance is in progress. Please try again in a few minutes.',
-            // 'c1' => 'Maintenance is in progress. Please try again in a few minutes.',
+            'DEFAULT' => 'Maintenance is in progress. Please try again in a few minutes.',
+            'c1' => 'Maintenance is in progress. Please try again in a few minutes.',
         ],
     ];
 }
