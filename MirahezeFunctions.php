@@ -2,7 +2,6 @@
 
 use MediaWiki\Config\SiteConfiguration;
 use MediaWiki\Context\IContextSource;
-use MediaWiki\JobQueue\Jobs\CdnPurgeJob;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Registration\ExtensionProcessor;
 use MediaWiki\Registration\ExtensionRegistry;
@@ -29,6 +28,7 @@ class MirahezeFunctions {
     private const ALLOWED_DOMAINS = [
         'default' => [
             'wikioasis.org',
+            'skywiki.org',
         ],
         'beta' => [
             'betaoasis.xyz',
@@ -37,7 +37,9 @@ class MirahezeFunctions {
 
     private const BETA_HOSTNAME = 'staging11';
 
-    public const CACHE_DIRECTORY = '/var/www/mediawiki/cw_cache';
+    public const CACHE_DIRECTORY = '/srv/mediawiki/cw_cache';
+
+    private const CONFIG_DIRECTORY = '/srv/mediawiki/config';
 
     private const CENTRAL_DATABASE = [
         'default' => 'metawiki',
@@ -59,7 +61,7 @@ class MirahezeFunctions {
         'beta' => 'wikidbbeta',
     ];
 
-    private const MEDIAWIKI_DIRECTORY = '/var/www/mediawiki';
+    private const MEDIAWIKI_DIRECTORY = '/srv/mediawiki/versions';
 
     public const MEDIAWIKI_VERSIONS = [
         'alpha' => '1.45',
@@ -83,7 +85,7 @@ class MirahezeFunctions {
                 exit( 2 );
             }
 
-            require_once self::MEDIAWIKI_DIRECTORY . '/config/MissingWiki.php';
+            require_once self::CONFIG_DIRECTORY . '/MissingWiki.php';
         }
 
         $this->wikiDBClusters = self::getDatabaseClusters();
@@ -159,15 +161,15 @@ class MirahezeFunctions {
             $databases = array_filter(
                 $databases,
                 static function ( array $data, string $key ): true {
-                    global $wgDBname, $wgDatabaseClustersMaintenance;
+                    global $wgDatabaseClustersMaintenance;
 
                     if (
-                        $wgDBname &&
-                        $key === $wgDBname &&
+                        self::$currentDatabase &&
+                        $key === self::$currentDatabase &&
                         MW_ENTRY_POINT !== 'cli' &&
                         in_array( $data['c'] ?? null, $wgDatabaseClustersMaintenance, true )
                     ) {
-                        require_once self::MEDIAWIKI_DIRECTORY . '/config/DatabaseMaintenance.php';
+                        require_once self::CONFIG_DIRECTORY . '/DatabaseMaintenance.php';
                     }
 
                     return true;
@@ -445,6 +447,11 @@ class MirahezeFunctions {
         }
 
         if ( $database ) {
+            // Check wikiVersions.php first (written by ManageWiki version selector)
+            $wikiVersions = @include self::CONFIG_DIRECTORY . '/wikiVersions.php';
+            if ( is_array( $wikiVersions ) && isset( $wikiVersions[$database] ) ) {
+                return self::resolveMediaWikiVersion( $wikiVersions[$database] );
+            }
             $dbVersion = self::readDbListFile( 'databases', false, $database )['v']
                 ?? self::MEDIAWIKI_VERSIONS[ self::getDefaultMediaWikiVersion() ];
 
@@ -453,7 +460,10 @@ class MirahezeFunctions {
 
         if ( PHP_SAPI === 'cli' ) {
             $parts = explode( '/', $_SERVER['SCRIPT_NAME'] );
-            $version = $parts[3] ?? null;
+            // MEDIAWIKI_DIRECTORY = /srv/mediawiki/versions → 3 non-empty segments
+            // version lives one level deeper: /srv/mediawiki/versions/<version>/...
+            $mwDirDepth = count( array_filter( explode( '/', self::MEDIAWIKI_DIRECTORY ) ) );
+            $version = $parts[ $mwDirDepth + 1 ] ?? null;
 
             if ( $version && in_array( $version, self::MEDIAWIKI_VERSIONS, true ) ) {
                 return self::resolveMediaWikiVersion( $version );
@@ -463,6 +473,16 @@ class MirahezeFunctions {
         static $version = null;
 
         self::$currentDatabase ??= self::getCurrentDatabase();
+
+        // Check wikiVersions.php first (written by ManageWiki version selector)
+        if ( $version === null ) {
+            $wikiVersions = @include self::CONFIG_DIRECTORY . '/wikiVersions.php';
+            if ( is_array( $wikiVersions ) && isset( $wikiVersions[ self::$currentDatabase ] ) ) {
+                $version = $wikiVersions[ self::$currentDatabase ];
+                return self::resolveMediaWikiVersion( $version );
+            }
+        }
+
         $version ??= self::readDbListFile( 'databases', false, self::$currentDatabase )['v']
             ?? self::MEDIAWIKI_VERSIONS[ self::getDefaultMediaWikiVersion() ];
 
@@ -834,12 +854,11 @@ class MirahezeFunctions {
         }
 
         $version = self::resolveMediaWikiVersion( $this->version );
-        $listFile = self::CACHE_DIRECTORY . '/extension-list.php';
+        $versionDir = self::CACHE_DIRECTORY . '/' . $version;
+        $listFile = $versionDir . '/extension-list.php';
         $list = @include $listFile;
         if ( $list === false ) {
-            $versionDir = self::CACHE_DIRECTORY . '/' . $version;
             if ( !is_dir( $versionDir ) ) {
-                // Create directory since it doesn't exist
                 mkdir( $versionDir, recursive: true );
             }
 
@@ -1017,7 +1036,7 @@ class MirahezeFunctions {
         $versions = array_unique( array_filter(
             self::MEDIAWIKI_VERSIONS,
             static fn ( string $version ): bool => $mwVersion === $version ||
-                is_dir( self::MEDIAWIKI_DIRECTORY . $version )
+                is_dir( self::MEDIAWIKI_DIRECTORY . '/' . $version )
         ) );
 
         asort( $versions );
@@ -1027,30 +1046,6 @@ class MirahezeFunctions {
             'type' => 'select',
             'options' => array_combine( self::ALLOWED_DOMAINS[self::getRealm( $dbname )], self::ALLOWED_DOMAINS[self::getRealm( $dbname )] ),
             'default' => self::getPrimaryDomain( $dbname ),
-            'disabled' => !$context->getAuthority()->isAllowed( 'managewiki-restricted' ),
-            'cssclass' => 'ext-managewiki-infuse',
-            'section' => 'main',
-        ];
-
-        $mwSettings = $moduleFactory->settings( $dbname );
-        $setList = $mwSettings->listAll();
-        $formDescriptor['article-path'] = [
-            'label-message' => 'miraheze-label-managewiki-article-path',
-            'type' => 'select',
-            'options-messages' => [
-                'miraheze-label-managewiki-article-path-wiki' => '/wiki/$1',
-                'miraheze-label-managewiki-article-path-root' => '/$1',
-            ],
-            'default' => $setList['wgArticlePath'] ?? '/wiki/$1',
-            'disabled' => !$context->getAuthority()->isAllowed( 'managewiki-restricted' ),
-            'cssclass' => 'ext-managewiki-infuse',
-            'section' => 'main',
-        ];
-
-        $formDescriptor['mainpage-is-domain-root'] = [
-            'label-message' => 'miraheze-label-managewiki-mainpage-is-domain-root',
-            'type' => 'check',
-            'default' => $setList['wgMainPageIsDomainRoot'] ?? false,
             'disabled' => !$context->getAuthority()->isAllowed( 'managewiki-restricted' ),
             'cssclass' => 'ext-managewiki-infuse',
             'section' => 'main',
@@ -1076,10 +1071,14 @@ class MirahezeFunctions {
         $version = self::getMediaWikiVersion( $dbname );
         $mediawikiVersion = $formData['mediawiki-version'] ?? $version;
         $mwCore = $moduleFactory->core( $dbname );
-        if ( $mediawikiVersion !== $version && is_dir( self::MEDIAWIKI_DIRECTORY . $mediawikiVersion ) ) {
+        if ( $mediawikiVersion !== $version && is_dir( self::MEDIAWIKI_DIRECTORY . '/' . $mediawikiVersion ) ) {
             $mwCore->setExtraFieldData(
                 'mediawiki-version', $mediawikiVersion, default: $version
             );
+            // Update local wikiVersions.php fast-path immediately so this server
+            // uses the new version on the next request without waiting for
+            // databases.php to be regenerated by CreateWiki's syncCache().
+            WikiFarmMultiVersion::setWikiVersion( $dbname, $mediawikiVersion );
         }
 
         $domain = self::getPrimaryDomain( $dbname );
@@ -1087,39 +1086,6 @@ class MirahezeFunctions {
         if ( $primaryDomain !== $domain ) {
             $mwCore->setExtraFieldData(
                 'primary-domain', $primaryDomain, default: $domain
-            );
-        }
-
-        $mwSettings = $moduleFactory->settings( $dbname );
-        $articlePath = $mwSettings->list( 'wgArticlePath' ) ?? '/wiki/$1';
-        if ( $formData['article-path'] !== $articlePath ) {
-            $mwSettings->modify( [ 'wgArticlePath' => $formData['article-path'] ], default: '/wiki/$1' );
-            $mwSettings->commit();
-
-            $mwCore->trackChange( 'article-path', $articlePath, $formData['article-path'] );
-
-            $server = self::getServer();
-            $jobQueueGroupFactory = MediaWikiServices::getInstance()->getJobQueueGroupFactory();
-            $jobQueueGroupFactory->makeJobQueueGroup( $dbname )->push(
-                new CdnPurgeJob( [
-                    'urls' => [
-                        $server . '/wiki/',
-                        $server . '/wiki',
-                        $server . '/',
-                        $server,
-                    ],
-                ] )
-            );
-        }
-
-        $mainPageIsDomainRoot = $mwSettings->list( 'wgMainPageIsDomainRoot' ) ?? false;
-        if ( $formData['mainpage-is-domain-root'] !== $mainPageIsDomainRoot ) {
-            $mwSettings->modify( [ 'wgMainPageIsDomainRoot' => $formData['mainpage-is-domain-root'] ], default: false );
-            $mwSettings->commit();
-
-            $mwCore->trackChange( 'mainpage-is-domain-root',
-                $mainPageIsDomainRoot,
-                $formData['mainpage-is-domain-root']
             );
         }
     }

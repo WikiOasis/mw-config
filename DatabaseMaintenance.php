@@ -7,7 +7,7 @@ $path = $_SERVER['REQUEST_URI'];
 $actual_link = 'https://' . $_SERVER['HTTP_HOST'] . $path;
 $encUrl = htmlspecialchars( $path );
 $encHost = htmlspecialchars( $_SERVER['HTTP_HOST'] );
-http_response_code( 410 );
+http_response_code( 503 );
 
 echo <<<EOF
 <!DOCTYPE html>
@@ -166,7 +166,7 @@ h1 {
 <div class="container">
     <img class="logo" src="https://cdn.wikioasis.org/metawiki/3/38/WikiOasis_Logo.png" alt="WikiOasis Logo" />
     <div class="content">
-        <h1>Under Maintenance</h1>
+        <h1>503 • Under Maintenance</h1>
         <p class="url">{$encHost}{$encUrl}</p>
         <p class="description">This wiki is currently undergoing<br>database maintenance.</p>
         <div class="buttons">
