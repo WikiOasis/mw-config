@@ -16,6 +16,7 @@ wfLoadExtensions( [
     'CentralAuth',
     'CentralNotice',
     'CFCachePurge',
+    'Cloudflare',
     'CheckUser',
     'CreateWiki',
     'CookieWarning',
