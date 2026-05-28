@@ -414,16 +414,11 @@ $wgConf->settings += [
     'wgUseCdn' => [
         'default' => true,
     ],
-    'wgCdnServers' => [
-        'default' => [
-            "10.0.4.104",
-        ],
-    ],
     'wgCdnServersNoPurge' => [
         'default' => [
 	    // in house cp servers
-	    "100.97.154.116", // cp41
-	    "100.72.177.98", // cp21
+	    "10.0.1.1", // proxy-us-east-011
+	    "10.0.2.1", // proxy-us-east-021
             // IPv4 addresses
 	    "127.0.0.1",
             "103.21.244.0/22",
