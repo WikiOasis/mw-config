@@ -35,7 +35,7 @@ wfLoadExtensions( [
     //'GTag',
     //'GlobalNewFiles',
     'ImportDump',
-    'Interwiki',
+    //'Interwiki',
     'InterwikiDispatcher',
     //'IPInfo',
     'LoginNotify',
