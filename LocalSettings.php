@@ -2372,6 +2372,18 @@ $wgAWSRepoZones["{$wgDBname}-upv2avatars"] = [
     'isPublic' => true,
 ];
 
+$wgAWSRepoZones['avatars'] = [
+    'container' => 'avatars',
+    'path' => 'wikioasis-media/avatars',
+    'isPublic' => true,
+];
+
+$wgAWSRepoZones["{$wgDBname}-avatars"] = [
+    'container' => $wgDBname,
+    'path' => "wikioasis-media/{$wgDBname}/avatars",
+    'isPublic' => true,
+];
+
 $wgUserProfileV2UseGlobalAvatars = true;
 $wgUserProfileGlobalUploadBaseUrl = "https://cdn.wikioasis.org/upv2avatars/";
 
