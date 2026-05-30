@@ -222,6 +222,9 @@ $wgConf->settings += [
             'webp',
         ],
     ],
+    'wgSVGNativeRendering' => [
+        'default' => true,
+    ],
 
     // for nginx
     'wgArticlePath' => [
