@@ -57,77 +57,8 @@ if ( PHP_SAPI !== 'cli' ) {
 	$sentryTx = \Sentry\startTransaction( $sentryTxCtx );
 	\Sentry\SentrySdk::getCurrentHub()->setSpan( $sentryTx );
 
-	$_sentryPhaseSpan  = null;
-	$_sentryParserSpan = null;
-
-	$sentryStartPhaseSpan = function ( string $op, string $desc ) use ( $sentryTx ) {
-		$ctx = ( new \Sentry\Tracing\SpanContext() )->setOp( $op )->setDescription( $desc );
-		$span = $sentryTx->startChild( $ctx );
-		\Sentry\SentrySdk::getCurrentHub()->setSpan( $span );
-		return $span;
-	};
-
-	$_sentryPhaseSpan = $sentryStartPhaseSpan( 'mediawiki.bootstrap', 'LocalSettings + autoload' );
-
-	$wgHooks['BeforeInitialize'][] = function () use ( &$_sentryPhaseSpan, $sentryStartPhaseSpan ) {
-		$_sentryPhaseSpan?->finish();
-		$_sentryPhaseSpan = $sentryStartPhaseSpan( 'mediawiki.init', 'Request routing + session' );
-		return true;
-	};
-
-	$wgHooks['MediaWikiPerformAction'][] = function (
-		$output, $article, $title, $user, $request
-	) use ( &$_sentryPhaseSpan, $sentryStartPhaseSpan ) {
-		$_sentryPhaseSpan?->finish();
-		$_sentryPhaseSpan = $sentryStartPhaseSpan(
-			'mediawiki.action',
-			$request->getVal( 'action', 'view' ) . ' ' . $title->getPrefixedText()
-		);
-		return true;
-	};
-
-	$wgHooks['ApiBeforeMain'][] = function ( &$main ) use ( &$_sentryPhaseSpan, $sentryStartPhaseSpan ) {
-		$_sentryPhaseSpan?->finish();
-		$_sentryPhaseSpan = $sentryStartPhaseSpan(
-			'mediawiki.api',
-			is_object( $main ) ? $main->getModuleName() : 'api'
-		);
-		return true;
-	};
-
-	$wgHooks['ParserBeforeInternalParse'][] = function ( $parser ) use ( &$_sentryParserSpan, &$_sentryPhaseSpan ) {
-		$title = $parser->getTitle();
-		if ( $title && $_sentryPhaseSpan ) {
-			$ctx = ( new \Sentry\Tracing\SpanContext() )
-				->setOp( 'mediawiki.parse' )
-				->setDescription( $title->getPrefixedText() );
-			$_sentryParserSpan = $_sentryPhaseSpan->startChild( $ctx );
-			\Sentry\SentrySdk::getCurrentHub()->setSpan( $_sentryParserSpan );
-		}
-		return true;
-	};
-
-	$wgHooks['ParserAfterParse'][] = function () use ( &$_sentryParserSpan, &$_sentryPhaseSpan ) {
-		if ( $_sentryParserSpan ) {
-			$_sentryParserSpan->finish();
-			$_sentryParserSpan = null;
-			if ( $_sentryPhaseSpan ) {
-				\Sentry\SentrySdk::getCurrentHub()->setSpan( $_sentryPhaseSpan );
-			}
-		}
-		return true;
-	};
-
-	$wgHooks['OutputPageBeforeHTML'][] = function () use ( &$_sentryPhaseSpan, $sentryStartPhaseSpan ) {
-		$_sentryPhaseSpan?->finish();
-		$_sentryPhaseSpan = $sentryStartPhaseSpan( 'mediawiki.output', 'OutputPage → HTML' );
-		return true;
-	};
-
-	register_shutdown_function( static function () use ( $sentryTx, &$_sentryParserSpan, &$_sentryPhaseSpan ) {
+	register_shutdown_function( static function () use ( $sentryTx ) {
 		try {
-			$_sentryParserSpan?->finish();
-			$_sentryPhaseSpan?->finish();
 			$error = error_get_last();
 			if ( $error && in_array( $error['type'], [ E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ], true ) ) {
 				\Sentry\captureMessage( $error['message'], \Sentry\Severity::fatal() );
