@@ -2360,6 +2360,18 @@ $wgFileBackends['s3']['containerPaths'] = [
     "{$wgDBname}-avatars" => "wikioasis-media/{$wgDBname}/avatars",
     "{$wgDBname}-upv2avatars" => "wikioasis-media/{$wgDBname}/upv2avatars",
 ];
+$wgAWSRepoZones['upv2avatars'] = [
+    'container' => 'upv2avatars',
+    'path' => 'wikioasis-media/upv2avatars',
+    'isPublic' => true,
+];
+
+$wgAWSRepoZones["{$wgDBname}-upv2avatars"] = [
+    'container' => $wgDBname,
+    'path' => "wikioasis-media/{$wgDBname}/upv2avatars",
+    'isPublic' => true,
+];
+
 $wgUserProfileV2UseGlobalAvatars = true;
 $wgUserProfileGlobalUploadBaseUrl = "https://cdn.wikioasis.org/upv2avatars/";
 
