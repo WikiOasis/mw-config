@@ -2321,6 +2321,7 @@ $wgHooks['SetupAfterCache'][] = static function () {
 // some observability here
 $wgStatsFormat = 'dogstatsd';
 $wgStatsTarget = 'udp://monitoring-us-east-021.ovvin.wonet:9125';
+$wgWMEStatsdBaseUri = 'udp://monitoring-us-east-021.ovvin.wonet:9125';
 
 
 $wmgUploadHostname = 'cdn.wikioasis.org';
