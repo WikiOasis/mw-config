@@ -26,8 +26,8 @@ wfLoadExtensions( [
     'DiscordNotifications',
     'DismissableSiteNotice',
     'Echo',
-    'EventBus',
-    'EventLogging',
+    //'EventBus',
+    //'EventLogging',
     //'EventStreamConfig',
     'GlobalBlocking',
     'GlobalCssJs',
@@ -65,10 +65,5 @@ wfLoadExtensions( [
     'WikiDiscover',
     'WikiEditor',
     'WikiOasisMagic',
-    'WikimediaEvents',
     'cldr',
 ] );
-
-$wgEventLoggingBaseUri = '/beacon/event';
-$wgEventLoggingServiceUri = '/beacon/intake-analytics';
-$wgEventLoggingStreamNames = false;
