@@ -67,7 +67,7 @@ if ($wi->isExtensionActive('QuickInstantCommons')) {
 if ($wi->isExtensionActive('CirrusSearch')) {
 	wfLoadExtension('Elastica');
 	$wgSearchType = 'CirrusSearch';
-	$wgCirrusSearchServers = ['opensearch-us-east-011', 'opensearch-us-east-012'];
+	$wgCirrusSearchServers = ['opensearch-us-east-011.ovvin.wonet', 'opensearch-us-east-012.ovvin.wonet'];
 
 	if ($wi->isExtensionActive('RelatedArticles')) {
 		$wgRelatedArticlesUseCirrusSearch = true;
