@@ -2,7 +2,7 @@
 
 $wgMainCacheType = 'redis';
 $wgMessageCacheType = 'redis';
-$wgCacheDirectory = '/var/www/mediawiki/cache/{$wgDBname}';
+$wgCacheDirectory = "/srv/mediawiki/cache/{$wgDBname}";
 
 // ParserCache: write to Redis first (fast, memory-bounded via volatile-lru eviction),
 // then replicate to SQL (durable, full TTL). Reads check Redis first, fall back to SQL.
@@ -13,14 +13,14 @@ $wgObjectCaches['parsercache-multiwrite'] = [
     'class' => MultiWriteBagOStuff::class,
     'caches' => [
         0 => $wgObjectCaches['redis'],
-        1 => [
-            'class' => SqlBagOStuff::class,
-            'cluster' => 'pc1',
-            'dbDomain' => 'parsercache',
-            'purgePeriod' => 0,
-            'tableName' => 'objectcache',
-            'reportDupes' => false,
-        ],
+//        1 => [
+//            'class' => SqlBagOStuff::class,
+//            'cluster' => 'pc1',
+//            'dbDomain' => 'parsercache',
+//            'purgePeriod' => 0,
+//            'tableName' => 'objectcache',
+//            'reportDupes' => false,
+//        ],
     ],
 ];
 
@@ -95,15 +95,15 @@ $wgParsoidCacheConfig = [
 
 $wgManageWikiServers = [
       'task-us-east-011.ovvin.wonet:80',
-      'mw-us-east-011.ovvin.wonet:80',
-      'mw-us-east-012.ovvin.wonet:80',
+//      'mw-us-east-011.ovvin.wonet:80',
+//      'mw-us-east-012.ovvin.wonet:80',
       'mw-us-east-021.ovvin.wonet:80',
       'mw-us-east-022.ovvin.wonet:80',
 ];
 
 $wgJobTypeConf['default'] = [
     'class' => 'JobQueueRedis',
-    'redisServer' => 'redis-us-east-012.ovvin.wonet:6379',
+    'redisServer' => 'redis-us-east-021.ovvin.wonet:6379',
     'redisConfig' => [],
     'daemonized' => true,
 ];
