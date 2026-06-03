@@ -13,14 +13,14 @@ $wgObjectCaches['parsercache-multiwrite'] = [
     'class' => MultiWriteBagOStuff::class,
     'caches' => [
         0 => $wgObjectCaches['redis'],
-//        1 => [
-//            'class' => SqlBagOStuff::class,
-//            'cluster' => 'pc1',
-//            'dbDomain' => 'parsercache',
-//            'purgePeriod' => 0,
-//            'tableName' => 'objectcache',
-//            'reportDupes' => false,
-//        ],
+        1 => [
+            'class' => SqlBagOStuff::class,
+            'cluster' => 'pc1',
+            'dbDomain' => 'parsercache',
+            'purgePeriod' => 0,
+            'tableName' => 'objectcache',
+            'reportDupes' => false,
+        ],
     ],
 ];
 
