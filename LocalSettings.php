@@ -32,6 +32,12 @@ ini_set( 'xdebug.var_display_max_children', - 1 );
 ini_set( 'xdebug.var_display_max_data', - 1 );
 ini_set( 'xdebug.var_display_max_depth', - 1 );
 
+// Raise the per-request memory ceiling above the php.ini default of 128M.
+// MediaWiki only ever raises (never lowers) this during Setup; 128M is too
+// low for the number of extensions loaded here and causes OOM fatals on
+// heavy page parses.
+$wgMemoryLimit = '256M';
+
 require_once "$IP/config/PrivateSettings.php";
 
 $wgConf->suffixes = [ 'wiki' ];
