@@ -13,7 +13,7 @@ $wgObjectCaches['parsercache-multiwrite'] = [
     'class' => MultiWriteBagOStuff::class,
     'caches' => [
         0 => $wgObjectCaches['redis'],
-        1 => [
+c        1 => [
             'class' => SqlBagOStuff::class,
             'cluster' => 'pc1',
             'dbDomain' => 'parsercache',
@@ -102,7 +102,7 @@ $wgManageWikiServers = [
 ];
 
 $wgJobTypeConf['default'] = [
-    'class' => 'JobQueueRedis',
+    'class' => WikiOasis\WikiOasisMagic\JobQueue\JobQueueSentryRedis::class,
     'redisServer' => 'redis-us-east-012.ovvin.wonet:6379',
     'redisConfig' => [],
     'daemonized' => true,
