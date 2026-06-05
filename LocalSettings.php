@@ -36,6 +36,7 @@ ini_set( 'xdebug.var_display_max_depth', - 1 );
 // MediaWiki only ever raises (never lowers) this during Setup; 128M is too
 // low for the number of extensions loaded here and causes OOM fatals on
 // heavy page parses.
+ini_set( 'memory_limit', '256M' );
 $wgMemoryLimit = '256M';
 
 require_once "$IP/config/PrivateSettings.php";
