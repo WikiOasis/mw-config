@@ -791,7 +791,7 @@ $wgConf->settings += [
             #"$IP/extensions/LoginNotify/sql/mysql/tables-generated.sql",
             "$IP/extensions/OATHAuth/sql/mysql/tables-generated.sql",
             "$IP/extensions/OAuth/schema/mysql/tables-generated.sql",
-	    "$IP/extensions/MediaModeration/schema/mysql/tables-generated.sql",
+	        "$IP/extensions/MediaModeration/schema/mysql/tables-generated.sql",
             //"$IP/extensions/RottenLinks/sql/rottenlinks.sql",
             //"$IP/extensions/UrlShortener/schemas/tables-generated.sql",
         ],
@@ -1237,13 +1237,16 @@ $wgConf->settings += [
         ],
     ],
     // MediaModeration
+    'wgMediaModerationDeveloperMode' => [
+	    'default' => false,
+    ],
     'wgMediaModerationFrom' => [
-	'default' => 'noreply@wikioasis.org',
+	    'default' => 'noreply@wikioasis.org',
     ],
     'wgMediaModerationRecipientList' => [
-	'default' => [
-		'safety@wikioasis.org',
-	],
+	    'default' => [
+	    	'safety@wikioasis.org',
+	    ],
     ],
     // GlobalBlocking & GlobalPreferences & GlobalUserPage & GlobalCssJs & GlobalUsage
     'wgGlobalBlockingDatabase' => [
