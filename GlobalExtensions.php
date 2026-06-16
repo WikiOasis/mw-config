@@ -65,5 +65,6 @@ wfLoadExtensions( [
     'WikiDiscover',
     'WikiEditor',
     'WikiOasisMagic',
+    'WikimediaEvents',
     'cldr',
 ] );
