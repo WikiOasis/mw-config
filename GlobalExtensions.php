@@ -26,7 +26,7 @@ wfLoadExtensions( [
     'DiscordNotifications',
     'DismissableSiteNotice',
     'Echo',
-    //'EventBus',
+    'EventBus',
     'EventLogging',
     //'EventStreamConfig',
     'GlobalBlocking',
