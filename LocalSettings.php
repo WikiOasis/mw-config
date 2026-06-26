@@ -464,7 +464,12 @@ $wgConf->settings += [
 
     // permissions
     '+wgRevokePermissions' => [
-        'default' => [],
+        'default' => [
+            '*' => [
+                'import' => true,
+                'importupload' => true,
+            ],
+        ],
         '+ext-MediaWikiChat' => [
             'blockedfromchat' => [
                 'chat' => true,
@@ -1123,6 +1128,7 @@ $wgConf->settings += [
                 'handle-pii',
                 'hideuser',
                 'investigate',
+                'import',
                 'ipinfo',
                 'ipinfo-view-basic',
                 'ipinfo-view-full',
