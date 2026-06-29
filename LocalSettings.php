@@ -2224,6 +2224,11 @@ $wgConf->settings += [
         'default' => false,
     ],
 
+    // Maps
+    'egMapsEnableCoordinateFunction' => [
+        'default' => true,
+    ],
+
     // CFCachePurge
     'wgCFCachePurgeIgnoreImgAuth' => [
         'default' => true,
