@@ -445,7 +445,7 @@ $wgManageWikiExtensions = [
 	'dynamicpagelist' => [
 		'name' => 'DynamicPageList',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:DynamicPageList_(Wikimedia)',
-		'conflicts' => 'dynamicpagelist3',
+		'conflicts' => 'dynamicpagelist4',
 		'requires' => [],
 		'section' => 'parserhooks',
 	],
