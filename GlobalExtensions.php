@@ -3,7 +3,6 @@ wfLoadSkins( [
 	'Citizen',
 	'CologneBlue',
 	'Modern',
-	'MonoBook',
 	'Timeless',
 	'Vector',
 ] );
