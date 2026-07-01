@@ -775,7 +775,7 @@ $wgConf->settings += [
         'default' => [
             'inactive' => 90,
             'closed' => 30,
-            'removed' => 245,
+            'removed' => 120,
             'deleted' => 30,
         ]
     ],
