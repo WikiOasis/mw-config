@@ -784,7 +784,7 @@ $wgConf->settings += [
     ],
     'wgCreateWikiSQLFiles' => [
         'default' => [
-            "$IP/maintenance/tables-generated.sql",
+            "$IP/sql/tables-generated.sql",
             "$IP/extensions/AbuseFilter/db_patches/mysql/tables-generated.sql",
             "$IP/extensions/AntiSpoof/sql/mysql/tables-generated.sql",
             "$IP/extensions/BetaFeatures/sql/tables-generated.sql",
