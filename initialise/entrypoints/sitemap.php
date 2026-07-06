@@ -43,7 +43,6 @@ curl_setopt_array( $ch, [
 $body      = curl_exec( $ch );
 $httpCode  = (int)curl_getinfo( $ch, CURLINFO_HTTP_CODE );
 $curlError = curl_error( $ch );
-curl_close( $ch );
 
 if ( $body === false || $curlError !== '' ) {
 	http_response_code( 503 );

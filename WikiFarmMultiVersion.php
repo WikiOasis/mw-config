@@ -1,6 +1,6 @@
 <?php
 /**
- * MultiVersion.php
+ * WikiFarmMultiVersion.php
  * Fast-path version overrides and CreateWiki cache bridge.
  *
  * wikiVersions.php is the source of truth for per-wiki version overrides set
@@ -17,7 +17,6 @@
  * wikiVersions.php serves as a lightweight override that takes effect
  * immediately (before the next full cache rebuild).
  */
-
 class WikiFarmMultiVersion {
 
 	private const VERSIONS_FILE = '/srv/mediawiki/config/wikiVersions.php';

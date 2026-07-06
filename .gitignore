@@ -1,3 +1,8 @@
 .idea
 PrivateSettings.php
 OAuth.key
+
+# Testing
+/composer.lock
+/vendor
+/node_modules

@@ -22,7 +22,7 @@ $wgHooks['ManageWikiCoreAddFormFields'][] = 'MirahezeFunctions::onManageWikiCore
 $wgHooks['ManageWikiCoreFormSubmission'][] = 'MirahezeFunctions::onManageWikiCoreFormSubmission';
 
 // Load MultiVersion helpers (setWikiVersion used by onManageWikiCoreFormSubmission).
-require_once '/srv/mediawiki/config/MultiVersion.php';
+require_once '/srv/mediawiki/config/WikiFarmMultiVersion.php';
 
 wfLoadExtensions( [
     'CentralAuth',
@@ -207,7 +207,8 @@ $wgDataDump = [
 			'options' => [
 				'-r',
 				"{$wgDataDumpDirectory}" . '${filename}',
-				($cwPrivate ? "/var/www/images/{$wgDBname}" : "$IP/images/{$wgDBname}"),  // 条件による切り替え
+				// 条件による切り替え
+				($cwPrivate ? "/var/www/images/{$wgDBname}" : "$IP/images/{$wgDBname}"),
 			],
 		],
 		'limit' => 1,

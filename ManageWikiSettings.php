@@ -1485,7 +1485,7 @@ $wgManageWikiSettings = [
 		'type' => 'check',
 		'overridedefault' => true,
 		'section' => 'parserfunctions',
-		'help' => 'Enables short descritption in site tagline',
+		'help' => 'Enables short description in site tagline',
 		'requires' => [],
 	],
 	'wgTabberNeueParseTabName' => [
@@ -1954,7 +1954,7 @@ $wgManageWikiSettings = [
 		'type' => 'text',
 		'overridedefault' => false,
 		'section' => 'media',
-		'help' => 'The database name for the wiki to use as the file repository. This value must be a valid WikiOasis-hosted wiki database. The databse in this field will be used for granting permission from the client database. This <b>can not</b> be a private wiki database.',
+		'help' => 'The database name for the wiki to use as the file repository. This value must be a valid WikiOasis-hosted wiki database. The database in this field will be used for granting permission from the client database. This <b>can not</b> be a private wiki database.',
 		'requires' => [],
 	],
 	'wmgEnableSharedUploads' => [

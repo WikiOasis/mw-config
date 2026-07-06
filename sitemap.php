@@ -8,7 +8,7 @@ require '/var/www/mediawiki/includes/WebStart.php';
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 
-function streamSitemapIndex() {
+function wfStreamSitemapIndex() {
 	global $wgDBname, $wmgUploadHostname;
 	wfResetOutputBuffers();
 
@@ -37,4 +37,4 @@ function streamSitemapIndex() {
 	echo $content;
 }
 
-streamSitemapIndex();
+wfStreamSitemapIndex();
