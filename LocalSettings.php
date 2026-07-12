@@ -464,12 +464,6 @@ $wgConf->settings += [
 
     // permissions
     '+wgRevokePermissions' => [
-        'default' => [
-            '*' => [
-                'import' => true,
-                'importupload' => true,
-            ],
-        ],
         '+ext-MediaWikiChat' => [
             'blockedfromchat' => [
                 'chat' => true,
