@@ -799,6 +799,9 @@ $wgConf->settings += [
 	'wgCheckUserForceSummary' => [
         'default' => true,
     ],
+	'wgCheckUserDisableCheckUserAPI' => [
+		'default' => false,
+	],
     'wgCheckUserLogLogins' => [
         'default' => true,
     ],
