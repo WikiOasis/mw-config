@@ -128,8 +128,21 @@ class MirahezeFunctions {
             return $database;
         }
 
-        $databasesArray = @include self::CACHE_DIRECTORY . "/$dblist.php";
-        if ( $databasesArray === false || $databasesArray === [] ) {
+        // Memoize the raw file contents per dblist for the lifetime of the
+        // request. These cache files are immutable within a single request but
+        // readDbListFile() is called many times per request (getServers(),
+        // getMediaWikiVersion(), getCurrentDatabase(), ...). Without this each
+        // call re-executes the include and rebuilds the entire array — which,
+        // for a farm, holds every wiki. Opcache caches the parse, not the array
+        // construction, so memoizing here avoids the repeated rebuild.
+        static $fileCache = [];
+        if ( !array_key_exists( $dblist, $fileCache ) ) {
+            $loaded = @include self::CACHE_DIRECTORY . "/$dblist.php";
+            $fileCache[$dblist] = $loaded === false ? [] : $loaded;
+        }
+
+        $databasesArray = $fileCache[$dblist];
+        if ( $databasesArray === [] ) {
             return [];
         }
 
@@ -512,17 +525,25 @@ class MirahezeFunctions {
     }
 
     public static function getCacheArray(): array {
+        // Memoize for the request: this per-wiki cache file is immutable within
+        // a request but getCacheArray() is called from getConfigForCaching(),
+        // getManageWikiConfigCache(), getActiveExtensions() and getSettingValue(),
+        // each of which previously kept its own static and so triggered a
+        // separate @include of the same file.
+        static $cache = null;
+        if ( $cache !== null ) {
+            return $cache;
+        }
+
         self::$currentDatabase ??= self::getCurrentDatabase();
 
         $filePath = self::CACHE_DIRECTORY . '/' . self::$currentDatabase . '.php';
         $cacheData = @include $filePath;
 
         // If we don't have a cache file, return an empty array
-        if ( $cacheData === false ) {
-            return [];
-        }
+        $cache = $cacheData === false ? [] : $cacheData;
 
-        return $cacheData;
+        return $cache;
     }
 
     public static function getConfigGlobals(): array {
