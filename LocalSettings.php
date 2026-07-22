@@ -1508,7 +1508,7 @@ $wgConf->settings += [
     ],
     // CentralNotice
     'wgNoticeInfrastructure' => [
-        'default' => true,
+        'default' => false,
         'metawiki' => true,
         'metawikibeta' => true,
     ],
