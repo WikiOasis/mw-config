@@ -1520,8 +1520,11 @@ $wgConf->settings += [
     ],
     'wgCentralDBname' => [
         'default' => 'metawiki',
-	'beta' => 'metawikibeta',
+		'beta' => 'metawikibeta',
     ],
+	'wgCentralNoticeApiUrl' => [
+		'default' => 'https://meta.wikioasis.org/w/api.php',
+	],
     'wgCentralHost' => [
         'default' => 'https://meta.wikioasis.org',
     ],
