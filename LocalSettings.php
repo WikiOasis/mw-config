@@ -62,6 +62,7 @@ if ( php_uname( 'n' ) === 'staging11' ) {
     $wgVirtualDomainsMapping['virtual-requestcustomdomain'] = ['db' => 'metawikibeta'];
     $wgVirtualDomainsMapping['virtual-interwiki'] = ['db' => 'metawikibeta'];
     $wgVirtualDomainsMapping['virtual-interwiki-interlanguage'] = ['db' => 'metawikibeta'];
+    $wgVirtualDomainsMapping['virtual-centralnotice'] = ['db' => 'metawikibeta'];
 } else {
     $wgVirtualDomainsMapping['virtual-centralauth'] = ['db' => 'wikidb'];
     $wgVirtualDomainsMapping['virtual-checkuser-global'] = ['db' => 'wikidb'];
@@ -75,6 +76,7 @@ if ( php_uname( 'n' ) === 'staging11' ) {
     $wgVirtualDomainsMapping['virtual-requestcustomdomain'] = ['db' => 'metawiki'];
     $wgVirtualDomainsMapping['virtual-interwiki'] = ['db' => 'metawiki'];
     $wgVirtualDomainsMapping['virtual-interwiki-interlanguage'] = ['db' => 'metawiki'];
+    $wgVirtualDomainsMapping['virtual-centralnotice'] = ['db' => 'metawiki'];
 }
 
 $wgDebugLogGroups['MirahezeFunctions'] = "/var/log/mediawiki/mf.log";
@@ -1522,9 +1524,6 @@ $wgConf->settings += [
         'default' => 'metawiki',
 		'beta' => 'metawikibeta',
     ],
-	'wgCentralNoticeApiUrl' => [
-		'default' => 'https://meta.wikioasis.org/w/api.php',
-	],
     'wgCentralHost' => [
         'default' => 'https://meta.wikioasis.org',
     ],
