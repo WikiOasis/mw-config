@@ -4,7 +4,7 @@ use MediaWiki\MediaWikiServices;
 
 /**
  * LocalSettings.php
- * Production LocalSettings file for WikiOasis
+ * Production LocalSettings file for WikiOasisf
  * This file is included by the main LocalSettings.php file
  *
  * @var string $IP
@@ -274,7 +274,9 @@ $wgConf->settings += [
             'sw' => '',
         ],
     ],
-
+	'wgULSAnonCanChangeLanguage' => [
+		'default' => false,
+	],
     // Footer icons
     '+wgFooterIcons' => [
         'songnguxyzwiki' => [
