@@ -739,6 +739,17 @@ $wgConf->settings += [
             ],
         ],
     ],
+	'wgCreateWikiClosedReasons' => [
+		'default' => [
+			'Closed by bureaucrat' => 'bureaucrat',
+			'Community initiated closure' => 'community',
+			'Inactivity' => 'inactivity',
+			'Content Policy' => 'content'
+			'Trust and Safety action' => 'ts',
+			'Technology Team Action' => 'tech',
+			'Unmanaged wiki' => 'unmanaged',
+		],
+	],
     'wgCreateWikiDisallowedSubdomains' => [
         'default' => [
             'www',
