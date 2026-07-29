@@ -5,9 +5,10 @@ Disallow: /rest_v1/
 Disallow: /skins/
 Disallow: /extensions/
 Disallow: /resources/
+Crawl-delay: 5
 
 User-agent: bingbot
-Crawl-delay: 20
+Crawl-delay: 10
 
 User-agent: YandexBot
-Crawl-delay: 2.5
+Crawl-delay: 5
