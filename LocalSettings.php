@@ -4,7 +4,7 @@ use MediaWiki\MediaWikiServices;
 
 /**
  * LocalSettings.php
- * Production LocalSettings file for WikiOasisf
+ * Production LocalSettings file for WikiOasis
  * This file is included by the main LocalSettings.php file
  *
  * @var string $IP
@@ -744,7 +744,7 @@ $wgConf->settings += [
 			'Closed by bureaucrat' => 'bureaucrat',
 			'Community initiated closure' => 'community',
 			'Inactivity' => 'inactivity',
-			'Content Policy' => 'content'
+			'Content Policy' => 'content',
 			'Trust and Safety action' => 'ts',
 			'Technology Team Action' => 'tech',
 			'Unmanaged wiki' => 'unmanaged',
