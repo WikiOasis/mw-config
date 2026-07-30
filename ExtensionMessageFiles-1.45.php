@@ -257,12 +257,18 @@ $wgExtensionMessagesFiles = array (
     'CosmosAliases' => "$IP/skins/Cosmos/CosmosAliases.php",
     'CosmosMagic' => "$IP/skins/Cosmos/CosmosMagic.php",
     'RefreshSpecial' => "$IP/extensions/RefreshSpecial/RefreshSpecial.alias.php",
+    'BucketAliases' => "$IP/extensions/Bucket/Bucket.i18n.alias.php",
+    'BucketNamespaces' => "$IP/extensions/Bucket/Bucket.i18n.namespaces.php",
 );
 
 $wgMessagesDirs = array (
     'RefreshSpecial' =>
         array (
             0 => "$IP/extensions/RefreshSpecial/i18n",
+        ),
+    'Bucket' =>
+        array (
+            0 => "$IP/extensions/Bucket/i18n",
         ),
     'Pulse' =>
         array (
