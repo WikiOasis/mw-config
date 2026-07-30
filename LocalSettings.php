@@ -2275,6 +2275,12 @@ $wgConf->settings += [
         'default' => "https://wikioasis.org/; tech@wikioasis.org;"
     ],
 
+    // Bucket
+    'wgBucketDBuser' => [
+        'default' => 'bucketuser',
+    ],
+
+
 
     // CreateWiki Defined Special Variables
     'cwClosed' => [
