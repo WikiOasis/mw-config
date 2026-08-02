@@ -36,8 +36,8 @@ $wgExtensionMessagesFiles = array (
     'RemovePIIAliases' => "$IP/extensions/RemovePII/RemovePIIAliases.php",
     'ScribuntoMagic' => "$IP/extensions/Scribunto/Scribunto.magic.php",
     'ScribuntoNamespaces' => "$IP/extensions/Scribunto/Scribunto.namespaces.php",
-    'WikiDiscoverAliases' => "$IP/extensions/WikiDiscover/WikiDiscoverAliases.php",
-    'WikiDiscoverMagic' => "$IP/extensions/WikiDiscover/WikiDiscoverMagic.php",
+    'CompassAliases' => "$IP/extensions/Compass/CompassAliases.php",
+    'CompassMagic' => "$IP/extensions/Compass/CompassMagic.php",
     'CategoryTreeAlias' => "$IP/extensions/CategoryTree/CategoryTree.alias.php",
     'CategoryTreeMagic' => "$IP/extensions/CategoryTree/CategoryTree.i18n.magic.php",
     'CiteThisPageAliases' => "$IP/extensions/CiteThisPage/CiteThisPage.alias.php",
@@ -522,9 +522,9 @@ $wgMessagesDirs = array (
             0 => "$IP/extensions/TorBlock/i18n",
             1 => "$IP/extensions/TorBlock/i18n/api",
         ),
-    'WikiDiscover' =>
+    'Compass' =>
         array (
-            0 => "$IP/extensions/WikiDiscover/i18n",
+            0 => "$IP/extensions/Compass/i18n",
         ),
     'WikiEditor' =>
         array (
