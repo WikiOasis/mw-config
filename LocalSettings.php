@@ -616,6 +616,10 @@ $wgConf->settings += [
     'wgUseSameSiteLegacyCookies' => [
         'default' => true,
     ],
+    // Compass
+    'wgCompassDefaultVisibility' => [
+        'default' => false,
+    ],
 
     // CreateWiki
     'wgCreateWikiDatabase' => [
