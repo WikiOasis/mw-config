@@ -2408,6 +2408,7 @@ $wgFileBackends['s3']['containerPaths'] = [
 	'awards'     => 'wikioasis-media/awards',
 	'upv2avatars' => 'wikioasis-media/upv2avatars',
     "{$wgDBname}-avatars" => "wikioasis-media/{$wgDBname}/avatars",
+    "{$wgDBname}-awards" => "wikioasis-media/{$wgDBname}/awards",
     "{$wgDBname}-upv2avatars" => "wikioasis-media/{$wgDBname}/upv2avatars",
 ];
 $wgAWSRepoZones['upv2avatars'] = [
