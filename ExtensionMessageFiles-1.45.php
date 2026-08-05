@@ -259,9 +259,14 @@ $wgExtensionMessagesFiles = array (
     'RefreshSpecial' => "$IP/extensions/RefreshSpecial/RefreshSpecial.alias.php",
     'BucketAliases' => "$IP/extensions/Bucket/Bucket.i18n.alias.php",
     'BucketNamespaces' => "$IP/extensions/Bucket/Bucket.i18n.namespaces.php",
+    'SpringAliases' => "$IP/extensions/Spring/SpringAliases.php",
 );
 
 $wgMessagesDirs = array (
+    'Spring' =>
+        array (
+            0 => "$IP/extensions/Spring/i18n",
+        ),
     'RefreshSpecial' =>
         array (
             0 => "$IP/extensions/RefreshSpecial/i18n",

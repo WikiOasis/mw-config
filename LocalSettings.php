@@ -1261,6 +1261,442 @@ $wgConf->settings += [
             'wikiseo',
         ],
     ],
+
+    // Spring
+    'wgSpringEnabled' => [
+        'default' => true,
+    ],
+    'wgSpringAutoOpen' => [
+        'default' => true,
+    ],
+    'wgSpringAllowDismiss' => [
+        'default' => true,
+    ],
+    'wgSpringHelpURL' => [
+        'default' => '',
+    ],
+    'wgSpringLogManageWikiChanges' => [
+        'default' => true,
+    ],
+    'wgSpringHighlightedExtensions' => [
+        'default' => [
+            'visualeditor',
+            'discussiontools',
+            'bucket',
+            'moderation',
+            'darkmode',
+            'timedmediahandler',
+            'portableinfobox',
+            'templatestyles',
+        ]
+    ],
+    'wgSpringHighlightedSkins' => [
+        'default' => [
+            'tweeki',
+            'medik',
+            'gamepress',
+        ]
+    ],
+    'wgSpringSkinDefaultAdd' => [
+        'default' => [
+            'citizen',
+            'cologneblue',
+            'modern',
+            'monobook',
+            'timeless',
+            'vector',
+            'vector-2022',
+        ]
+    ],
+    'wgSpringImportDirectory' => [
+        'default' => '/srv/mediawiki/config/imports',
+    ],
+    'wgSpringImportSources' => [
+        'default' => [
+            'article_pack' => [
+                'label-message' => 'wikioasis-spring-import-article',
+                'description-message' => 'wikioasis-spring-import-article-desc',
+                'file' => 'article_pack.xml',
+            ],
+            'discussion_pack' => [
+                'label-message' => 'wikioasis-spring-import-discussion',
+                'description-message' => 'wikioasis-spring-import-discussion-desc',
+                'file' => 'discussion_pack.xml',
+            ],
+            'message_box_pack' => [
+                'label-message' => 'wikioasis-spring-import-messagebox',
+                'description-message' => 'wikioasis-spring-import-messagebox-desc',
+                'file' => 'message_box_pack.xml',
+            ],
+        ],
+    ],
+    'wgSpringOutroSteps' => [
+        'default' => [
+            'share',
+            'finish',
+        ],
+    ],
+    'wgSpringSteps' => [
+        'default' => [
+            'welcome' => [
+                'class' => 'WikiOasis\\Spring\\Steps\\WelcomeStep',
+                'services' => [
+                    'MainConfig',
+                ],
+                'config' => [
+                    'title-message' => 'wikioasis-spring-step-welcome',
+                    'description-message' => 'wikioasis-spring-step-welcome-desc',
+                    'body-message' => 'wikioasis-spring-welcome-body',
+                    'icon' => 'cdxIconLogoMediaWiki',
+                ],
+            ],
+            'route' => [
+                'class' => 'WikiOasis\\Spring\\Steps\\RouteStep',
+                'services' => [
+                    'SpringStepRegistry',
+                ],
+                'config' => [
+                    'title-message' => 'wikioasis-spring-step-route',
+                    'description-message' => 'wikioasis-spring-step-route-desc',
+                    'icon' => 'cdxIconLightbulb',
+                ],
+            ],
+            'template' => [
+                'class' => 'WikiOasis\\Spring\\Steps\\TemplateStep',
+                'services' => [
+                    'SpringCatalogue',
+                    'SpringImportSources',
+                    'SpringStepRegistry',
+                    'MainConfig',
+                ],
+                'config' => [
+                    'title-message' => 'wikioasis-spring-step-template',
+                    'description-message' => 'wikioasis-spring-step-template-desc',
+                    'icon' => 'cdxIconArticles',
+                    'required' => true,
+                ],
+            ],
+            'visibility' => [
+                'class' => 'WikiOasis\\Spring\\Steps\\PresetStep',
+                'services' => [
+                    'ManageWikiModuleFactory',
+                ],
+                'config' => [
+                    'title-message' => 'wikioasis-spring-step-visibility',
+                    'description-message' => 'wikioasis-spring-step-visibility-desc',
+                    'icon' => 'cdxIconLock',
+                    'default' => 'public',
+                    'required' => true,
+                    'requires-module' => 'core',
+                    'presets' => [
+                        'public' => [
+                            'label-message' => 'wikioasis-spring-visibility-public',
+                            'description-message' => 'wikioasis-spring-visibility-public-desc',
+                            'icon' => 'cdxIconUnLock',
+                            'private' => false,
+                        ],
+                        'private' => [
+                            'label-message' => 'wikioasis-spring-visibility-private',
+                            'description-message' => 'wikioasis-spring-visibility-private-desc',
+                            'icon' => 'cdxIconLock',
+                            'private' => true,
+                        ],
+                    ],
+                ],
+            ],
+            'editing' => [
+                'class' => 'WikiOasis\\Spring\\Steps\\PresetStep',
+                'services' => [
+                    'ManageWikiModuleFactory',
+                ],
+                'config' => [
+                    'title-message' => 'wikioasis-spring-step-editing',
+                    'description-message' => 'wikioasis-spring-step-editing-desc',
+                    'icon' => 'cdxIconEdit',
+                    'default' => 'accounts',
+                    'required' => true,
+                    'requires-module' => 'permissions',
+                    'presets' => [
+                        'anon' => [
+                            'label-message' => 'wikioasis-spring-editing-anon',
+                            'description-message' => 'wikioasis-spring-editing-anon-desc',
+                            'icon' => 'cdxIconUserAnonymous',
+                            'grant' => [
+                                '*' => [
+                                    'edit',
+                                    'createpage',
+                                    'createtalk',
+                                ],
+                                'user' => [
+                                    'edit',
+                                    'createpage',
+                                    'createtalk',
+                                ],
+                            ],
+                        ],
+                        'accounts' => [
+                            'label-message' => 'wikioasis-spring-editing-accounts',
+                            'description-message' => 'wikioasis-spring-editing-accounts-desc',
+                            'icon' => 'cdxIconUserGroup',
+                            'grant' => [
+                                'user' => [
+                                    'edit',
+                                    'createpage',
+                                    'createtalk',
+                                ],
+                            ],
+                            'revoke' => [
+                                '*' => [
+                                    'edit',
+                                    'createpage',
+                                    'createtalk',
+                                ],
+                            ],
+                        ],
+                        'approved' => [
+                            'label-message' => 'wikioasis-spring-editing-approved',
+                            'description-message' => 'wikioasis-spring-editing-approved-desc',
+                            'icon' => 'cdxIconUserRights',
+                            'grant' => [
+                                'editor' => [
+                                    'edit',
+                                    'createpage',
+                                    'createtalk',
+                                ],
+                            ],
+                            'revoke' => [
+                                '*' => [
+                                    'edit',
+                                    'createpage',
+                                    'createtalk',
+                                ],
+                                'user' => [
+                                    'edit',
+                                    'createpage',
+                                    'createtalk',
+                                ],
+                            ],
+                            'assignable-by' => [
+                                'editor' => [
+                                    'bureaucrat',
+                                    'sysop',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'extensions' => [
+                'class' => 'WikiOasis\\Spring\\Steps\\CatalogueStep',
+                'services' => [
+                    'SpringCatalogue',
+                    'ManageWikiModuleFactory',
+                ],
+                'config' => [
+                    'title-message' => 'wikioasis-spring-step-extensions',
+                    'description-message' => 'wikioasis-spring-step-extensions-desc',
+                    'icon' => 'cdxIconPuzzle',
+                    'kind' => 'extensions',
+                    'multiple' => true,
+                ],
+            ],
+            'skins' => [
+                'class' => 'WikiOasis\\Spring\\Steps\\CatalogueStep',
+                'services' => [
+                    'SpringCatalogue',
+                    'ManageWikiModuleFactory',
+                ],
+                'config' => [
+                    'title-message' => 'wikioasis-spring-step-skins',
+                    'description-message' => 'wikioasis-spring-step-skins-desc',
+                    'icon' => 'cdxIconPalette',
+                    'kind' => 'skins',
+                    'multiple' => true,
+                    'default-setting' => 'wgDefaultSkin',
+                ],
+            ],
+            'styling' => [
+                'class' => 'WikiOasis\\Spring\\Steps\\StylingStep',
+                'services' => [
+                    'SpringCatalogue',
+                    'ManageWikiModuleFactory',
+                ],
+                'config' => [
+                    'title-message' => 'wikioasis-spring-step-styling',
+                    'description-message' => 'wikioasis-spring-step-styling-desc',
+                    'icon' => 'cdxIconImage',
+                    'fields' => [
+                        'logo' => [
+                            'label-message' => 'wikioasis-spring-styling-logo',
+                            'help-message' => 'wikioasis-spring-styling-logo-help',
+                            'setting' => 'wgLogo',
+                            'type' => 'url',
+                            'preview' => true,
+                        ],
+                        'favicon' => [
+                            'label-message' => 'wikioasis-spring-styling-favicon',
+                            'help-message' => 'wikioasis-spring-styling-favicon-help',
+                            'setting' => 'wgFavicon',
+                            'type' => 'url',
+                        ],
+                        'wordmark' => [
+                            'label-message' => 'wikioasis-spring-styling-wordmark',
+                            'help-message' => 'wikioasis-spring-styling-wordmark-help',
+                            'setting' => 'wgWordmark',
+                            'type' => 'url',
+                        ],
+                    ],
+                ],
+            ],
+            'import' => [
+                'class' => 'WikiOasis\\Spring\\Steps\\ImportStep',
+                'services' => [
+                    'SpringImportSources',
+                ],
+                'config' => [
+                    'title-message' => 'wikioasis-spring-step-import',
+                    'description-message' => 'wikioasis-spring-step-import-desc',
+                    'icon' => 'cdxIconUpload',
+                    'optional' => true,
+                ],
+            ],
+            'options' => [
+                'class' => 'WikiOasis\\Spring\\Steps\\SettingsStep',
+                'services' => [
+                    'ManageWikiModuleFactory',
+                    'MainConfig',
+                ],
+                'config' => [
+                    'title-message' => 'wikioasis-spring-step-options',
+                    'description-message' => 'wikioasis-spring-step-options-desc',
+                    'icon' => 'cdxIconSettings',
+                    'optional' => true,
+                    'settings' => [
+                        'wgEnableUploads' => [],
+                        'wmgWikiLicense' => [],
+                        'wgUsersNotifiedOnAllChanges' => [],
+                        'wgSiteNotice' => [],
+                        'wgLocaltimezone' => [],
+                        'wgSkipSkins' => [],
+                        'wgRightsUrl' => [],
+                    ],
+                ],
+            ],
+            'share' => [
+                'class' => 'WikiOasis\\Spring\\Steps\\ShareStep',
+                'services' => [
+                    'MainConfig',
+                    'TitleFactory',
+                ],
+                'config' => [
+                    'title-message' => 'wikioasis-spring-step-share',
+                    'description-message' => 'wikioasis-spring-step-share-desc',
+                    'icon' => 'cdxIconShare',
+                ],
+            ],
+            'finish' => [
+                'class' => 'WikiOasis\\Spring\\Steps\\NextStepsStep',
+                'services' => [
+                    'TitleFactory',
+                ],
+                'config' => [
+                    'title-message' => 'wikioasis-spring-step-finish',
+                    'description-message' => 'wikioasis-spring-step-finish-desc',
+                    'icon' => 'cdxIconCheck',
+                    'items' => [
+                        'recentchanges' => [
+                            'label-message' => 'wikioasis-spring-next-recentchanges',
+                            'description-message' => 'wikioasis-spring-next-recentchanges-desc',
+                            'page' => 'Special:RecentChanges',
+                            'icon' => 'cdxIconHistory',
+                        ],
+                        'userrights' => [
+                            'label-message' => 'wikioasis-spring-next-userrights',
+                            'description-message' => 'wikioasis-spring-next-userrights-desc',
+                            'page' => 'Special:UserRights',
+                            'icon' => 'cdxIconUserGroup',
+                        ],
+                        'managewiki' => [
+                            'label-message' => 'wikioasis-spring-next-managewiki',
+                            'description-message' => 'wikioasis-spring-next-managewiki-desc',
+                            'page' => 'Special:ManageWiki',
+                            'icon' => 'cdxIconSettings',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'wgSpringTemplates' => [
+        'default' => [
+            'companion' => [
+                'label-message' => 'wikioasis-spring-template-companion',
+                'description-message' => 'wikioasis-spring-template-companion-desc',
+                'icon' => 'cdxIconArticles',
+                'answers' => [
+                    'visibility' => [
+                        'preset' => 'public',
+                    ],
+                    'editing' => [
+                        'preset' => 'anon',
+                    ],
+                    'skins' => [
+                        'items' => [ 'minervaneue', 'timeless', 'cosmos' ],
+                        'default' => 'citizen',
+                    ],
+                ],
+                'extensions' => [ 'templatestyles', 'mobilefrontend', 'portableinfobox', 'visualeditor', 'wikieditor', 'templatedata', 'darkmode' ],
+                'settings' => [
+                    'wgEnableUploads' => true,
+                    'wmgWikiLicense' => 'cc-by-sa',
+                ],
+                'bullets' => [
+                    'wikioasis-spring-template-companion-bullet-extensions',
+                    'wikioasis-spring-template-companion-bullet-skins',
+                    'wikioasis-spring-template-companion-bullet-pages',
+                ],
+                'import' => ['article_pack']
+            ],
+            'standalone' => [
+                'label-message' => 'wikioasis-spring-template-standalone',
+                'description-message' => 'wikioasis-spring-template-standalone-desc',
+                'icon' => 'cdxIconArticles',
+                'answers' => [
+                    'visibility' => [
+                        'preset' => 'public',
+                    ],
+                    'editing' => [
+                        'preset' => 'anon',
+                    ],
+                    'skins' => [
+                        'items' => [ 'minervaneue', 'timeless', 'cosmos' ],
+                        'default' => 'citizen',
+                    ],
+                ],
+                'extensions' => [ 'templatestyles', 'discussiontools', 'mobilefrontend', 'portableinfobox', 'visualeditor', 'wikieditor', 'templatedata', 'darkmode' ],
+                'settings' => [
+                    'wgEnableUploads' => true,
+                    'wmgWikiLicense' => 'cc-by-sa',
+                ],
+                'bullets' => [
+                    'wikioasis-spring-template-standalone-bullet-extensions',
+                    'wikioasis-spring-template-standalone-bullet-skins',
+                    'wikioasis-spring-template-standalone-bullet-pages',
+                ],
+                'import' => ['article_pack', 'message_box_pack', 'discussion_pack']
+            ],
+            'blank' => [
+                'label-message' => 'wikioasis-spring-template-blank',
+                'description-message' => 'wikioasis-spring-template-blank-desc',
+                'icon' => 'cdxIconLogoMediaWiki',
+                'bullets' => [
+                    'wikioasis-spring-template-blank-bullet-extensions',
+                    'wikioasis-spring-template-blank-bullet-skins',
+                    'wikioasis-spring-template-blank-bullet-pages',
+                ],
+                'answers' => [],
+            ],
+    ],
     // MediaModeration
     'wgMediaModerationDeveloperMode' => [
 	    'default' => false,
