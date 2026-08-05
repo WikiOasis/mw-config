@@ -1696,6 +1696,7 @@ $wgConf->settings += [
                 ],
                 'answers' => [],
             ],
+        ],
     ],
     // MediaModeration
     'wgMediaModerationDeveloperMode' => [
