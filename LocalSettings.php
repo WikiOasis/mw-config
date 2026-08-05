@@ -1332,6 +1332,7 @@ $wgConf->settings += [
     ],
     'wgSpringOutroSteps' => [
         'default' => [
+            'compass',
             'share',
             'finish',
         ],
@@ -1580,6 +1581,21 @@ $wgConf->settings += [
                         'wgSkipSkins' => [],
                         'wgRightsUrl' => [],
                     ],
+                ],
+            ],
+            'compass' => [
+                'class' => WikiOasis\Spring\Steps\CompassStep::class,
+                'services' => [
+                    'ManageWikiModuleFactory',
+                    'CompassStatistics',
+                    'CompassStore',
+                    'MainConfig',
+                ],
+                'config' => [
+                    'title' => 'Your wiki in compass',
+                    'description' => 'Let other people find your wiki in the wiki directory.',
+                    'icon' => 'cdxIconMapPin',
+                    'optional' => true,
                 ],
             ],
             'share' => [
