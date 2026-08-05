@@ -1272,7 +1272,7 @@ $wgConf->settings += [
     'wgSpringAllowDismiss' => [
         'default' => true,
     ],
-    'wgSpringHelpURL' => [
+    'wgSpringHelpUrl' => [
         'default' => '',
     ],
     'wgSpringLogManageWikiChanges' => [
@@ -1625,6 +1625,50 @@ $wgConf->settings += [
                     ],
                 ],
             ],
+        ],
+    ],
+    'wgSpringIntroSteps' => [
+        'default' => [
+            'welcome',
+            'route',
+        ],
+    ],
+    'wgSpringFlows' => [
+        'default' => [
+            'template' => [
+                'label-message' => 'wikioasis-spring-flow-template',
+                'description-message' => 'wikioasis-spring-flow-template-desc',
+                'icon' => 'cdxIconTemplateAdd',
+                'steps' => [
+                    'template',
+                    'skins',
+                    'styling',
+                ],
+            ],
+            'manual' => [
+                'label-message' => 'wikioasis-spring-flow-manual',
+                'description-message' => 'wikioasis-spring-flow-manual-desc',
+                'icon' => 'cdxIconSettings',
+                'steps' => [
+                    'visibility',
+                    'editing',
+                    'extensions',
+                    'skins',
+                    'styling',
+                    'options',
+                    'import',
+                ],
+            ],
+            'quick' => [
+                'label-message' => 'wikioasis-spring-flow-quick',
+                'description-message' => 'wikioasis-spring-flow-quick-desc',
+                'icon' => 'cdxIconPlay',
+                'steps' => [
+                    'visibility',
+                    'editing',
+                    'styling',
+                ]
+            ]
         ],
     ],
     'wgSpringTemplates' => [
