@@ -25,12 +25,12 @@ if ( $requestedSitemap !== '' ) {
 		echo 'Invalid sitemap filename.';
 		exit;
 	}
-	$cdnPath = "sitemaps/{$requestedSitemap}";
+	$cdnPath = $requestedSitemap;
 } else {
-	$cdnPath = "sitemaps/sitemap-index-{$dbname}.xml";
+	$cdnPath = "sitemap-index-{$dbname}.xml";
 }
 
-$url = "https://cdn.wikioasis.org/{$dbname}/{$cdnPath}";
+$url = "https://cdn.wikioasis.org/sitemaps/{$dbname}/{$cdnPath}";
 
 $ch = curl_init( $url );
 curl_setopt_array( $ch, [

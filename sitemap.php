@@ -12,9 +12,21 @@ function streamSitemapIndex() {
 	global $wgDBname, $wmgUploadHostname;
 	wfResetOutputBuffers();
 
-	$url = "https://{$wmgUploadHostname}/sitemaps/{$wgDBname}/sitemap-index-{$wgDBname}.xml";
-
 	$req = RequestContext::getMain()->getRequest();
+
+	// Either the index, or one of the individual sitemap-*.xml files that it lists.
+	$sitemap = $req->getVal( 'sitemap', '' );
+	if ( $sitemap !== '' ) {
+		if ( !preg_match( '/^sitemap-' . preg_quote( $wgDBname, '/' ) . '-[\w\-]+\.xml(\.gz)?$/', $sitemap ) ) {
+			header( 'HTTP/1.1 400 Bad Request' );
+			return;
+		}
+	} else {
+		$sitemap = "sitemap-index-{$wgDBname}.xml";
+	}
+
+	$url = "https://{$wmgUploadHostname}/sitemaps/{$wgDBname}/{$sitemap}";
+
 	if ( $req->getHeader( 'X-Sitemap-Loop' ) !== false ) {
 		header( 'HTTP/1.1 500 Internal Server Error' );
 		return;
