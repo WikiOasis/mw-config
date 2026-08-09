@@ -4905,6 +4905,54 @@ $wgManageWikiSettings = [
 		'help' => 'The default sort order to use. The default, \'code\' orders alphabetically by interwiki code.',
 		'requires' => [],
 	],
+
+    // Yappin
+    'wgYappinReadOnly' => [
+        'name' => 'Yappin Read Only',
+        'from' => 'yappin',
+        'type' => 'check',
+        'overridedefault' => false,
+        'section' => 'editing',
+        'help' => 'Disallow users from commenting on pages.',
+        'requires' => [],
+    ],
+    'wgYappinUseAbuseFilter' => [
+        'name' => 'Yappin Use AbuseFilter',
+        'from' => 'yappin',
+        'type' => 'check',
+        'overridedefault' => true,
+        'section' => 'editing',
+        'help' => 'Use AbuseFilter to review Yappin comments',
+        'requires' => [],
+    ],
+    'wgYappinUseVisualEditor' => [
+        'name' => 'Yappin Use VisualEditor',
+        'from' => 'yappin',
+        'type' => 'check',
+        'overridedefault' => false,
+        'section' => 'editing',
+        'help' => 'Use VisualEditor with Yappin',
+        'requires' => [
+            'extensions' => [
+                'visualeditor',
+                'yappin',
+            ],
+        ],
+    ],
+    'wgYappinShowUPV2Avatars' => [
+        'name' => 'Yappin Use UPV2 Avatars',
+        'from' => 'yappin',
+        'type' => 'check',
+        'overridedefault' => false,
+        'section' => 'editing',
+        'help' => 'Show avatars with Yappin',
+        'requires' => [
+            'extensions' => [
+                'userprofilev2',
+                'yappin',
+            ],
+        ],
+    ],
 ];
 
 if ( $wi->isAllOfExtensionsActive( 'Gamepress', 'Theme' ) ) {

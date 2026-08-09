@@ -1164,6 +1164,31 @@ $wgManageWikiExtensions = [
 		'requires' => [],
 		'section' => 'parserhooks',
 	],
+    'yappin' => [
+        'name' => 'Yappin',
+        'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Yappin',
+        'conflicts' => false,
+        'requires' => [],
+        'install' => [
+            'sql' => [
+                'Yappin' => "$IP/extensions/Yappin/sql/mysql/tables-generated.mysql"
+            ],
+            'permissions' => [
+                '*' => [
+                    'permissions' => [
+                        'yappin-comment',
+                    ],
+                ],
+                'sysop' => [
+                    'permissions' => [
+                        'yappin-manage',
+                        'yappin-import',
+                    ],
+                ],
+            ],
+        ],
+        'section' => 'parserhooks',
+    ],
 
 	// Spam prevention
 	'approvedrevs' => [
