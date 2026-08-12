@@ -2775,7 +2775,10 @@ $wgConf->settings += [
 
     // QuickInstantCommons
     'wgQuickInstantCommonsUserAgentInfo' => [
-        'default' => "https://wikioasis.org/; tech@wikioasis.org;"
+        'default' => "WikiOasis/0.0 (https://wikioasis.org/; tech@wikioasis.org)"
+    ],
+    'wgQuickInstantCommonsUserAgentOverride' => [
+        'default' => "WikiOasis/0.0 (https://wikioasis.org/; tech@wikioasis.org)"
     ],
 
     // Bucket
