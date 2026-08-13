@@ -263,6 +263,10 @@ $wgExtensionMessagesFiles = array (
 );
 
 $wgMessagesDirs = array (
+    'Yappin' =>
+        array (
+            0 => "$IP/extensions/Yappin/i18n",
+        ),
     'Spring' =>
         array (
             0 => "$IP/extensions/Spring/i18n",
