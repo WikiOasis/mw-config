@@ -830,8 +830,6 @@ $wgConf->settings += [
     'wgCheckUserGlobalContributionsCentralWikiId' => [
         'default' => null,
     ],
-    unset( $wgSpecialPages['GlobalContributions'] );
-    unset( $wgSpecialPages['IPContributions'] );
 
     // WebAuthn
     'wgWebAuthnLimitPasskeysToRoaming' => [
@@ -3010,4 +3008,6 @@ if ( !file_exists( $wgLocalisationCacheConf['storeDirectory'] . '/en.l10n.php' )
     $wgLocalisationCacheConf['manualRecache'] = false;
 }
 
+unset( $wgSpecialPages['GlobalContributions'] );
+unset( $wgSpecialPages['IPContributions'] );
 unset( $wi );
