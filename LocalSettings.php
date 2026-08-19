@@ -825,7 +825,10 @@ $wgConf->settings += [
         'default' => true,
     ],
     'wgCheckUserSuggestedInvestigationsEnabled' => [
-        'default' => true,
+        'default' => false,
+    ],
+    'wgCheckUserGlobalContributionsCentralWikiId' => [
+        'default' => null,
     ],
 
     // WebAuthn
