@@ -3008,6 +3008,6 @@ if ( !file_exists( $wgLocalisationCacheConf['storeDirectory'] . '/en.l10n.php' )
     $wgLocalisationCacheConf['manualRecache'] = false;
 }
 
-unset( $wgSpecialPages['GlobalContributions'] );
-unset( $wgSpecialPages['IPContributions'] );
+$wgSpecialPages['GlobalContributions'] = DisabledSpecialPage::getCallback( 'GlobalContributions' );
+$wgSpecialPages['IPContributions'] = DisabledSpecialPage::getCallback( 'IPContributions' );
 unset( $wi );
