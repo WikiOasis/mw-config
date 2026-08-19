@@ -830,6 +830,8 @@ $wgConf->settings += [
     'wgCheckUserGlobalContributionsCentralWikiId' => [
         'default' => null,
     ],
+    unset( $wgSpecialPages['GlobalContributions'] );
+    unset( $wgSpecialPages['IPContributions'] );
 
     // WebAuthn
     'wgWebAuthnLimitPasskeysToRoaming' => [
