@@ -9,6 +9,7 @@
  * @var mixed $wi
  */
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\SpecialPage\DisabledSpecialPage;
 
 // Protect against web entry
@@ -344,8 +345,11 @@ if ($wgConf->get('wgRightsIcon', $wi->dbname)) {
 	];
 }
 
-$wgHooks['SetupAfterCache'][] = function() {
-    global $wgSpecialPages;
-    $wgSpecialPages['GlobalContributions'] = DisabledSpecialPage::getCallback('GlobalContributions');
-    $wgSpecialPages['IPContributions'] = DisabledSpecialPage::getCallback('IPContributions');
+$wgExtensionFunctions[] = static function () {
+	MediaWikiServices::getInstance()->getHookContainer()->register(
+		'SpecialPage_initList',
+		static function ( &$list ) {
+			$list['GlobalContributions'] = DisabledSpecialPage::getCallback( 'GlobalContributions' );
+		}
+	);
 };
