@@ -9,6 +9,8 @@
  * @var mixed $wi
  */
 
+use MediaWiki\SpecialPage\DisabledSpecialPage;
+
 // Protect against web entry
 if (!defined('MEDIAWIKI')) {
 	die('Not an entry point.');
@@ -342,3 +344,5 @@ if ($wgConf->get('wgRightsIcon', $wi->dbname)) {
 	];
 }
 
+$wgSpecialPages['GlobalContributions'] = DisabledSpecialPage::getCallback( 'GlobalContributions' );
+$wgSpecialPages['IPContributions'] = DisabledSpecialPage::getCallback( 'IPContributions' );
