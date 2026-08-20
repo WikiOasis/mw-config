@@ -344,5 +344,8 @@ if ($wgConf->get('wgRightsIcon', $wi->dbname)) {
 	];
 }
 
-$wgSpecialPages['GlobalContributions'] = DisabledSpecialPage::getCallback( 'GlobalContributions' );
-$wgSpecialPages['IPContributions'] = DisabledSpecialPage::getCallback( 'IPContributions' );
+$wgHooks['SetupAfterCache'][] = function() {
+    global $wgSpecialPages;
+    $wgSpecialPages['GlobalContributions'] = DisabledSpecialPage::getCallback('GlobalContributions');
+    $wgSpecialPages['IPContributions'] = DisabledSpecialPage::getCallback('IPContributions');
+};
