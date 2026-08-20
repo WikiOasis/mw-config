@@ -1,7 +1,6 @@
 <?php
 
 use MediaWiki\MediaWikiServices;
-use MediaWiki\SpecialPage\DisabledSpecialPage;
 
 /**
  * LocalSettings.php
