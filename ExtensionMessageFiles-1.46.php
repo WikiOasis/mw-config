@@ -108,7 +108,7 @@ $wgExtensionMessagesFiles = array (
     'DisambiguatorMagic' => "$IP/extensions/Disambiguator/Disambiguator.i18n.magic.php",
     'DisplayTitleMagic' => "$IP/extensions/DisplayTitle/includes/DisplayTitle.i18n.magic.php",
     'DraftsAlias' => "$IP/extensions/Drafts/Drafts.alias.php",
-    'DynamicPageList4Magic' => "$IP/extensions/DynamicPageList3/DynamicPageList4Magic.php",
+    'DynamicPageList4Magic' => "$IP/extensions/DynamicPageList4/DynamicPageList4Magic.php",
     'EmbedVideoMagic' => "$IP/extensions/EmbedVideo/EmbedVideo.i18n.magic.php",
     'EnhancedUploadAlias' => "$IP/extensions/EnhancedUpload/languages/EnhancedUpload.i18n.alias.php",
     'ExternalDataMagic' => "$IP/extensions/ExternalData/ExternalData.i18n.magic.php",
@@ -974,7 +974,7 @@ $wgMessagesDirs = array (
         ),
     'DynamicPageList4' =>
         array (
-            0 => "$IP/extensions/DynamicPageList3/i18n",
+            0 => "$IP/extensions/DynamicPageList4/i18n",
         ),
     'EditSubpages' =>
         array (
