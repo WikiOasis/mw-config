@@ -39,7 +39,7 @@ ini_set( 'xdebug.var_display_max_depth', - 1 );
 ini_set( 'memory_limit', '256M' );
 $wgMemoryLimit = '256M';
 
-require_once "$IP/config/PrivateSettings.php";
+require_once "/srv/mediawiki/config/PrivateSettings.php";
 
 $wgConf->suffixes = [ 'wiki' ];
 
@@ -80,8 +80,8 @@ if ( php_uname( 'n' ) === 'staging11' ) {
 }
 
 $wgDebugLogGroups['MirahezeFunctions'] = "/var/log/mediawiki/mf.log";
-require_once "$IP/config/MirahezeFunctions.php";
-require_once "$IP/config/GlobalExtensions.php";
+require_once "/srv/mediawiki/config/MirahezeFunctions.php";
+require_once "/srv/mediawiki/config/GlobalExtensions.php";
 
 $wi = new MirahezeFunctions();
 // $wgReadOnly = ( PHP_SAPI === 'cli' ) ? null : 'This wiki is currently being upgraded to a newer software version. Please check back in a couple of hours.';
@@ -2430,7 +2430,7 @@ $wgConf->settings += [
     ],
     // Widgets
     'wgWidgetsCompileDir' => [
-        'default' => '$IP/cache/$wgDBname/compiled_templates',
+        'default' => '/srv/mediawiki/cache/$wgDBname/compiled_templates',
     ],
     // WikibaseLexeme
     'wgLexemeLanguageCodePropertyId' => [
@@ -2811,7 +2811,7 @@ $wgConf->settings += [
 
 $wgManageWikiSiteConfiguration = $wgConf;
 
-require_once "$IP/config/ManageWikiExtensions.php";
+require_once "/srv/mediawiki/config/ManageWikiExtensions.php";
 $wi::$disabledExtensions = [
     'drafts' => '<a href="https://issue-tracker.miraheze.org/T11970">T11970</a>',
     'score' => '<a href="https://issue-tracker.miraheze.org/T5863">T5863</a>',
@@ -2849,8 +2849,8 @@ require_once __DIR__ . '/ManageWikiNamespaces.php';
 require_once __DIR__ . '/ManageWikiSettings.php';
 
 //var_dump($wgConf->settings);
-require_once "$IP/config/Database.php";
-require_once "$IP/config/GlobalCache.php";
+require_once "/srv/mediawiki/config/Database.php";
+require_once "/srv/mediawiki/config/GlobalCache.php";
 
 $wgHooks['SetupAfterCache'][] = static function () {
     global $cwPrivate, $wgLocalFileRepo, $wgAWSRepoZones;
@@ -2983,8 +2983,8 @@ function wfHandleDeletedWiki() {
     require_once '/srv/mediawiki/config/DeletedWiki.php';
 }
 
-require_once "$IP/config/GlobalSettings.php";
-require_once "$IP/config/LocalWiki.php";
+require_once "/srv/mediawiki/config/GlobalSettings.php";
+require_once "/srv/mediawiki/config/LocalWiki.php";
 
 $wgCargoDBname = $wgDBname . 'cargo';
 
