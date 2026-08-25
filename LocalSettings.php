@@ -91,7 +91,6 @@ $wmgSharedDomainPathPrefix = '';
 if ( ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain()
     || getenv( 'MW_USE_SHARED_DOMAIN' )
 ) {
-    $wgLoadScript = "{$wi->server}/w/load.php";
     $wmgSharedDomainPathPrefix = "/$wgDBname";
 
     $wgCanonicalServer = 'https://' . $wi->getSharedDomain();
@@ -2857,6 +2856,10 @@ if ( $wmgSharedDomainPathPrefix ) {
     $wgArticlePath = "{$wmgSharedDomainPathPrefix}/wiki/\$1";
     $wgScriptPath = $wmgSharedDomainPathPrefix;
     $wgScript = "$wgScriptPath/index.php";
+    // Keep ResourceLoader same-origin on the shared domain. RL only sends
+    // `Access-Control-Allow-Origin: *` for styles and images, never for
+    // scripts or source maps, so loading it cross-origin cannot work.
+    $wgLoadScript = "$wgScriptPath/load.php";
     $wgServer = '//' . $wi->getSharedDomain();
 }
 
