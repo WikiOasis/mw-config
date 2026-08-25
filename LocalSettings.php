@@ -242,7 +242,19 @@ $wgConf->settings += [
     'wgScriptPath' => [
         'default' => '/w',
     ],
-    
+    'wgCrossSiteAJAXdomains' => [
+        'default' => [
+            'wikioasis.org',
+            '*.wikioasis.org',
+            'skywiki.org',
+            '*.skywiki.org',
+        ],
+        'beta' => [
+            'betaoasis.xyz',
+            '*.betaoasis.xyz',
+        ],
+    ],
+
     'wgUsePathInfo' => [
         'default' => true,
     ],
