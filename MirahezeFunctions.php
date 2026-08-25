@@ -1100,6 +1100,8 @@ class MirahezeFunctions {
             if (
                 !isset( $settings["+$global"] ) &&
                 $global !== 'wgArticlePath' &&
+                $global !== 'wgScriptPath' &&
+                $global !== 'wgScript' &&
                 $global !== 'wgServer' &&
                 $global !== 'wgManageWikiPermissionsAdditionalRights'
             ) {

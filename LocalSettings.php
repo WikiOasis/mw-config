@@ -2855,6 +2855,8 @@ extract( $globals );
 
 if ( $wmgSharedDomainPathPrefix ) {
     $wgArticlePath = "{$wmgSharedDomainPathPrefix}/wiki/\$1";
+    $wgScriptPath = $wmgSharedDomainPathPrefix;
+    $wgScript = "$wgScriptPath/index.php";
     $wgServer = '//' . $wi->getSharedDomain();
 }
 
