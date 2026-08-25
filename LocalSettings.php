@@ -239,6 +239,10 @@ $wgConf->settings += [
     'wgArticlePath' => [
         'default' => '/wiki/$1',
     ],
+    'wgScriptPath' => [
+        'default' => '/w',
+    ],
+    
     'wgUsePathInfo' => [
         'default' => true,
     ],
