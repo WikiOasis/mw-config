@@ -640,7 +640,7 @@ $wgConf->settings += [
     // CreateWiki
     'wgCreateWikiDatabase' => [
         'default' => 'wikidb',
- 	'beta' => 'wikidbbeta',
+ 	    'beta' => 'wikidbbeta',
     ],
     'wgCreateWikiUseJobQueue' => [
         'default' => true,
@@ -717,11 +717,11 @@ $wgConf->settings += [
     'wgCreateWikiDisableRESTAPI' => [
         'default' => true,
         'metawiki' => false,
-	'metawikibeta' => false,
+	    'metawikibeta' => false,
     ],
     'wgCreateWikiGlobalWiki' => [
         'default' => 'metawiki',
-	'beta' => 'metawikibeta',
+	    'beta' => 'metawikibeta',
     ],
     'wgCreateWikiEmailNotifications' => [
         'default' => true,
@@ -1792,11 +1792,11 @@ $wgConf->settings += [
     // GlobalBlocking & GlobalPreferences & GlobalUserPage & GlobalCssJs & GlobalUsage
     'wgGlobalBlockingDatabase' => [
         'default' => 'wikidb',
-	'beta' => 'wikidbbeta',
+	    'beta' => 'wikidbbeta',
     ],
     'wgGlobalPreferencesDB' => [
         'default' => 'wikidb',
-	'beta' => 'wikidbbeta',
+	    'beta' => 'wikidbbeta',
     ],
 	'wgGlobalUsageSharedRepoWiki' => [
 		'govnpcommonsbetawiki' => 'govnpcommonsbetawiki',
@@ -1824,22 +1824,22 @@ $wgConf->settings += [
                 'loadScript' => '//meta.wikioasis.org/w/load.php',
             ],
         ],
-	'beta' => [
-	    'metawikibeta' => [
-		'apiScript' => '//meta.betaoasis.xyz/w/api.php',
-		'loadScript' => '//meta.betaoasis.xyz/w/load.php',
+	    'beta' => [
+	        'metawikibeta' => [
+                'apiScript' => '//meta.betaoasis.xyz/w/api.php',
+                'loadScript' => '//meta.betaoasis.xyz/w/load.php',
+	        ],
 	    ],
-	],
     ],
     'wgGlobalCssJsConfig' => [
         'default' => [
             'wiki' => 'metawiki',
             'source' => 'metawiki',
         ],
-	'beta' => [
-	    'wiki' => 'metawikibeta',
-	    'source' => 'metawikibeta',
-	],
+	    'beta' => [
+            'wiki' => 'metawikibeta',
+            'source' => 'metawikibeta',
+	    ],
     ],
 
     // Temporary accounts
