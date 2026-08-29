@@ -1596,7 +1596,6 @@ $wgConf->settings += [
                         'wmgWikiLicense' => [],
                         'wgUsersNotifiedOnAllChanges' => [],
                         'wgSiteNotice' => [],
-                        'wgLocaltimezone' => [],
                         'wgSkipSkins' => [],
                         'wgRightsUrl' => [],
                     ],
