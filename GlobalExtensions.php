@@ -51,6 +51,7 @@ wfLoadExtensions( [
     'TorBlock',
     'WikiEditor',
     'WikiOasisMagic',
+    'WikiOasisSafety'
     'WikimediaEvents',
     'cldr',
 ] );

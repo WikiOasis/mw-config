@@ -49,39 +49,26 @@ $wgDBprefix = "";
 $wgDBssl = false;
 
 $wgDiff3 = "/usr/bin/diff3";
-if ( php_uname( 'n' ) === 'staging11' ) {
-    $wgVirtualDomainsMapping['virtual-centralauth'] = ['db' => 'wikidbbeta'];
-    $wgVirtualDomainsMapping['virtual-checkuser-global'] = ['db' => 'wikidbbeta'];
-    $wgVirtualDomainsMapping['virtual-createwiki'] = ['db' => 'wikidbbeta'];
-    $wgVirtualDomainsMapping['virtual-createwiki-central'] = ['db' => 'metawikibeta'];
-    $wgVirtualDomainsMapping['virtual-globalblocking'] = ['db' => 'wikidbbeta'];
-    $wgVirtualDomainsMapping['virtual-managewiki'] = ['db' => 'wikidbbeta'];
-    $wgVirtualDomainsMapping['virtual-oathauth'] = ['db' => 'wikidbbeta'];
-    $wgVirtualDomainsMapping['virtual-LoginNotify'] = ['db' => 'wikidbbeta'];
-    $wgVirtualDomainsMapping['virtual-importdump'] = ['db' => 'metawikibeta'];
-    $wgVirtualDomainsMapping['virtual-requestcustomdomain'] = ['db' => 'metawikibeta'];
-    $wgVirtualDomainsMapping['virtual-interwiki'] = ['db' => 'metawikibeta'];
-    $wgVirtualDomainsMapping['virtual-interwiki-interlanguage'] = ['db' => 'metawikibeta'];
-    $wgVirtualDomainsMapping['virtual-centralnotice'] = ['db' => 'metawikibeta'];
-} else {
-    $wgVirtualDomainsMapping['virtual-centralauth'] = ['db' => 'wikidb'];
-    $wgVirtualDomainsMapping['virtual-checkuser-global'] = ['db' => 'wikidb'];
-    $wgVirtualDomainsMapping['virtual-createwiki'] = ['db' => 'wikidb'];
-    $wgVirtualDomainsMapping['virtual-createwiki-central'] = ['db' => 'metawiki'];
-    $wgVirtualDomainsMapping['virtual-globalblocking'] = ['db' => 'wikidb'];
-    $wgVirtualDomainsMapping['virtual-managewiki'] = ['db' => 'wikidb'];
-    $wgVirtualDomainsMapping['virtual-oathauth'] = ['db' => 'wikidb'];
-    $wgVirtualDomainsMapping['virtual-LoginNotify'] = ['db' => 'wikidb'];
-    $wgVirtualDomainsMapping['virtual-importdump'] = ['db' => 'metawiki'];
-    $wgVirtualDomainsMapping['virtual-requestcustomdomain'] = ['db' => 'metawiki'];
-    $wgVirtualDomainsMapping['virtual-interwiki'] = ['db' => 'metawiki'];
-    $wgVirtualDomainsMapping['virtual-interwiki-interlanguage'] = ['db' => 'metawiki'];
-    $wgVirtualDomainsMapping['virtual-centralnotice'] = ['db' => 'metawiki'];
-}
+
+$wgVirtualDomainsMapping['virtual-centralauth'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-checkuser-global'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-createwiki'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-createwiki-central'] = ['db' => 'metawiki'];
+$wgVirtualDomainsMapping['virtual-globalblocking'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-managewiki'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-oathauth'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-LoginNotify'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-importdump'] = ['db' => 'metawiki'];
+$wgVirtualDomainsMapping['virtual-requestcustomdomain'] = ['db' => 'metawiki'];
+$wgVirtualDomainsMapping['virtual-interwiki'] = ['db' => 'metawiki'];
+$wgVirtualDomainsMapping['virtual-interwiki-interlanguage'] = ['db' => 'metawiki'];
+$wgVirtualDomainsMapping['virtual-centralnotice'] = ['db' => 'metawiki'];
+$wgVirtualDomainsMapping['virtual-wikioasissafety'] = [ 'db' => 'wikidb' ];
 
 $wgDebugLogGroups['MirahezeFunctions'] = "/var/log/mediawiki/mf.log";
 require_once "/srv/mediawiki/config/MirahezeFunctions.php";
 require_once "/srv/mediawiki/config/GlobalExtensions.php";
+require_once "/srv/mediawiki/config/Safety.php";
 
 $wi = new MirahezeFunctions();
 // $wgReadOnly = ( PHP_SAPI === 'cli' ) ? null : 'This wiki is currently being upgraded to a newer software version. Please check back in a couple of hours.';
@@ -1872,6 +1859,9 @@ $wgConf->settings += [
     ],
     'wgOAuth2RefreshTokenTTL' => [
         'default' => 'P365D',
+    ],
+    '$wgMWOAuthSharedUserIDs' => [
+        'default' => true,
     ],
     'wgMWOAuthSharedUserSource' => [
         'default' => 'CentralAuth',
