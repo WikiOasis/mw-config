@@ -43,7 +43,6 @@ wfLoadExtensions( [
     'ParserFunctions',
     'ParserMigration',
     'QuickInstantCommons',
-    'RemovePII',
     'Scribunto',
     'SpamBlacklist',
     'Spring',

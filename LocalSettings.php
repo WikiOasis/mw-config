@@ -1092,7 +1092,6 @@ $wgConf->settings += [
                 'globalblock' => true,
                 'globalgroupmembership' => true,
                 'globalgrouppermissions' => true,
-                'handle-pii' => true,
                 'oathauth-disable-for-user' => true,
                 'oathauth-verify-user' => true,
                 'userrights' => true,
@@ -1149,7 +1148,6 @@ $wgConf->settings += [
                 'globalgrouppermissions',
                 'handle-import-request-interwiki',
                 'handle-import-requests',
-                'handle-pii',
                 'hideuser',
                 'investigate',
                 'import',
@@ -2170,27 +2168,6 @@ $wgConf->settings += [
     'wgKartographerWikivoyageMode' => [
         'default' => false,
     ],
-
-    // 'RemovePII
-    'wgRemovePIIAllowedWikis' => [
-        'default' => [
-            'metawiki',
-	    'metawikibeta',
-        ],
-    ],
-    'wgRemovePIIAutoPrefix' => [
-        'default' => 'WikiOasisGDPR',
-    ],
-    'wgRemovePIIHashPrefixOptions' => [
-        'default' => [
-            'Trust and Safety' => 'Deleted_User_',
-            'Stewards' => 'Vanished User ',
-        ],
-    ],
-    'wgRemovePIIHashPrefix' => [
-        'default' => 'Deleted_User_',
-    ],
-
     // ImportDump
     'wgImportDumpCentralWiki' => [
         'default' => 'metawiki',
