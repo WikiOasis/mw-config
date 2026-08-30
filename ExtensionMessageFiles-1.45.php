@@ -260,9 +260,14 @@ $wgExtensionMessagesFiles = array (
     'BucketAliases' => "$IP/extensions/Bucket/Bucket.i18n.alias.php",
     'BucketNamespaces' => "$IP/extensions/Bucket/Bucket.i18n.namespaces.php",
     'SpringAliases' => "$IP/extensions/Spring/SpringAliases.php",
+    'WikiOasisSafetyAliases' => "$IP/extensions/WikiOasisSafety/WikiOasisSafety.alias.php",
 );
 
 $wgMessagesDirs = array (
+    'WikiOasisSafety' =>
+        array (
+            0 => "$IP/extensions/WikiOasisSafety/i18n",
+        ),
     'Yappin' =>
         array (
             0 => "$IP/extensions/Yappin/i18n",
