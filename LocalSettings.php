@@ -574,6 +574,91 @@ $wgConf->settings += [
         ],
     ],
 
+    // AdvancedSearch
+    'wgAdvancedSearchNamespacePresets' => [
+        'default' => [
+            'defaultNamespaces' => [
+                'enabled' => true,
+                'provider' => 'defaultNamespaces',
+                'label' => 'advancedsearch-namespaces-preset-default',
+            ],
+            'discussion' => [
+                'enabled' => true,
+                'provider' => 'discussion',
+                'label' => 'advancedsearch-namespaces-preset-discussion',
+            ],
+            'generalHelp' => [
+                'enabled' => true,
+                'namespaces' => [
+                    '4',
+                    '12',
+                ],
+                'label' => 'advancedsearch-namespaces-preset-general-help',
+            ],
+            'all' => [
+                'enabled' => true,
+                'provider' => 'all',
+                'label' => 'advancedsearch-namespaces-preset-all',
+            ],
+        ],
+        'countryhumanswiki' => [
+            'defaultNamespaces' => [
+                'enabled' => true,
+                'provider' => 'defaultNamespaces',
+                'label' => 'advancedsearch-namespaces-preset-default',
+            ],
+            'discussion' => [
+                'enabled' => true,
+                'provider' => 'discussion',
+                'label' => 'advancedsearch-namespaces-preset-discussion',
+            ],
+            'multimedia' => [
+                'enabled' => true,
+                'namespaces' => [
+                    '6',
+                ],
+                'label' => 'advancedsearch-namespaces-preset-multimedia'
+            ],
+            'original-or-fictional' => [
+                'enabled' => true,
+                'namespaces' => [
+                    '3000',
+                    '3002',
+                ],
+                'label' => 'advancedsearch-namespaces-preset-original-or-fictional' 
+            ],
+            'generalHelp' => [
+                'enabled' => true,
+                'namespaces' => [
+                    '4',
+                    '12',
+                ],
+                'label' => 'advancedsearch-namespaces-preset-general-help',
+            ],
+            'tech' => [
+                'enabled' => true,
+                'namespaces' => [
+                    '8',
+                    '10',
+                    '828',
+                ],
+                'label' => 'advancedsearch-namespaces-preset-tech' 
+            ],
+            'category' => [
+                'enabled' => true,
+                'namespaces' => [
+                    '14',
+                ],
+                'label' => 'advancedsearch-namespaces-preset-category' 
+            ],
+            'all' => [
+                'enabled' => true,
+                'provider' => 'all',
+                'label' => 'advancedsearch-namespaces-preset-all',
+            ],
+        ],
+    ],
+
     // CentralAuth
     'wgCentralAuthAutoCreateWikis' => [
         'default' => [
@@ -2081,7 +2166,8 @@ $wgConf->settings += [
         ],
         'countryhumanswiki' => [
             NS_MAIN,
-            3000
+            3000,
+			3002,
         ],
         'objectshowwiki' => [
             NS_MAIN,
