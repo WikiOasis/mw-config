@@ -2992,4 +2992,19 @@ if ( !file_exists( $wgLocalisationCacheConf['storeDirectory'] . '/en.l10n.php' )
     $wgLocalisationCacheConf['manualRecache'] = false;
 }
 
+// Workaround: GlobalBlocking registers block action IDs via onGetAllBlockActions that collide
+// with IDs added to CORE_BLOCK_ACTIONS in MediaWiki 1.45. Deduplicate by keeping the first
+// (core) occurrence of each integer ID so Special:Block does not throw UnexpectedValueException.
+// TODO: Remove once GlobalBlocking is updated to use non-conflicting IDs.
+$wgHooks['GetAllBlockActions'][] = static function ( array &$actions ): void {
+    $seen = [];
+    foreach ( $actions as $name => $id ) {
+        if ( isset( $seen[$id] ) ) {
+            unset( $actions[$name] );
+        } else {
+            $seen[$id] = true;
+        }
+    }
+};
+
 unset( $wi );
