@@ -164,12 +164,15 @@ if ($cwClosed) {
 	}
 }
 
-$wgDataDumpDirectory = '/var/www/dumps/';
+$wgDataDumpFileBackend = 'AmazonS3';
 
 $wgDataDump = [
 	'xml' => [
 		'file_ending' => '.xml.gz',
 		'useBackendTempStore' => true,
+		// An R2 PutObject caps out at 5 GiB, so split large dumps
+		'chunkSize' => 480 * 1024 * 1024,
+		'startChunkSize' => 1 * 1024 * 1024 * 1024,
 		'generate' => [
 			'type' => 'mwscript',
 			'script' => "$IP/maintenance/dumpBackup.php",
@@ -178,7 +181,7 @@ $wgDataDump = [
 				'--logs',
 				'--uploads',
 				'--output',
-				'gzip:/tmp/${filename}',
+				"gzip:{$wgTmpDirectory}/" . '${filename}',
 			],
 			'arguments' => [
 				'--namespaces'
@@ -197,24 +200,6 @@ $wgDataDump = [
 			'noArgsValue' => 'all',
 			'hide-if' => ['!==', 'generatedumptype', 'xml'],
 			'label-message' => 'datadump-namespaceselect-label'
-		],
-	],
-	'zip' => [
-		'file_ending' => '.zip',
-		'generate' => [
-			'type' => 'script',
-			'script' => '/usr/bin/zip',
-			'options' => [
-				'-r',
-				"{$wgDataDumpDirectory}" . '${filename}',
-				($cwPrivate ? "/var/www/images/{$wgDBname}" : "$IP/images/{$wgDBname}"),  // 条件による切り替え
-			],
-		],
-		'limit' => 1,
-		'permissions' => [
-			'view' => 'view-dump',
-			'generate' => 'generate-dump',
-			'delete' => 'delete-dump',
 		],
 	],
 	'managewiki_backup' => [

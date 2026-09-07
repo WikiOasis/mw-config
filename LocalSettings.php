@@ -3007,6 +3007,11 @@ $wgAWSRepoZones["{$wgDBname}-avatars"] = [
     'isPublic' => true,
 ];
 
+$wgAWSRepoZones['dumps-backup'] = [
+    'container' => 'dumps-backup',
+    'path' => '/dumps',
+];
+
 $wgUserProfileV2UseGlobalAvatars = true;
 $wgUserProfileGlobalUploadBaseUrl = "https://cdn.wikioasis.org/upv2avatars/";
 
