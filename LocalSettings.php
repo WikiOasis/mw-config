@@ -115,7 +115,6 @@ $wgConf->settings += [
     //],
     'wgDisableSearchUpdate' => [
         'default' => false,
-        'heroeswiki' => true,
     ],
     'wgCreateWikiDatabaseClusters' => [
         'default' => [
