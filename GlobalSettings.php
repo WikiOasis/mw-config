@@ -28,7 +28,6 @@ wfLoadExtensions( [
     'CentralAuth',
     'GlobalBlocking',
     'GlobalPreferences',
-    'RemovePII',
 ] );
 
 // Only allow users with global accounts to login
@@ -243,7 +242,6 @@ if ( $wgWordmark ) {
 	];
 }
 
-$wgRemovePIIAutoPrefix = 'WikiOasisGDPR';
 $wgRightsIcon = "https://meta.wikioasis.org$wgResourceBasePath/resources/assets/licenses/cc-by-sa.png";
 $wgRightsText = 'Creative Commons Attribution Share Alike';
 $wgRightsUrl = 'https://creativecommons.org/licenses/by-sa/4.0/';
