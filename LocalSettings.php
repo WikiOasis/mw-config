@@ -3031,11 +3031,7 @@ if ( $wi->missing ) {
         }
         $host = strtolower( trim( preg_replace( '/:\d+$/', '', $host ) ) );
 
-        if ( $host !== '' && preg_match( '/(^|\.)skywiki\.org$/', $host ) ) {
-            require_once '/srv/mediawiki/config/MissingSkyWiki.php';
-        } else {
-            require_once '/srv/mediawiki/config/MissingWiki.php';
-        }
+        require_once '/srv/mediawiki/config/MissingWiki.php';
     }
 }
 
