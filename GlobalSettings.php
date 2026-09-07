@@ -29,6 +29,7 @@ require_once '/srv/mediawiki/config/MultiVersion.php';
 
 wfLoadExtensions( [
     'CentralAuth',
+    'GlobalBlocking',
     'GlobalPreferences',
     'RemovePII',
 ] );
