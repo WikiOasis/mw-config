@@ -3058,16 +3058,16 @@ require_once "/srv/mediawiki/config/LocalWiki.php";
 
 $wgCargoDBname = $wgDBname . 'cargo';
 
+
 // Define last - Extension message files for loading extensions
+//$_mwVersion = WikiOasisFunctions::getMediaWikiVersion();
+//if (file_exists(__DIR__ . "/ExtensionMessageFiles-{$_mwVersion}.php") && !defined('MW_NO_EXTENSION_MESSAGES')) {
+//    require_once __DIR__ . "/ExtensionMessageFiles-{$_mwVersion}.php";
+//}
+// TODO: reintegrate localisation into deployment
 $_mwVersion = WikiOasisFunctions::getMediaWikiVersion();
-if (file_exists(__DIR__ . "/ExtensionMessageFiles-{$_mwVersion}.php") && !defined('MW_NO_EXTENSION_MESSAGES')) {
-    require_once __DIR__ . "/ExtensionMessageFiles-{$_mwVersion}.php";
-    // These are not loaded by mergeMessageFileList.php due to not being on ExtensionRegistry
-    $wgMessagesDirs['SocialProfile'] = $IP . '/extensions/SocialProfile/i18n';
-    $wgExtensionMessagesFiles['SocialProfileAlias'] = $IP . '/extensions/SocialProfile/SocialProfile.alias.php';
-    $wgMessagesDirs['SocialProfileUserProfile'] = $IP . '/extensions/SocialProfile/UserProfile/i18n';
-    $wgExtensionMessagesFiles['SocialProfileNamespaces'] = $IP . '/extensions/SocialProfile/SocialProfile.namespaces.php';
-    $wgExtensionMessagesFiles['AvatarMagic'] = $IP . '/extensions/SocialProfile/UserProfile/includes/avatar/Avatar.i18n.magic.php';
+if (file_exists(__DIR__ . "/ExtensionMessageFiles.php") && !defined('MW_NO_EXTENSION_MESSAGES')) {
+    require_once __DIR__ . "/ExtensionMessageFiles.php";
 }
 // Use a per-version subdirectory so multiple MW versions can coexist.
 $wgLocalisationCacheConf['storeClass'] = LCStoreStaticArray::class;
