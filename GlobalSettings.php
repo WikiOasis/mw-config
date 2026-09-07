@@ -18,14 +18,11 @@ if (!defined('MEDIAWIKI')) {
 }
 
 // Populates databases.php with per-wiki data including 'v' (version), 'd' (domain), etc.
-$wgHooks['CreateWikiGenerateDatabaseLists'][] = 'MirahezeFunctions::onGenerateDatabaseLists';
+$wgHooks['CreateWikiGenerateDatabaseLists'][] = 'WikiOasisFunctions::onGenerateDatabaseLists';
 
 // ManageWiki hooks for primary-domain, article-path, and version selection.
-$wgHooks['ManageWikiCoreAddFormFields'][] = 'MirahezeFunctions::onManageWikiCoreAddFormFields';
-$wgHooks['ManageWikiCoreFormSubmission'][] = 'MirahezeFunctions::onManageWikiCoreFormSubmission';
-
-// Load MultiVersion helpers (setWikiVersion used by onManageWikiCoreFormSubmission).
-require_once '/srv/mediawiki/config/MultiVersion.php';
+$wgHooks['ManageWikiCoreAddFormFields'][] = 'WikiOasisFunctions::onManageWikiCoreAddFormFields';
+$wgHooks['ManageWikiCoreFormSubmission'][] = 'WikiOasisFunctions::onManageWikiCoreFormSubmission';
 
 wfLoadExtensions( [
     'CentralAuth',
@@ -50,7 +47,7 @@ $wgCentralAuthSharedDomainCallback = static fn ( $dbname ) =>
 "https://{$wi->getSharedDomain()}/$dbname";
 
 if ( $wmgSharedDomainPathPrefix ) {
-    $wgCentralAuthCookieDomain = '.' . MirahezeFunctions::getDefaultServer();
+    $wgCentralAuthCookieDomain = '.' . WikiOasisFunctions::getDefaultServer();
     $wgCookiePrefix = 'auth';
     $wgSessionName = 'authSession';
     $wgWebAuthnNewCredsDisabled = false;

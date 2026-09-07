@@ -6,8 +6,8 @@ use MediaWiki\MediaWikiServices;
 
 define( 'MW_ENTRY_POINT', 'index' );
 
-require_once dirname( __DIR__, 2 ) . '/MirahezeFunctions.php';
-MirahezeFunctions::getMediaWiki( '' );
+require_once dirname(__DIR__, 2) . '/WikiOasisFunctions.php';
+WikiOasisFunctions::getMediaWiki( '' );
 global $IP;
 
 require_once "$IP/includes/PHPVersionCheck.php";

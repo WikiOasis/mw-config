@@ -65,12 +65,12 @@ $wgVirtualDomainsMapping['virtual-interwiki-interlanguage'] = ['db' => 'metawiki
 $wgVirtualDomainsMapping['virtual-centralnotice'] = ['db' => 'metawiki'];
 $wgVirtualDomainsMapping['virtual-wikioasissafety'] = [ 'db' => 'wikidb' ];
 
-$wgDebugLogGroups['MirahezeFunctions'] = "/var/log/mediawiki/mf.log";
-require_once "/srv/mediawiki/config/MirahezeFunctions.php";
+$wgDebugLogGroups['WikiOasisFunctions'] = "/var/log/mediawiki/mf.log";
+require_once "/srv/mediawiki/config/WikiOasisFunctions.php";
 require_once "/srv/mediawiki/config/GlobalExtensions.php";
 require_once "/srv/mediawiki/config/Safety.php";
 
-$wi = new MirahezeFunctions();
+$wi = new WikiOasisFunctions();
 // $wgReadOnly = ( PHP_SAPI === 'cli' ) ? null : 'This wiki is currently being upgraded to a newer software version. Please check back in a couple of hours.';
 
 $wmgSharedDomainPathPrefix = '';
@@ -2897,7 +2897,7 @@ $wi::$disabledExtensions = [
     'semanticscribunto' => 'Semantic MediaWiki currently not enabled. Contact for enable.',
 ];
 
-$globals = MirahezeFunctions::getConfigGlobals();
+$globals = WikiOasisFunctions::getConfigGlobals();
 
 // profiling
 require_once __DIR__ . '/Sentry.php';
@@ -3059,7 +3059,7 @@ require_once "/srv/mediawiki/config/LocalWiki.php";
 $wgCargoDBname = $wgDBname . 'cargo';
 
 // Define last - Extension message files for loading extensions
-$_mwVersion = MirahezeFunctions::getMediaWikiVersion();
+$_mwVersion = WikiOasisFunctions::getMediaWikiVersion();
 if (file_exists(__DIR__ . "/ExtensionMessageFiles-{$_mwVersion}.php") && !defined('MW_NO_EXTENSION_MESSAGES')) {
     require_once __DIR__ . "/ExtensionMessageFiles-{$_mwVersion}.php";
     // These are not loaded by mergeMessageFileList.php due to not being on ExtensionRegistry
@@ -3071,7 +3071,7 @@ if (file_exists(__DIR__ . "/ExtensionMessageFiles-{$_mwVersion}.php") && !define
 }
 // Use a per-version subdirectory so multiple MW versions can coexist.
 $wgLocalisationCacheConf['storeClass'] = LCStoreStaticArray::class;
-$wgLocalisationCacheConf['storeDirectory'] = "/srv/mediawiki/cache/" . MirahezeFunctions::getMediaWikiVersion();
+$wgLocalisationCacheConf['storeDirectory'] = "/srv/mediawiki/cache/" . WikiOasisFunctions::getMediaWikiVersion();
 $wgLocalisationCacheConf['manualRecache'] = true;
 
 if ( !file_exists( $wgLocalisationCacheConf['storeDirectory'] . '/en.l10n.php' ) ) {

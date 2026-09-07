@@ -2,7 +2,7 @@
 
 define( 'MW_NO_SESSION', 1 );
 
-require_once '/var/www/mediawiki/config/MirahezeFunctions.php';
+require_once '/var/www/mediawiki/config/WikiOasisFunctions.php';
 require '/var/www/mediawiki/includes/WebStart.php';
 
 use MediaWiki\Context\RequestContext;
