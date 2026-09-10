@@ -86,6 +86,13 @@ if ($wi->isExtensionActive('UserProfileV2')) {
 
 // JsonConfig
 if ( $wi->isExtensionActive( 'JsonConfig' ) ) {
+	// GlobalJsonLinks tracking writes to the 'virtual-globaljsonlinks' database domain,
+	// which is not mapped in $wgVirtualDomainsMapping. Without a mapping it falls back to
+	// each wiki's own database, where the globaljsonlinks / globaljsonlinks_wiki tables do
+	// not exist, so every LinksUpdate fails. Keep tracking off until update.php has created
+	// the tables or the virtual domain is mapped to a shared database.
+	$wgTrackGlobalJsonLinks = false;
+
 	$wgJsonConfigs = [
 		'Map.JsonConfig' => [
 			'namespace' => 486,
