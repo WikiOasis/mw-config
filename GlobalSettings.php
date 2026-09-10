@@ -63,7 +63,10 @@ if ($wi->isExtensionActive('QuickInstantCommons')) {
     $wgQuickInstantCommonsUserAgentInfo = 'https://wikioasis.org; tech@wikioasis.org';
 }
 
-if ($wi->isExtensionActive('CirrusSearch')) {
+// On the shared login domain LocalSettings.php skips $wi->loadExtensions(), so the
+// CirrusSearch class is never registered even when ManageWiki lists it as active.
+// Setting $wgSearchType to it there makes SearchEngineFactory::create fatal.
+if ( !$wmgSharedDomainPathPrefix && $wi->isExtensionActive('CirrusSearch') ) {
 	wfLoadExtension('Elastica');
 	$wgSearchType = 'CirrusSearch';
 	$wgCirrusSearchServers = ['opensearch-us-east-011.ovvin.wonet', 'opensearch-us-east-012.ovvin.wonet'];
