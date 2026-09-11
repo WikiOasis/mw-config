@@ -2291,6 +2291,13 @@ $wgConf->settings += [
     ],
 
     // WikiOasisMagic
+    'wgWikiOasisMagicAccessIdsMap' => [
+        'default' => [],
+        'staffwiki' => [
+            'staffwiki' => [],
+        ],
+    ],
+
     'wgWikiOasisMagicReportsBlockAlertKeywords' => [
 	'default' => [
 	    'underage',
