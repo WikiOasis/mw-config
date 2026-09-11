@@ -63,7 +63,7 @@ if ($wi->isExtensionActive('QuickInstantCommons')) {
     $wgQuickInstantCommonsUserAgentInfo = 'https://wikioasis.org; tech@wikioasis.org';
 }
 
-if ($wi->isExtensionActive('CirrusSearch')) {
+if ( !$wmgSharedDomainPathPrefix && $wi->isExtensionActive('CirrusSearch') ) {
 	wfLoadExtension('Elastica');
 	$wgSearchType = 'CirrusSearch';
 	$wgCirrusSearchServers = ['opensearch-us-east-011.ovvin.wonet', 'opensearch-us-east-012.ovvin.wonet'];
