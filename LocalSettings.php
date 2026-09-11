@@ -2291,6 +2291,33 @@ $wgConf->settings += [
     ],
 
     // WikiOasisMagic
+    'wgWikiOasisMagicAccessIdsMap' => [
+        'default' => [
+            // Only staff are allowed access
+            // DO NOT ADD UNAUTHORIZED USERS
+            'staffwiki' => [
+                /** Zippy (Tech, Safety, Steward) */
+                8,
+                /** Globe (Board, Safety, Steward) */
+                10,
+                /** Raidarr (Safety, Steward) */
+                29,
+                /** Reception123 (Tech) */
+                31,
+                /** Pisces (Tech) */
+                152,
+                /** Dream Indigo (Board) */
+                278,
+                /** Justarandomamerican (Steward) */
+                11040,
+                /** Owlnai (Tech) */
+                16616,
+                /** Doug (Board, Safety) */
+                20647,
+            ],
+        ],
+    ],
+
     'wgWikiOasisMagicReportsBlockAlertKeywords' => [
 	'default' => [
 	    'underage',
