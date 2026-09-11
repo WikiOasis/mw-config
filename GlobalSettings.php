@@ -86,6 +86,8 @@ if ($wi->isExtensionActive('UserProfileV2')) {
 
 // JsonConfig
 if ( $wi->isExtensionActive( 'JsonConfig' ) ) {
+	$wgTrackGlobalJsonLinks = false;
+
 	$wgJsonConfigs = [
 		'Map.JsonConfig' => [
 			'namespace' => 486,
