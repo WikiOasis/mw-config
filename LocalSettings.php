@@ -2894,13 +2894,7 @@ $wi::$disabledExtensions = [
     'hawelcome' => 'Privacy issue',
     'semanticscribunto' => 'Semantic MediaWiki currently not enabled. Contact for enable.',
 
-    // Bucket needs its own MySQL account ($wgBucketDBuser/$wgBucketDBpassword).
-    // Only the user is set (see wgBucketDBuser above); nothing sets a password,
-    // so BucketDatabase::getDB() throws a ConfigException on every code path,
-    // including the LinksUpdateComplete hook that runs on every page save.
-    // Keep it globally disabled until the account is provisioned and the
-    // password is wired in from PrivateSettings.php.
-    'bucket' => 'Requires dedicated database credentials that are not provisioned on this farm.',
+    'bucket' => 'Missing database credentials ($wgBucketDBpassword is not provisioned on this farm).',
 ];
 
 $globals = WikiOasisFunctions::getConfigGlobals();
