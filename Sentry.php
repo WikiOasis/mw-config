@@ -98,6 +98,30 @@ $wgHooks['UserGetRights'][] = function ( $user ) {
 };
 
 $wgHooks['BeforePageDisplay'][] = function ( OutputPage $out, Skin $skin ) {
+	$out->addHeadItem( 'sentry-js-config', <<<'HTML'
+		<script>
+		window.sentryOnLoad = function () {
+			Sentry.init( {
+				beforeSend: function ( event ) {
+					var values = event.exception && event.exception.values;
+					var error = values && values.length ? values[ values.length - 1 ] : null;
+					var frames = error && error.stacktrace && error.stacktrace.frames;
+					if ( !frames || !frames.length ) {
+						return event;
+					}
+					var here = location.href.split( '#' )[ 0 ];
+					for ( var i = 0; i < frames.length; i++ ) {
+						if ( String( frames[ i ].filename ).split( '#' )[ 0 ] !== here ) {
+							return event;
+						}
+					}
+					event.fingerprint = [ 'inline-page-script', error.type || 'Error' ];
+					return event;
+				}
+			} );
+		};
+		</script>
+		HTML );
 	$out->addHeadItem( 'sentry-js', '<script src="https://js.sentry-cdn.com/8d12d310c7d40b6b4d8c8989e36a7b5a.min.js" crossorigin="anonymous"></script>' );
 	return true;
 };
