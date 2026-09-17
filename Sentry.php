@@ -59,10 +59,6 @@ if ( PHP_SAPI !== 'cli' ) {
 
 	register_shutdown_function( static function () use ( $sentryTx ) {
 		try {
-			$error = error_get_last();
-			if ( $error && in_array( $error['type'], [ E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ], true ) ) {
-				\Sentry\captureMessage( $error['message'], \Sentry\Severity::fatal() );
-			}
 			if ( method_exists( $sentryTx, 'setHttpStatus' ) ) {
 				$sentryTx->setHttpStatus( http_response_code() ?: 200 );
 			}
