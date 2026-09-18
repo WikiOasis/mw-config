@@ -24,6 +24,15 @@ $wgHooks['CreateWikiGenerateDatabaseLists'][] = 'WikiOasisFunctions::onGenerateD
 $wgHooks['ManageWikiCoreAddFormFields'][] = 'WikiOasisFunctions::onManageWikiCoreAddFormFields';
 $wgHooks['ManageWikiCoreFormSubmission'][] = 'WikiOasisFunctions::onManageWikiCoreFormSubmission';
 
+// skin-responsive's hide-if references the 'skin' field, which $wgHiddenPrefs may remove.
+$wgHooks['GetPreferences'][] = static function ( $user, &$preferences ) {
+	global $wgHiddenPrefs;
+
+	if ( in_array( 'skin', (array)$wgHiddenPrefs, true ) ) {
+		unset( $preferences['skin-responsive'] );
+	}
+};
+
 wfLoadExtensions( [
     'CentralAuth',
     'GlobalBlocking',
