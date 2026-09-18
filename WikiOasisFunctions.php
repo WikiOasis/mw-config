@@ -61,7 +61,7 @@ class WikiOasisFunctions {
         'beta' => 'wikidbbeta',
     ];
 
-    private const MEDIAWIKI_DIRECTORY = '/srv/mediawiki/versions';
+    public const MEDIAWIKI_DIRECTORY = '/srv/mediawiki/versions';
 
     public const MEDIAWIKI_VERSIONS = [
         'alpha' => '1.46',
