@@ -109,9 +109,13 @@ $wgHooks['BeforePageDisplay'][] = function ( OutputPage $out, Skin $skin ) {
 					if ( !frames || !frames.length ) {
 						return event;
 					}
+					if ( error.mechanism && error.mechanism.synthetic ) {
+						return event;
+					}
 					var here = location.href.split( '#' )[ 0 ];
 					for ( var i = 0; i < frames.length; i++ ) {
-						if ( String( frames[ i ].filename ).split( '#' )[ 0 ] !== here ) {
+						var filename = String( frames[ i ].filename ).split( '#' )[ 0 ];
+						if ( filename !== here && filename !== '<anonymous>' ) {
 							return event;
 						}
 					}
