@@ -69,6 +69,8 @@ class WikiOasisFunctions {
         'stable' => '1.45',
     ];
 
+    public const NEW_WIKI_MEDIAWIKI_VERSION = '1.46';
+
     public const SUFFIXES = [
         'wiki' => self::ALLOWED_DOMAINS['default'],
         'wikibeta' => self::ALLOWED_DOMAINS['beta'],
@@ -878,8 +880,9 @@ class WikiOasisFunctions {
     }
 
     private static function getDatabaseConnection( string $databaseName ): IReadableDatabase {
+        // Primary, so a wiki just created or edited isn't missed through replica lag
         return MediaWikiServices::getInstance()->getConnectionProvider()
-            ->getReplicaDatabase( $databaseName );
+            ->getPrimaryDatabase( $databaseName );
     }
 
     private static function generateDatabaseLists( string $globalDatabase ): array {
@@ -1008,6 +1011,54 @@ class WikiOasisFunctions {
                 "$name-wikis" => $databases['versions'][$version],
             ];
         }
+    }
+
+    public static function onCreateWikiCreation( string $dbname, bool $private ): void {
+        $dbw = MediaWikiServices::getInstance()->get( 'CreateWikiDatabaseUtils' )->getGlobalPrimaryDB();
+        $extra = $dbw->newSelectQueryBuilder()
+            ->select( 'wiki_extra' )
+            ->from( 'cw_wikis' )
+            ->where( [ 'wiki_dbname' => $dbname ] )
+            ->caller( __METHOD__ )
+            ->fetchField();
+
+        $extraData = json_decode( $extra ?: '[]', true ) ?: [];
+        $extraData['mediawiki-version'] = self::NEW_WIKI_MEDIAWIKI_VERSION;
+
+        $dbw->newUpdateQueryBuilder()
+            ->update( 'cw_wikis' )
+            ->set( [ 'wiki_extra' => json_encode( $extraData ) ] )
+            ->where( [ 'wiki_dbname' => $dbname ] )
+            ->caller( __METHOD__ )
+            ->execute();
+    }
+
+    public static function onWfShellWikiCmd( string &$script, array &$parameters, array &$options ): void {
+        if ( isset( $options['php'] ) || isset( $options['wrapper'] ) ) {
+            return;
+        }
+
+        $wikiIndex = array_search( '--wiki', $parameters, true );
+        $dbname = $wikiIndex !== false ? ( $parameters[$wikiIndex + 1] ?? null ) : null;
+        if ( !is_string( $dbname ) || $dbname === '' ) {
+            return;
+        }
+
+        $versionPath = self::MEDIAWIKI_DIRECTORY . '/' . self::getMediaWikiVersion( $dbname );
+        if ( !is_dir( $versionPath ) || $versionPath === MW_INSTALL_PATH ) {
+            return;
+        }
+
+        if ( str_starts_with( $script, MW_INSTALL_PATH . '/' ) ) {
+            $script = $versionPath . substr( $script, strlen( MW_INSTALL_PATH ) );
+        }
+
+        // Inherited MW_INSTALL_PATH would load the caller's core
+        $phpCli = MediaWikiServices::getInstance()->getMainConfig()->get( 'PhpCli' );
+        $parameters = [ "$versionPath/maintenance/run.php", $script, ...$parameters ];
+        $script = $phpCli;
+        $options['php'] = '/usr/bin/env';
+        $options['wrapper'] = "MW_INSTALL_PATH=$versionPath";
     }
 
     public static function onManageWikiCoreAddFormFields(

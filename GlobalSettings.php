@@ -24,6 +24,9 @@ $wgHooks['CreateWikiGenerateDatabaseLists'][] = 'WikiOasisFunctions::onGenerateD
 $wgHooks['ManageWikiCoreAddFormFields'][] = 'WikiOasisFunctions::onManageWikiCoreAddFormFields';
 $wgHooks['ManageWikiCoreFormSubmission'][] = 'WikiOasisFunctions::onManageWikiCoreFormSubmission';
 
+$wgHooks['CreateWikiCreation'][] = 'WikiOasisFunctions::onCreateWikiCreation';
+$wgHooks['wfShellWikiCmd'][] = 'WikiOasisFunctions::onWfShellWikiCmd';
+
 wfLoadExtensions( [
     'CentralAuth',
     'GlobalBlocking',
