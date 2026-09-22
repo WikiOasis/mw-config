@@ -880,8 +880,9 @@ class WikiOasisFunctions {
     }
 
     private static function getDatabaseConnection( string $databaseName ): IReadableDatabase {
+        // Primary, so a wiki just created or edited isn't missed through replica lag
         return MediaWikiServices::getInstance()->getConnectionProvider()
-            ->getReplicaDatabase( $databaseName );
+            ->getPrimaryDatabase( $databaseName );
     }
 
     private static function generateDatabaseLists( string $globalDatabase ): array {
