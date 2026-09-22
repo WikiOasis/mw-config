@@ -95,6 +95,10 @@ $wgExtensionAssetsPath = "$wgResourceBasePath/extensions";
 $wgStylePath = "$wgResourceBasePath/skins";
 $wgLocalStylePath = $wgStylePath;
 
+// Install path of the MediaWiki version new wikis are created on. Used for
+// wgCreateWikiSQLFiles so new wikis get that version's schema, not the creating wiki's.
+$wmgNewWikiIP = WikiOasisFunctions::MEDIAWIKI_DIRECTORY . '/' . WikiOasisFunctions::NEW_WIKI_MEDIAWIKI_VERSION;
+
 $wgConf->settings += [
     'wgAuthenticationTokenVersion' => [
         'default' => '1',
@@ -884,21 +888,21 @@ $wgConf->settings += [
     ],
     'wgCreateWikiSQLFiles' => [
         'default' => [
-            "$IP/sql/mysql/tables-generated.sql",
-            "$IP/extensions/AbuseFilter/db_patches/mysql/tables-generated.sql",
-            "$IP/extensions/AntiSpoof/sql/mysql/tables-generated.sql",
-            "$IP/extensions/BetaFeatures/sql/tables-generated.sql",
-            "$IP/extensions/CheckUser/schema/mysql/tables-generated.sql",
-            "$IP/extensions/CentralNotice/sql/mysql/tables-generated.sql",
-            "$IP/extensions/DataDump/sql/data_dump.sql",
-            "$IP/extensions/Echo/sql/mysql/tables-generated.sql",
-            "$IP/extensions/GlobalBlocking/sql/mysql/tables-generated-global_block_whitelist.sql",
-            #"$IP/extensions/LoginNotify/sql/mysql/tables-generated.sql",
-            "$IP/extensions/OATHAuth/sql/mysql/tables-generated.sql",
-            "$IP/extensions/OAuth/schema/mysql/tables-generated.sql",
-	        "$IP/extensions/MediaModeration/schema/mysql/tables-generated.sql",
-            //"$IP/extensions/RottenLinks/sql/rottenlinks.sql",
-            //"$IP/extensions/UrlShortener/schemas/tables-generated.sql",
+            "$wmgNewWikiIP/sql/mysql/tables-generated.sql",
+            "$wmgNewWikiIP/extensions/AbuseFilter/db_patches/mysql/tables-generated.sql",
+            "$wmgNewWikiIP/extensions/AntiSpoof/sql/mysql/tables-generated.sql",
+            "$wmgNewWikiIP/extensions/BetaFeatures/sql/tables-generated.sql",
+            "$wmgNewWikiIP/extensions/CheckUser/schema/mysql/tables-generated.sql",
+            "$wmgNewWikiIP/extensions/CentralNotice/sql/mysql/tables-generated.sql",
+            "$wmgNewWikiIP/extensions/DataDump/sql/data_dump.sql",
+            "$wmgNewWikiIP/extensions/Echo/sql/mysql/tables-generated.sql",
+            "$wmgNewWikiIP/extensions/GlobalBlocking/sql/mysql/tables-generated-global_block_whitelist.sql",
+            #"$wmgNewWikiIP/extensions/LoginNotify/sql/mysql/tables-generated.sql",
+            "$wmgNewWikiIP/extensions/OATHAuth/sql/mysql/tables-generated.sql",
+            "$wmgNewWikiIP/extensions/OAuth/schema/mysql/tables-generated.sql",
+	        "$wmgNewWikiIP/extensions/MediaModeration/schema/mysql/tables-generated.sql",
+            //"$wmgNewWikiIP/extensions/RottenLinks/sql/rottenlinks.sql",
+            //"$wmgNewWikiIP/extensions/UrlShortener/schemas/tables-generated.sql",
         ],
     ],
     // CheckUser

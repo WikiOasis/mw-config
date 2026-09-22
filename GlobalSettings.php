@@ -24,6 +24,11 @@ $wgHooks['CreateWikiGenerateDatabaseLists'][] = 'WikiOasisFunctions::onGenerateD
 $wgHooks['ManageWikiCoreAddFormFields'][] = 'WikiOasisFunctions::onManageWikiCoreAddFormFields';
 $wgHooks['ManageWikiCoreFormSubmission'][] = 'WikiOasisFunctions::onManageWikiCoreFormSubmission';
 
+// Pin new wikis to WikiOasisFunctions::NEW_WIKI_MEDIAWIKI_VERSION and run per-wiki
+// maintenance scripts on the target wiki's version.
+$wgHooks['CreateWikiCreation'][] = 'WikiOasisFunctions::onCreateWikiCreation';
+$wgHooks['WfShellWikiCmd'][] = 'WikiOasisFunctions::onWfShellWikiCmd';
+
 wfLoadExtensions( [
     'CentralAuth',
     'GlobalBlocking',

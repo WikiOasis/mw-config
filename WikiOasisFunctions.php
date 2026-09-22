@@ -69,6 +69,10 @@ class WikiOasisFunctions {
         'stable' => '1.45',
     ];
 
+    // Version newly created wikis are pinned to (stored in wiki_extra as 'mediawiki-version').
+    // Existing wikis without an explicit version still follow 'stable'.
+    public const NEW_WIKI_MEDIAWIKI_VERSION = '1.46';
+
     public const SUFFIXES = [
         'wiki' => self::ALLOWED_DOMAINS['default'],
         'wikibeta' => self::ALLOWED_DOMAINS['beta'],
@@ -1008,6 +1012,57 @@ class WikiOasisFunctions {
                 "$name-wikis" => $databases['versions'][$version],
             ];
         }
+    }
+
+    public static function onCreateWikiCreation( string $dbname, bool $private ): void {
+        // Pin the new wiki to NEW_WIKI_MEDIAWIKI_VERSION. Runs before CreateWiki's deferred
+        // resetDatabaseLists(), so databases.php picks up the version before the
+        // post-creation maintenance scripts run.
+        $dbw = MediaWikiServices::getInstance()->get( 'CreateWikiDatabaseUtils' )->getGlobalPrimaryDB();
+        $extra = $dbw->newSelectQueryBuilder()
+            ->select( 'wiki_extra' )
+            ->from( 'cw_wikis' )
+            ->where( [ 'wiki_dbname' => $dbname ] )
+            ->caller( __METHOD__ )
+            ->fetchField();
+
+        $extraData = json_decode( $extra ?: '[]', true ) ?: [];
+        $extraData['mediawiki-version'] = self::NEW_WIKI_MEDIAWIKI_VERSION;
+
+        $dbw->newUpdateQueryBuilder()
+            ->update( 'cw_wikis' )
+            ->set( [ 'wiki_extra' => json_encode( $extraData ) ] )
+            ->where( [ 'wiki_dbname' => $dbname ] )
+            ->caller( __METHOD__ )
+            ->execute();
+    }
+
+    public static function onWfShellWikiCmd( string &$script, array &$parameters, array &$options ): void {
+        // Run maintenance scripts spawned for another wiki (e.g. CreateWiki's post-creation
+        // scripts) on that wiki's MediaWiki version rather than the caller's.
+        if ( isset( $options['php'] ) || isset( $options['wrapper'] ) ) {
+            return;
+        }
+
+        $wikiIndex = array_search( '--wiki', $parameters, true );
+        $dbname = $wikiIndex !== false ? ( $parameters[$wikiIndex + 1] ?? null ) : null;
+        if ( !is_string( $dbname ) || $dbname === '' ) {
+            return;
+        }
+
+        $versionPath = self::MEDIAWIKI_DIRECTORY . '/' . self::getMediaWikiVersion( $dbname );
+        if ( !is_dir( $versionPath ) || $versionPath === MW_INSTALL_PATH ) {
+            return;
+        }
+
+        // MW_INSTALL_PATH is inherited from the parent (set by getMediaWiki()) and would make
+        // the child load the parent's core, so override it via env.
+        // Resulting command: env MW_INSTALL_PATH=<path> <php> <path>/maintenance/run.php <script> ...
+        $phpCli = MediaWikiServices::getInstance()->getMainConfig()->get( 'PhpCli' );
+        $parameters = [ "$versionPath/maintenance/run.php", $script, ...$parameters ];
+        $script = $phpCli;
+        $options['php'] = '/usr/bin/env';
+        $options['wrapper'] = "MW_INSTALL_PATH=$versionPath";
     }
 
     public static function onManageWikiCoreAddFormFields(
