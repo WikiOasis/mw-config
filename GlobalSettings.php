@@ -25,7 +25,7 @@ $wgHooks['ManageWikiCoreAddFormFields'][] = 'WikiOasisFunctions::onManageWikiCor
 $wgHooks['ManageWikiCoreFormSubmission'][] = 'WikiOasisFunctions::onManageWikiCoreFormSubmission';
 
 $wgHooks['CreateWikiCreation'][] = 'WikiOasisFunctions::onCreateWikiCreation';
-$wgHooks['WfShellWikiCmd'][] = 'WikiOasisFunctions::onWfShellWikiCmd';
+$wgHooks['wfShellWikiCmd'][] = 'WikiOasisFunctions::onWfShellWikiCmd';
 
 wfLoadExtensions( [
     'CentralAuth',

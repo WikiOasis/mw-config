@@ -1049,6 +1049,10 @@ class WikiOasisFunctions {
             return;
         }
 
+        if ( str_starts_with( $script, MW_INSTALL_PATH . '/' ) ) {
+            $script = $versionPath . substr( $script, strlen( MW_INSTALL_PATH ) );
+        }
+
         // Inherited MW_INSTALL_PATH would load the caller's core
         $phpCli = MediaWikiServices::getInstance()->getMainConfig()->get( 'PhpCli' );
         $parameters = [ "$versionPath/maintenance/run.php", $script, ...$parameters ];
