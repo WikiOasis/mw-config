@@ -889,6 +889,7 @@ $wgConf->settings += [
             "/srv/mediawiki/versions/1.46/extensions/AntiSpoof/sql/mysql/tables-generated.sql",
             "/srv/mediawiki/versions/1.46/extensions/BetaFeatures/sql/tables-generated.sql",
             "/srv/mediawiki/versions/1.46/extensions/CheckUser/schema/mysql/tables-generated.sql",
+			"/srv/mediawiki/versions/1.46/extensions/CheckUser/schema/mysql/tables-virtual-checkuser-generated.sql",
             "/srv/mediawiki/versions/1.46/extensions/CentralNotice/sql/mysql/tables-generated.sql",
             "/srv/mediawiki/versions/1.46/extensions/DataDump/sql/data_dump.sql",
             "/srv/mediawiki/versions/1.46/extensions/Echo/sql/mysql/tables-generated.sql",
