@@ -28,7 +28,6 @@ class WikiOasisFunctions {
     private const ALLOWED_DOMAINS = [
         'default' => [
             'wikioasis.org',
-            'skywiki.org',
         ],
         'beta' => [
             'betaoasis.xyz',
@@ -65,11 +64,9 @@ class WikiOasisFunctions {
 
     public const MEDIAWIKI_VERSIONS = [
         'alpha' => '1.46',
-        'beta' => '1.45',
-        'stable' => '1.45',
+        'beta' => '1.46',
+        'stable' => '1.46',
     ];
-
-    public const NEW_WIKI_MEDIAWIKI_VERSION = '1.46';
 
     public const SUFFIXES = [
         'wiki' => self::ALLOWED_DOMAINS['default'],
@@ -1023,7 +1020,7 @@ class WikiOasisFunctions {
             ->fetchField();
 
         $extraData = json_decode( $extra ?: '[]', true ) ?: [];
-        $extraData['mediawiki-version'] = self::NEW_WIKI_MEDIAWIKI_VERSION;
+        $extraData['mediawiki-version'] = self::MEDIAWIKI_VERSIONS['stable'];
 
         $dbw->newUpdateQueryBuilder()
             ->update( 'cw_wikis' )
