@@ -69,8 +69,6 @@ class WikiOasisFunctions {
         'stable' => '1.45',
     ];
 
-    // Version newly created wikis are pinned to (stored in wiki_extra as 'mediawiki-version').
-    // Existing wikis without an explicit version still follow 'stable'.
     public const NEW_WIKI_MEDIAWIKI_VERSION = '1.46';
 
     public const SUFFIXES = [
@@ -1015,9 +1013,6 @@ class WikiOasisFunctions {
     }
 
     public static function onCreateWikiCreation( string $dbname, bool $private ): void {
-        // Pin the new wiki to NEW_WIKI_MEDIAWIKI_VERSION. Runs before CreateWiki's deferred
-        // resetDatabaseLists(), so databases.php picks up the version before the
-        // post-creation maintenance scripts run.
         $dbw = MediaWikiServices::getInstance()->get( 'CreateWikiDatabaseUtils' )->getGlobalPrimaryDB();
         $extra = $dbw->newSelectQueryBuilder()
             ->select( 'wiki_extra' )
@@ -1038,8 +1033,6 @@ class WikiOasisFunctions {
     }
 
     public static function onWfShellWikiCmd( string &$script, array &$parameters, array &$options ): void {
-        // Run maintenance scripts spawned for another wiki (e.g. CreateWiki's post-creation
-        // scripts) on that wiki's MediaWiki version rather than the caller's.
         if ( isset( $options['php'] ) || isset( $options['wrapper'] ) ) {
             return;
         }
@@ -1055,9 +1048,7 @@ class WikiOasisFunctions {
             return;
         }
 
-        // MW_INSTALL_PATH is inherited from the parent (set by getMediaWiki()) and would make
-        // the child load the parent's core, so override it via env.
-        // Resulting command: env MW_INSTALL_PATH=<path> <php> <path>/maintenance/run.php <script> ...
+        // Inherited MW_INSTALL_PATH would load the caller's core
         $phpCli = MediaWikiServices::getInstance()->getMainConfig()->get( 'PhpCli' );
         $parameters = [ "$versionPath/maintenance/run.php", $script, ...$parameters ];
         $script = $phpCli;
