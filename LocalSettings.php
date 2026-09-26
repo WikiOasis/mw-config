@@ -56,6 +56,7 @@ $wgVirtualDomainsMapping['virtual-createwiki'] = ['db' => 'wikidb'];
 $wgVirtualDomainsMapping['virtual-createwiki-central'] = ['db' => 'metawiki'];
 $wgVirtualDomainsMapping['virtual-globalblocking'] = ['db' => 'wikidb'];
 $wgVirtualDomainsMapping['virtual-managewiki'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-managewiki-central'] = ['db' => 'wikidb'];
 $wgVirtualDomainsMapping['virtual-oathauth'] = ['db' => 'wikidb'];
 $wgVirtualDomainsMapping['virtual-LoginNotify'] = ['db' => 'wikidb'];
 $wgVirtualDomainsMapping['virtual-importdump'] = ['db' => 'metawiki'];
