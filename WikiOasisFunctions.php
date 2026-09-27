@@ -630,6 +630,20 @@ class WikiOasisFunctions {
         return null;
     }
 
+    private static function isValidTimezone( mixed $timezone ): bool {
+        if ( !is_string( $timezone ) || $timezone === '' ) {
+            return false;
+        }
+
+        try {
+            new DateTimeZone( $timezone );
+        } catch ( Throwable ) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static function getManageWikiConfigCache(): array {
         static $cacheArray = null;
         $cacheArray ??= self::getCacheArray();
@@ -653,6 +667,10 @@ class WikiOasisFunctions {
 
         // Config settings
         foreach ( $cacheArray['settings'] ?? [] as $var => $val ) {
+            if ( $var === 'wgLocaltimezone' && !self::isValidTimezone( $val ) ) {
+                continue;
+            }
+
             $settings[$var]['default'] = $val;
         }
 
