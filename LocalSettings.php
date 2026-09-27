@@ -27,7 +27,7 @@ if ( !defined( 'MW_ENTRY_POINT' ) ) {
 // for debugging
 error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 #error_reporting(E_ALL);
-ini_set( 'display_errors', E_ALL);
+ini_set( 'display_errors', PHP_SAPI === 'cli' ? 'stderr' : E_ALL );
 ini_set( 'xdebug.var_display_max_children', - 1 );
 ini_set( 'xdebug.var_display_max_data', - 1 );
 ini_set( 'xdebug.var_display_max_depth', - 1 );
