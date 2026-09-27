@@ -7,8 +7,8 @@ use MediaWiki\MediaWikiServices;
 define( 'MW_API', true );
 define( 'MW_ENTRY_POINT', 'api' );
 
-require_once dirname( __DIR__, 2 ) . '/MirahezeFunctions.php';
-MirahezeFunctions::getMediaWiki( '' );
+require_once dirname(__DIR__, 2) . '/WikiOasisFunctions.php';
+WikiOasisFunctions::getMediaWiki( '' );
 global $IP;
 
 require "$IP/includes/WebStart.php";

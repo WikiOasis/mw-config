@@ -4,9 +4,9 @@
 
 define( 'MW_NO_SESSION', 1 );
 
-require_once dirname( __DIR__, 2 ) . '/MirahezeFunctions.php';
+require_once dirname(__DIR__, 2) . '/WikiOasisFunctions.php';
 
-$version = MirahezeFunctions::getMediaWikiVersion();
+$version = WikiOasisFunctions::getMediaWikiVersion();
 $resourcesBase = '/srv/mediawiki/versions/' . $version . '/resources';
 
 // Extract the sub-path after /resources/ from REQUEST_URI.

@@ -39,7 +39,7 @@ ini_set( 'xdebug.var_display_max_depth', - 1 );
 ini_set( 'memory_limit', '256M' );
 $wgMemoryLimit = '256M';
 
-require_once "$IP/config/PrivateSettings.php";
+require_once "/srv/mediawiki/config/PrivateSettings.php";
 
 $wgConf->suffixes = [ 'wiki' ];
 
@@ -49,41 +49,29 @@ $wgDBprefix = "";
 $wgDBssl = false;
 
 $wgDiff3 = "/usr/bin/diff3";
-if ( php_uname( 'n' ) === 'staging11' ) {
-    $wgVirtualDomainsMapping['virtual-centralauth'] = ['db' => 'wikidbbeta'];
-    $wgVirtualDomainsMapping['virtual-checkuser-global'] = ['db' => 'wikidbbeta'];
-    $wgVirtualDomainsMapping['virtual-createwiki'] = ['db' => 'wikidbbeta'];
-    $wgVirtualDomainsMapping['virtual-createwiki-central'] = ['db' => 'metawikibeta'];
-    $wgVirtualDomainsMapping['virtual-globalblocking'] = ['db' => 'wikidbbeta'];
-    $wgVirtualDomainsMapping['virtual-managewiki'] = ['db' => 'wikidbbeta'];
-    $wgVirtualDomainsMapping['virtual-oathauth'] = ['db' => 'wikidbbeta'];
-    $wgVirtualDomainsMapping['virtual-LoginNotify'] = ['db' => 'wikidbbeta'];
-    $wgVirtualDomainsMapping['virtual-importdump'] = ['db' => 'metawikibeta'];
-    $wgVirtualDomainsMapping['virtual-requestcustomdomain'] = ['db' => 'metawikibeta'];
-    $wgVirtualDomainsMapping['virtual-interwiki'] = ['db' => 'metawikibeta'];
-    $wgVirtualDomainsMapping['virtual-interwiki-interlanguage'] = ['db' => 'metawikibeta'];
-    $wgVirtualDomainsMapping['virtual-centralnotice'] = ['db' => 'metawikibeta'];
-} else {
-    $wgVirtualDomainsMapping['virtual-centralauth'] = ['db' => 'wikidb'];
-    $wgVirtualDomainsMapping['virtual-checkuser-global'] = ['db' => 'wikidb'];
-    $wgVirtualDomainsMapping['virtual-createwiki'] = ['db' => 'wikidb'];
-    $wgVirtualDomainsMapping['virtual-createwiki-central'] = ['db' => 'metawiki'];
-    $wgVirtualDomainsMapping['virtual-globalblocking'] = ['db' => 'wikidb'];
-    $wgVirtualDomainsMapping['virtual-managewiki'] = ['db' => 'wikidb'];
-    $wgVirtualDomainsMapping['virtual-oathauth'] = ['db' => 'wikidb'];
-    $wgVirtualDomainsMapping['virtual-LoginNotify'] = ['db' => 'wikidb'];
-    $wgVirtualDomainsMapping['virtual-importdump'] = ['db' => 'metawiki'];
-    $wgVirtualDomainsMapping['virtual-requestcustomdomain'] = ['db' => 'metawiki'];
-    $wgVirtualDomainsMapping['virtual-interwiki'] = ['db' => 'metawiki'];
-    $wgVirtualDomainsMapping['virtual-interwiki-interlanguage'] = ['db' => 'metawiki'];
-    $wgVirtualDomainsMapping['virtual-centralnotice'] = ['db' => 'metawiki'];
-}
 
-$wgDebugLogGroups['MirahezeFunctions'] = "/var/log/mediawiki/mf.log";
-require_once "$IP/config/MirahezeFunctions.php";
-require_once "$IP/config/GlobalExtensions.php";
+$wgVirtualDomainsMapping['virtual-centralauth'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-checkuser-global'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-createwiki'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-createwiki-central'] = ['db' => 'metawiki'];
+$wgVirtualDomainsMapping['virtual-globalblocking'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-managewiki'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-managewiki-central'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-oathauth'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-LoginNotify'] = ['db' => 'wikidb'];
+$wgVirtualDomainsMapping['virtual-importdump'] = ['db' => 'metawiki'];
+$wgVirtualDomainsMapping['virtual-requestcustomdomain'] = ['db' => 'metawiki'];
+$wgVirtualDomainsMapping['virtual-interwiki'] = ['db' => 'metawiki'];
+$wgVirtualDomainsMapping['virtual-interwiki-interlanguage'] = ['db' => 'metawiki'];
+$wgVirtualDomainsMapping['virtual-centralnotice'] = ['db' => 'metawiki'];
+$wgVirtualDomainsMapping['virtual-wikioasissafety'] = [ 'db' => 'wikidb' ];
 
-$wi = new MirahezeFunctions();
+$wgDebugLogGroups['WikiOasisFunctions'] = "/var/log/mediawiki/mf.log";
+require_once "/srv/mediawiki/config/WikiOasisFunctions.php";
+require_once "/srv/mediawiki/config/GlobalExtensions.php";
+require_once "/srv/mediawiki/config/Safety.php";
+
+$wi = new WikiOasisFunctions();
 // $wgReadOnly = ( PHP_SAPI === 'cli' ) ? null : 'This wiki is currently being upgraded to a newer software version. Please check back in a couple of hours.';
 
 $wmgSharedDomainPathPrefix = '';
@@ -128,7 +116,6 @@ $wgConf->settings += [
     //],
     'wgDisableSearchUpdate' => [
         'default' => false,
-        'heroeswiki' => true,
     ],
     'wgCreateWikiDatabaseClusters' => [
         'default' => [
@@ -239,6 +226,22 @@ $wgConf->settings += [
     'wgArticlePath' => [
         'default' => '/wiki/$1',
     ],
+    'wgScriptPath' => [
+        'default' => '/w',
+    ],
+    'wgCrossSiteAJAXdomains' => [
+        'default' => [
+            'wikioasis.org',
+            '*.wikioasis.org',
+            'skywiki.org',
+            '*.skywiki.org',
+        ],
+        'beta' => [
+            'betaoasis.xyz',
+            '*.betaoasis.xyz',
+        ],
+    ],
+
     'wgUsePathInfo' => [
         'default' => true,
     ],
@@ -558,6 +561,91 @@ $wgConf->settings += [
         ],
     ],
 
+    // AdvancedSearch
+    'wgAdvancedSearchNamespacePresets' => [
+        'default' => [
+            'defaultNamespaces' => [
+                'enabled' => true,
+                'provider' => 'defaultNamespaces',
+                'label' => 'advancedsearch-namespaces-preset-default',
+            ],
+            'discussion' => [
+                'enabled' => true,
+                'provider' => 'discussion',
+                'label' => 'advancedsearch-namespaces-preset-discussion',
+            ],
+            'generalHelp' => [
+                'enabled' => true,
+                'namespaces' => [
+                    '4',
+                    '12',
+                ],
+                'label' => 'advancedsearch-namespaces-preset-general-help',
+            ],
+            'all' => [
+                'enabled' => true,
+                'provider' => 'all',
+                'label' => 'advancedsearch-namespaces-preset-all',
+            ],
+        ],
+        'countryhumanswiki' => [
+            'defaultNamespaces' => [
+                'enabled' => true,
+                'provider' => 'defaultNamespaces',
+                'label' => 'advancedsearch-namespaces-preset-default',
+            ],
+            'discussion' => [
+                'enabled' => true,
+                'provider' => 'discussion',
+                'label' => 'advancedsearch-namespaces-preset-discussion',
+            ],
+            'multimedia' => [
+                'enabled' => true,
+                'namespaces' => [
+                    '6',
+                ],
+                'label' => 'advancedsearch-namespaces-preset-multimedia'
+            ],
+            'original-or-fictional' => [
+                'enabled' => true,
+                'namespaces' => [
+                    '3000',
+                    '3002',
+                ],
+                'label' => 'advancedsearch-namespaces-preset-original-or-fictional' 
+            ],
+            'generalHelp' => [
+                'enabled' => true,
+                'namespaces' => [
+                    '4',
+                    '12',
+                ],
+                'label' => 'advancedsearch-namespaces-preset-general-help',
+            ],
+            'tech' => [
+                'enabled' => true,
+                'namespaces' => [
+                    '8',
+                    '10',
+                    '828',
+                ],
+                'label' => 'advancedsearch-namespaces-preset-tech' 
+            ],
+            'category' => [
+                'enabled' => true,
+                'namespaces' => [
+                    '14',
+                ],
+                'label' => 'advancedsearch-namespaces-preset-category' 
+            ],
+            'all' => [
+                'enabled' => true,
+                'provider' => 'all',
+                'label' => 'advancedsearch-namespaces-preset-all',
+            ],
+        ],
+    ],
+
     // CentralAuth
     'wgCentralAuthAutoCreateWikis' => [
         'default' => [
@@ -624,7 +712,7 @@ $wgConf->settings += [
     // CreateWiki
     'wgCreateWikiDatabase' => [
         'default' => 'wikidb',
- 	'beta' => 'wikidbbeta',
+ 	    'beta' => 'wikidbbeta',
     ],
     'wgCreateWikiUseJobQueue' => [
         'default' => true,
@@ -701,11 +789,11 @@ $wgConf->settings += [
     'wgCreateWikiDisableRESTAPI' => [
         'default' => true,
         'metawiki' => false,
-	'metawikibeta' => false,
+	    'metawikibeta' => false,
     ],
     'wgCreateWikiGlobalWiki' => [
         'default' => 'metawiki',
-	'beta' => 'metawikibeta',
+	    'beta' => 'metawikibeta',
     ],
     'wgCreateWikiEmailNotifications' => [
         'default' => true,
@@ -797,21 +885,22 @@ $wgConf->settings += [
     ],
     'wgCreateWikiSQLFiles' => [
         'default' => [
-            "$IP/sql/mysql/tables-generated.sql",
-            "$IP/extensions/AbuseFilter/db_patches/mysql/tables-generated.sql",
-            "$IP/extensions/AntiSpoof/sql/mysql/tables-generated.sql",
-            "$IP/extensions/BetaFeatures/sql/tables-generated.sql",
-            "$IP/extensions/CheckUser/schema/mysql/tables-generated.sql",
-            "$IP/extensions/CentralNotice/sql/mysql/tables-generated.sql",
-            "$IP/extensions/DataDump/sql/data_dump.sql",
-            "$IP/extensions/Echo/sql/mysql/tables-generated.sql",
-            "$IP/extensions/GlobalBlocking/sql/mysql/tables-generated-global_block_whitelist.sql",
-            #"$IP/extensions/LoginNotify/sql/mysql/tables-generated.sql",
-            "$IP/extensions/OATHAuth/sql/mysql/tables-generated.sql",
-            "$IP/extensions/OAuth/schema/mysql/tables-generated.sql",
-	        "$IP/extensions/MediaModeration/schema/mysql/tables-generated.sql",
-            //"$IP/extensions/RottenLinks/sql/rottenlinks.sql",
-            //"$IP/extensions/UrlShortener/schemas/tables-generated.sql",
+            "/srv/mediawiki/versions/1.46/sql/mysql/tables-generated.sql",
+            "/srv/mediawiki/versions/1.46/extensions/AbuseFilter/db_patches/mysql/tables-generated.sql",
+            "/srv/mediawiki/versions/1.46/extensions/AntiSpoof/sql/mysql/tables-generated.sql",
+            "/srv/mediawiki/versions/1.46/extensions/BetaFeatures/sql/tables-generated.sql",
+            "/srv/mediawiki/versions/1.46/extensions/CheckUser/schema/mysql/tables-generated.sql",
+			"/srv/mediawiki/versions/1.46/extensions/CheckUser/schema/mysql/tables-virtual-checkuser-generated.sql",
+            "/srv/mediawiki/versions/1.46/extensions/CentralNotice/sql/mysql/tables-generated.sql",
+            "/srv/mediawiki/versions/1.46/extensions/DataDump/sql/data_dump.sql",
+            "/srv/mediawiki/versions/1.46/extensions/Echo/sql/mysql/tables-generated.sql",
+            "/srv/mediawiki/versions/1.46/extensions/GlobalBlocking/sql/mysql/tables-generated-global_block_whitelist.sql",
+            #"/srv/mediawiki/versions/1.46/extensions/LoginNotify/sql/mysql/tables-generated.sql",
+            "/srv/mediawiki/versions/1.46/extensions/OATHAuth/sql/mysql/tables-generated.sql",
+            "/srv/mediawiki/versions/1.46/extensions/OAuth/schema/mysql/tables-generated.sql",
+	        "/srv/mediawiki/versions/1.46/extensions/MediaModeration/schema/mysql/tables-generated.sql",
+            //"/srv/mediawiki/versions/1.46/extensions/RottenLinks/sql/rottenlinks.sql",
+            //"/srv/mediawiki/versions/1.46/extensions/UrlShortener/schemas/tables-generated.sql",
         ],
     ],
     // CheckUser
@@ -825,7 +914,10 @@ $wgConf->settings += [
         'default' => true,
     ],
     'wgCheckUserSuggestedInvestigationsEnabled' => [
-        'default' => true,
+        'default' => false,
+    ],
+    'wgCheckUserGlobalContributionsCentralWikiId' => [
+        'default' => null,
     ],
 
     // WebAuthn
@@ -940,7 +1032,6 @@ $wgConf->settings += [
                 'edituserjs' => true,
                 'edituserjson' => true,
                 'generate-dump' => true,
-                'globalblock-whitelist' => true,
                 'import' => true,
                 'importupload' => true,
                 'interwiki' => true,
@@ -1087,7 +1178,6 @@ $wgConf->settings += [
                 'globalblock' => true,
                 'globalgroupmembership' => true,
                 'globalgrouppermissions' => true,
-                'handle-pii' => true,
                 'oathauth-disable-for-user' => true,
                 'oathauth-verify-user' => true,
                 'userrights' => true,
@@ -1139,11 +1229,11 @@ $wgConf->settings += [
                 'generate-random-hash',
                 'globalblock',
                 'globalblock-exempt',
+				'globalblock-whitelist',
                 'globalgroupmembership',
                 'globalgrouppermissions',
                 'handle-import-request-interwiki',
                 'handle-import-requests',
-                'handle-pii',
                 'hideuser',
                 'investigate',
                 'import',
@@ -1272,7 +1362,7 @@ $wgConf->settings += [
     'wgSpringAllowDismiss' => [
         'default' => true,
     ],
-    'wgSpringHelpURL' => [
+    'wgSpringHelpUrl' => [
         'default' => '',
     ],
     'wgSpringLogManageWikiChanges' => [
@@ -1332,6 +1422,7 @@ $wgConf->settings += [
     ],
     'wgSpringOutroSteps' => [
         'default' => [
+            'compass',
             'share',
             'finish',
         ],
@@ -1576,10 +1667,24 @@ $wgConf->settings += [
                         'wmgWikiLicense' => [],
                         'wgUsersNotifiedOnAllChanges' => [],
                         'wgSiteNotice' => [],
-                        'wgLocaltimezone' => [],
                         'wgSkipSkins' => [],
                         'wgRightsUrl' => [],
                     ],
+                ],
+            ],
+            'compass' => [
+                'class' => WikiOasis\Spring\Steps\CompassStep::class,
+                'services' => [
+                    'ManageWikiModuleFactory',
+                    'CompassStatistics',
+                    'CompassStore',
+                    'MainConfig',
+                ],
+                'config' => [
+                    'title' => 'Your wiki in compass',
+                    'description' => 'Let other people find your wiki in the wiki directory.',
+                    'icon' => 'cdxIconMapPin',
+                    'optional' => true,
                 ],
             ],
             'share' => [
@@ -1625,6 +1730,50 @@ $wgConf->settings += [
                     ],
                 ],
             ],
+        ],
+    ],
+    'wgSpringIntroSteps' => [
+        'default' => [
+            'welcome',
+            'route',
+        ],
+    ],
+    'wgSpringFlows' => [
+        'default' => [
+            'template' => [
+                'label-message' => 'wikioasis-spring-flow-template',
+                'description-message' => 'wikioasis-spring-flow-template-desc',
+                'icon' => 'cdxIconTemplateAdd',
+                'steps' => [
+                    'template',
+                    'skins',
+                    'styling',
+                ],
+            ],
+            'manual' => [
+                'label-message' => 'wikioasis-spring-flow-manual',
+                'description-message' => 'wikioasis-spring-flow-manual-desc',
+                'icon' => 'cdxIconSettings',
+                'steps' => [
+                    'visibility',
+                    'editing',
+                    'extensions',
+                    'skins',
+                    'styling',
+                    'options',
+                    'import',
+                ],
+            ],
+            'quick' => [
+                'label-message' => 'wikioasis-spring-flow-quick',
+                'description-message' => 'wikioasis-spring-flow-quick-desc',
+                'icon' => 'cdxIconPlay',
+                'steps' => [
+                    'visibility',
+                    'editing',
+                    'styling',
+                ]
+            ]
         ],
     ],
     'wgSpringTemplates' => [
@@ -1713,11 +1862,11 @@ $wgConf->settings += [
     // GlobalBlocking & GlobalPreferences & GlobalUserPage & GlobalCssJs & GlobalUsage
     'wgGlobalBlockingDatabase' => [
         'default' => 'wikidb',
-	'beta' => 'wikidbbeta',
+	    'beta' => 'wikidbbeta',
     ],
     'wgGlobalPreferencesDB' => [
         'default' => 'wikidb',
-	'beta' => 'wikidbbeta',
+	    'beta' => 'wikidbbeta',
     ],
 	'wgGlobalUsageSharedRepoWiki' => [
 		'govnpcommonsbetawiki' => 'govnpcommonsbetawiki',
@@ -1745,22 +1894,22 @@ $wgConf->settings += [
                 'loadScript' => '//meta.wikioasis.org/w/load.php',
             ],
         ],
-	'beta' => [
-	    'metawikibeta' => [
-		'apiScript' => '//meta.betaoasis.xyz/w/api.php',
-		'loadScript' => '//meta.betaoasis.xyz/w/load.php',
+	    'beta' => [
+	        'metawikibeta' => [
+                'apiScript' => '//meta.betaoasis.xyz/w/api.php',
+                'loadScript' => '//meta.betaoasis.xyz/w/load.php',
+	        ],
 	    ],
-	],
     ],
     'wgGlobalCssJsConfig' => [
         'default' => [
             'wiki' => 'metawiki',
             'source' => 'metawiki',
         ],
-	'beta' => [
-	    'wiki' => 'metawikibeta',
-	    'source' => 'metawikibeta',
-	],
+	    'beta' => [
+            'wiki' => 'metawikibeta',
+            'source' => 'metawikibeta',
+	    ],
     ],
 
     // Temporary accounts
@@ -1794,6 +1943,9 @@ $wgConf->settings += [
     ],
     'wgOAuth2RefreshTokenTTL' => [
         'default' => 'P365D',
+    ],
+    '$wgMWOAuthSharedUserIDs' => [
+        'default' => true,
     ],
     'wgMWOAuthSharedUserSource' => [
         'default' => 'CentralAuth',
@@ -2003,7 +2155,8 @@ $wgConf->settings += [
         ],
         'countryhumanswiki' => [
             NS_MAIN,
-            3000
+            3000,
+			3002,
         ],
         'objectshowwiki' => [
             NS_MAIN,
@@ -2102,27 +2255,6 @@ $wgConf->settings += [
     'wgKartographerWikivoyageMode' => [
         'default' => false,
     ],
-
-    // 'RemovePII
-    'wgRemovePIIAllowedWikis' => [
-        'default' => [
-            'metawiki',
-	    'metawikibeta',
-        ],
-    ],
-    'wgRemovePIIAutoPrefix' => [
-        'default' => 'WikiOasisGDPR',
-    ],
-    'wgRemovePIIHashPrefixOptions' => [
-        'default' => [
-            'Trust and Safety' => 'Deleted_User_',
-            'Stewards' => 'Vanished User ',
-        ],
-    ],
-    'wgRemovePIIHashPrefix' => [
-        'default' => 'Deleted_User_',
-    ],
-
     // ImportDump
     'wgImportDumpCentralWiki' => [
         'default' => 'metawiki',
@@ -2161,6 +2293,33 @@ $wgConf->settings += [
     ],
 
     // WikiOasisMagic
+    'wgWikiOasisMagicAccessIdsMap' => [
+        'default' => [
+            // Only staff are allowed access
+            // DO NOT ADD UNAUTHORIZED USERS
+            'staffwiki' => [
+                /** Zippy (Tech, Safety, Steward) */
+                8,
+                /** Globe (Board, Safety, Steward) */
+                10,
+                /** Raidarr (Safety, Steward) */
+                29,
+                /** Reception123 (Tech) */
+                31,
+                /** Pisces (Tech) */
+                152,
+                /** Dream Indigo (Board) */
+                278,
+                /** Justarandomamerican (Steward) */
+                11040,
+                /** Owlnai (Tech) */
+                16616,
+                /** Doug (Board, Safety) */
+                20647,
+            ],
+        ],
+    ],
+
     'wgWikiOasisMagicReportsBlockAlertKeywords' => [
 	'default' => [
 	    'underage',
@@ -2367,7 +2526,7 @@ $wgConf->settings += [
     ],
     // Widgets
     'wgWidgetsCompileDir' => [
-        'default' => '$IP/cache/$wgDBname/compiled_templates',
+        'default' => '/srv/mediawiki/cache/$wgDBname/compiled_templates',
     ],
     // WikibaseLexeme
     'wgLexemeLanguageCodePropertyId' => [
@@ -2715,7 +2874,10 @@ $wgConf->settings += [
 
     // QuickInstantCommons
     'wgQuickInstantCommonsUserAgentInfo' => [
-        'default' => "https://wikioasis.org/; tech@wikioasis.org;"
+        'default' => "WikiOasis/0.0 (https://wikioasis.org/; tech@wikioasis.org)"
+    ],
+    'wgQuickInstantCommonsUserAgentOverride' => [
+        'default' => "WikiOasis/0.0 (https://wikioasis.org/; tech@wikioasis.org)"
     ],
 
     // Bucket
@@ -2745,12 +2907,13 @@ $wgConf->settings += [
 
 $wgManageWikiSiteConfiguration = $wgConf;
 
-require_once "$IP/config/ManageWikiExtensions.php";
+require_once "/srv/mediawiki/config/ManageWikiExtensions.php";
 $wi::$disabledExtensions = [
     'drafts' => '<a href="https://issue-tracker.miraheze.org/T11970">T11970</a>',
     'score' => '<a href="https://issue-tracker.miraheze.org/T5863">T5863</a>',
     'wikiforum' => '<a href="https://issue-tracker.miraheze.org/T11641">T11641</a>',
     'mobiletabsplugin' => 'Incompatible with MediaWiki 1.42+',
+    'externaldata' => 'MW-120',
 
     'lingo' => 'Currently broken',
 
@@ -2762,7 +2925,7 @@ $wi::$disabledExtensions = [
     'semanticscribunto' => 'Semantic MediaWiki currently not enabled. Contact for enable.',
 ];
 
-$globals = MirahezeFunctions::getConfigGlobals();
+$globals = WikiOasisFunctions::getConfigGlobals();
 
 // profiling
 require_once __DIR__ . '/Sentry.php';
@@ -2772,6 +2935,8 @@ extract( $globals );
 
 if ( $wmgSharedDomainPathPrefix ) {
     $wgArticlePath = "{$wmgSharedDomainPathPrefix}/wiki/\$1";
+    $wgScriptPath = $wmgSharedDomainPathPrefix;
+    $wgScript = "$wgScriptPath/index.php";
     $wgServer = '//' . $wi->getSharedDomain();
 }
 
@@ -2782,8 +2947,8 @@ require_once __DIR__ . '/ManageWikiNamespaces.php';
 require_once __DIR__ . '/ManageWikiSettings.php';
 
 //var_dump($wgConf->settings);
-require_once "$IP/config/Database.php";
-require_once "$IP/config/GlobalCache.php";
+require_once "/srv/mediawiki/config/Database.php";
+require_once "/srv/mediawiki/config/GlobalCache.php";
 
 $wgHooks['SetupAfterCache'][] = static function () {
     global $cwPrivate, $wgLocalFileRepo, $wgAWSRepoZones;
@@ -2871,6 +3036,11 @@ $wgAWSRepoZones["{$wgDBname}-avatars"] = [
     'isPublic' => true,
 ];
 
+$wgAWSRepoZones['dumps-backup'] = [
+    'container' => 'dumps-backup',
+    'path' => '/dumps',
+];
+
 $wgUserProfileV2UseGlobalAvatars = true;
 $wgUserProfileGlobalUploadBaseUrl = "https://cdn.wikioasis.org/upv2avatars/";
 
@@ -2894,11 +3064,7 @@ if ( $wi->missing ) {
         }
         $host = strtolower( trim( preg_replace( '/:\d+$/', '', $host ) ) );
 
-        if ( $host !== '' && preg_match( '/(^|\.)skywiki\.org$/', $host ) ) {
-            require_once '/srv/mediawiki/config/MissingSkyWiki.php';
-        } else {
-            require_once '/srv/mediawiki/config/MissingWiki.php';
-        }
+        require_once '/srv/mediawiki/config/MissingWiki.php';
     }
 }
 
@@ -2916,25 +3082,25 @@ function wfHandleDeletedWiki() {
     require_once '/srv/mediawiki/config/DeletedWiki.php';
 }
 
-require_once "$IP/config/GlobalSettings.php";
-require_once "$IP/config/LocalWiki.php";
+require_once "/srv/mediawiki/config/GlobalSettings.php";
+require_once "/srv/mediawiki/config/LocalWiki.php";
 
 $wgCargoDBname = $wgDBname . 'cargo';
 
+
 // Define last - Extension message files for loading extensions
-$_mwVersion = MirahezeFunctions::getMediaWikiVersion();
-if (file_exists(__DIR__ . "/ExtensionMessageFiles-{$_mwVersion}.php") && !defined('MW_NO_EXTENSION_MESSAGES')) {
-    require_once __DIR__ . "/ExtensionMessageFiles-{$_mwVersion}.php";
-    // These are not loaded by mergeMessageFileList.php due to not being on ExtensionRegistry
-    $wgMessagesDirs['SocialProfile'] = $IP . '/extensions/SocialProfile/i18n';
-    $wgExtensionMessagesFiles['SocialProfileAlias'] = $IP . '/extensions/SocialProfile/SocialProfile.alias.php';
-    $wgMessagesDirs['SocialProfileUserProfile'] = $IP . '/extensions/SocialProfile/UserProfile/i18n';
-    $wgExtensionMessagesFiles['SocialProfileNamespaces'] = $IP . '/extensions/SocialProfile/SocialProfile.namespaces.php';
-    $wgExtensionMessagesFiles['AvatarMagic'] = $IP . '/extensions/SocialProfile/UserProfile/includes/avatar/Avatar.i18n.magic.php';
+//$_mwVersion = WikiOasisFunctions::getMediaWikiVersion();
+//if (file_exists(__DIR__ . "/ExtensionMessageFiles-{$_mwVersion}.php") && !defined('MW_NO_EXTENSION_MESSAGES')) {
+//    require_once __DIR__ . "/ExtensionMessageFiles-{$_mwVersion}.php";
+//}
+// TODO: reintegrate localisation into deployment
+$_mwVersion = WikiOasisFunctions::getMediaWikiVersion();
+if (file_exists(__DIR__ . "/ExtensionMessageFiles.php") && !defined('MW_NO_EXTENSION_MESSAGES')) {
+    require_once __DIR__ . "/ExtensionMessageFiles.php";
 }
 // Use a per-version subdirectory so multiple MW versions can coexist.
 $wgLocalisationCacheConf['storeClass'] = LCStoreStaticArray::class;
-$wgLocalisationCacheConf['storeDirectory'] = "/srv/mediawiki/cache/" . MirahezeFunctions::getMediaWikiVersion();
+$wgLocalisationCacheConf['storeDirectory'] = "/srv/mediawiki/cache/" . WikiOasisFunctions::getMediaWikiVersion();
 $wgLocalisationCacheConf['manualRecache'] = true;
 
 if ( !file_exists( $wgLocalisationCacheConf['storeDirectory'] . '/en.l10n.php' ) ) {

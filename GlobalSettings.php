@@ -9,26 +9,28 @@
  * @var mixed $wi
  */
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\SpecialPage\DisabledSpecialPage;
+
 // Protect against web entry
 if (!defined('MEDIAWIKI')) {
 	die('Not an entry point.');
 }
 
 // Populates databases.php with per-wiki data including 'v' (version), 'd' (domain), etc.
-$wgHooks['CreateWikiGenerateDatabaseLists'][] = 'MirahezeFunctions::onGenerateDatabaseLists';
+$wgHooks['CreateWikiGenerateDatabaseLists'][] = 'WikiOasisFunctions::onGenerateDatabaseLists';
 
 // ManageWiki hooks for primary-domain, article-path, and version selection.
-$wgHooks['ManageWikiCoreAddFormFields'][] = 'MirahezeFunctions::onManageWikiCoreAddFormFields';
-$wgHooks['ManageWikiCoreFormSubmission'][] = 'MirahezeFunctions::onManageWikiCoreFormSubmission';
+$wgHooks['ManageWikiCoreAddFormFields'][] = 'WikiOasisFunctions::onManageWikiCoreAddFormFields';
+$wgHooks['ManageWikiCoreFormSubmission'][] = 'WikiOasisFunctions::onManageWikiCoreFormSubmission';
 
-// Load MultiVersion helpers (setWikiVersion used by onManageWikiCoreFormSubmission).
-require_once '/srv/mediawiki/config/MultiVersion.php';
+$wgHooks['CreateWikiCreation'][] = 'WikiOasisFunctions::onCreateWikiCreation';
+$wgHooks['wfShellWikiCmd'][] = 'WikiOasisFunctions::onWfShellWikiCmd';
 
 wfLoadExtensions( [
     'CentralAuth',
-    'GlobalPreferences',
     'GlobalBlocking',
-    'RemovePII',
+    'GlobalPreferences',
 ] );
 
 // Only allow users with global accounts to login
@@ -47,7 +49,7 @@ $wgCentralAuthSharedDomainCallback = static fn ( $dbname ) =>
 "https://{$wi->getSharedDomain()}/$dbname";
 
 if ( $wmgSharedDomainPathPrefix ) {
-    $wgCentralAuthCookieDomain = '.' . MirahezeFunctions::getDefaultServer();
+    $wgCentralAuthCookieDomain = '.' . WikiOasisFunctions::getDefaultServer();
     $wgCookiePrefix = 'auth';
     $wgSessionName = 'authSession';
     $wgWebAuthnNewCredsDisabled = false;
@@ -64,7 +66,7 @@ if ($wi->isExtensionActive('QuickInstantCommons')) {
     $wgQuickInstantCommonsUserAgentInfo = 'https://wikioasis.org; tech@wikioasis.org';
 }
 
-if ($wi->isExtensionActive('CirrusSearch')) {
+if ( !$wmgSharedDomainPathPrefix && $wi->isExtensionActive('CirrusSearch') ) {
 	wfLoadExtension('Elastica');
 	$wgSearchType = 'CirrusSearch';
 	$wgCirrusSearchServers = ['opensearch-us-east-011.ovvin.wonet', 'opensearch-us-east-012.ovvin.wonet'];
@@ -87,6 +89,8 @@ if ($wi->isExtensionActive('UserProfileV2')) {
 
 // JsonConfig
 if ( $wi->isExtensionActive( 'JsonConfig' ) ) {
+	$wgTrackGlobalJsonLinks = false;
+
 	$wgJsonConfigs = [
 		'Map.JsonConfig' => [
 			'namespace' => 486,
@@ -164,12 +168,15 @@ if ($cwClosed) {
 	}
 }
 
-$wgDataDumpDirectory = '/var/www/dumps/';
+$wgDataDumpFileBackend = 'AmazonS3';
 
 $wgDataDump = [
 	'xml' => [
 		'file_ending' => '.xml.gz',
 		'useBackendTempStore' => true,
+		// An R2 PutObject caps out at 5 GiB, so split large dumps
+		'chunkSize' => 480 * 1024 * 1024,
+		'startChunkSize' => 1 * 1024 * 1024 * 1024,
 		'generate' => [
 			'type' => 'mwscript',
 			'script' => "$IP/maintenance/dumpBackup.php",
@@ -178,7 +185,7 @@ $wgDataDump = [
 				'--logs',
 				'--uploads',
 				'--output',
-				'gzip:/tmp/${filename}',
+				"gzip:{$wgTmpDirectory}/" . '${filename}',
 			],
 			'arguments' => [
 				'--namespaces'
@@ -197,24 +204,6 @@ $wgDataDump = [
 			'noArgsValue' => 'all',
 			'hide-if' => ['!==', 'generatedumptype', 'xml'],
 			'label-message' => 'datadump-namespaceselect-label'
-		],
-	],
-	'zip' => [
-		'file_ending' => '.zip',
-		'generate' => [
-			'type' => 'script',
-			'script' => '/usr/bin/zip',
-			'options' => [
-				'-r',
-				"{$wgDataDumpDirectory}" . '${filename}',
-				($cwPrivate ? "/var/www/images/{$wgDBname}" : "$IP/images/{$wgDBname}"),  // 条件による切り替え
-			],
-		],
-		'limit' => 1,
-		'permissions' => [
-			'view' => 'view-dump',
-			'generate' => 'generate-dump',
-			'delete' => 'delete-dump',
 		],
 	],
 	'managewiki_backup' => [
@@ -258,7 +247,6 @@ if ( $wgWordmark ) {
 	];
 }
 
-$wgRemovePIIAutoPrefix = 'WikiOasisGDPR';
 $wgRightsIcon = "https://meta.wikioasis.org$wgResourceBasePath/resources/assets/licenses/cc-by-sa.png";
 $wgRightsText = 'Creative Commons Attribution Share Alike';
 $wgRightsUrl = 'https://creativecommons.org/licenses/by-sa/4.0/';
@@ -342,3 +330,11 @@ if ($wgConf->get('wgRightsIcon', $wi->dbname)) {
 	];
 }
 
+$wgExtensionFunctions[] = static function () {
+	MediaWikiServices::getInstance()->getHookContainer()->register(
+		'SpecialPage_initList',
+		static function ( &$list ) {
+			$list['GlobalContributions'] = DisabledSpecialPage::getCallback( 'GlobalContributions' );
+		}
+	);
+};

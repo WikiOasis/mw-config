@@ -2,8 +2,8 @@
 define( 'MW_NO_SESSION', 1 );
 define( 'MW_ENTRY_POINT', 'opensearch_desc' );
 
-require_once dirname( __DIR__, 2 ) . '/MirahezeFunctions.php';
-MirahezeFunctions::getMediaWiki( '' );
+require_once dirname(__DIR__, 2) . '/WikiOasisFunctions.php';
+WikiOasisFunctions::getMediaWiki( '' );
 global $IP;
 
 require_once "$IP/includes/WebStart.php";

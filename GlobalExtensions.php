@@ -43,7 +43,6 @@ wfLoadExtensions( [
     'ParserFunctions',
     'ParserMigration',
     'QuickInstantCommons',
-    'RemovePII',
     'Scribunto',
     'SpamBlacklist',
     'Spring',
@@ -51,6 +50,7 @@ wfLoadExtensions( [
     'TorBlock',
     'WikiEditor',
     'WikiOasisMagic',
+    'WikiOasisSafety',
     'WikimediaEvents',
     'cldr',
 ] );

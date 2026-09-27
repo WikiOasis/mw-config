@@ -7,8 +7,8 @@
 define( 'MW_NO_OUTPUT_COMPRESSION', 1 );
 define( 'MW_ENTRY_POINT', 'index' );
 
-require_once dirname( __DIR__, 2 ) . '/MirahezeFunctions.php';
-MirahezeFunctions::getMediaWiki( '' );
+require_once dirname(__DIR__, 2) . '/WikiOasisFunctions.php';
+WikiOasisFunctions::getMediaWiki( '' );
 global $IP;
 
 require "$IP/includes/WebStart.php";
@@ -25,12 +25,12 @@ if ( $requestedSitemap !== '' ) {
 		echo 'Invalid sitemap filename.';
 		exit;
 	}
-	$cdnPath = "sitemaps/{$requestedSitemap}";
+	$cdnPath = $requestedSitemap;
 } else {
-	$cdnPath = "sitemaps/sitemap-index-{$dbname}.xml";
+	$cdnPath = "sitemap-index-{$dbname}.xml";
 }
 
-$url = "https://cdn.wikioasis.org/{$dbname}/{$cdnPath}";
+$url = "https://cdn.wikioasis.org/sitemaps/{$dbname}/{$cdnPath}";
 
 $ch = curl_init( $url );
 curl_setopt_array( $ch, [

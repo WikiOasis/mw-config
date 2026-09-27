@@ -95,8 +95,8 @@ $wgParsoidCacheConfig = [
 
 $wgManageWikiServers = [
       'task-us-east-011.ovvin.wonet:80',
-//      'mw-us-east-011.ovvin.wonet:80',
-//      'mw-us-east-012.ovvin.wonet:80',
+      'mw-us-east-011.ovvin.wonet:80',
+      'mw-us-east-012.ovvin.wonet:80',
       'mw-us-east-021.ovvin.wonet:80',
       'mw-us-east-022.ovvin.wonet:80',
 ];
