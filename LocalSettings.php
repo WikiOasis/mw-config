@@ -2885,7 +2885,13 @@ $wgConf->settings += [
         'default' => 'bucketuser',
     ],
 
-
+    // WME
+    'wgWikimediaEventsCreateAccountInstrumentation' => [
+        'default' => true,
+    ],
+    'wgWikimediaEventsUserLoginInstrumentation' => [
+        'default' => true,
+    ],
 
     // CreateWiki Defined Special Variables
     'cwClosed' => [
