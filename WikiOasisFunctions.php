@@ -436,7 +436,14 @@ class WikiOasisFunctions {
     }
 
     private static function resolveMediaWikiVersion( string $version ): string {
-        return self::MEDIAWIKI_VERSIONS[$version] ?? $version;
+        $version = self::MEDIAWIKI_VERSIONS[$version] ?? $version;
+
+        // Wikis pinned to a retired version (e.g. 1.45) fall back to the default
+        if ( !in_array( $version, self::MEDIAWIKI_VERSIONS, true ) ) {
+            return self::MEDIAWIKI_VERSIONS[ self::getDefaultMediaWikiVersion() ];
+        }
+
+        return $version;
     }
 
     public static function getMediaWikiVersion( ?string $database = null ): string {
@@ -962,7 +969,9 @@ class WikiOasisFunctions {
                 $extraData = json_decode( $wiki->wiki_extra ?: '[]', true );
 
                 $primaryDomain = ( $extraData['primary-domain'] ?? null ) ?: self::DEFAULT_SERVER[self::getRealm( $wiki->wiki_dbname )];
-                $wikiVersion = ( $extraData['mediawiki-version'] ?? null ) ?: self::MEDIAWIKI_VERSIONS[self::getDefaultMediaWikiVersion()];
+                $wikiVersion = self::resolveMediaWikiVersion(
+                    ( $extraData['mediawiki-version'] ?? null ) ?: self::getDefaultMediaWikiVersion()
+                );
 
                 $combiList[$wiki->wiki_dbname] = [
                     's' => $wiki->wiki_sitename,
