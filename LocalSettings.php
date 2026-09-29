@@ -108,7 +108,8 @@ $wgConf->settings += [
         'default' => 0,
     ],
     'wgShowExceptionDetails' => [
-        'default' => true,
+        'default' => false,
+        'testwiki' => true,
     ],
     //'wgReadOnly' => [
     //    'default' => false,
