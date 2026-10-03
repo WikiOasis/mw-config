@@ -2183,22 +2183,6 @@ $wgManageWikiExtensions = [
 		'install' => [],
 		'section' => 'other',
 	],
-	'externaldata' => [
-		'name' => 'External Data',
-		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:External_Data',
-		'conflicts' => false,
-		'requires' => [
-			'permissions' => [
-				'managewiki-restricted',
-			],
-		],
-		'install' => [
-			'sql' => [
-				'ed_url_cache' => "$IP/extensions/ExternalData/sql/mysql/ExternalData.sql"
-			],
-		],
-		'section' => 'other',
-	],
 	'flexdiagrams' => [
 		'name' => 'Flex Diagrams',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Flex_Diagrams',
