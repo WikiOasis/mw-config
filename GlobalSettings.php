@@ -53,6 +53,8 @@ if ( $wmgSharedDomainPathPrefix ) {
     $wgCookiePrefix = 'auth';
     $wgSessionName = 'authSession';
     $wgWebAuthnNewCredsDisabled = false;
+    $wgOATHPasswordlessLogin = true;
+    $wgWebAuthnRelyingPartyName = 'WikiOasis';
 
     $wgCheckUserClientHintsEnabled = true;
     $wgCheckUserAlwaysSetClientHintHeaders = true;

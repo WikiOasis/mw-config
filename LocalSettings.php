@@ -88,6 +88,20 @@ if ( ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain()
     $wgUseSiteJs = false;
 }
 
+$wmgIsCustomDomain = !str_ends_with(
+    parse_url( $wi->server, PHP_URL_HOST ) ?? '',
+    '.' . WikiOasisFunctions::getDefaultServer()
+);
+
+if ( $wmgIsCustomDomain ) {
+    $wgLoadScript = 'https://' . $wi->getSharedDomain() . "/$wgDBname/load.php";
+
+    if ( $wmgSharedDomainPathPrefix && defined( 'MW_ENTRY_POINT' ) && MW_ENTRY_POINT === 'load' ) {
+        $wgUseSiteCss = true;
+        $wgUseSiteJs = true;
+    }
+}
+
 $wgScriptPath = $wmgSharedDomainPathPrefix ?: '/w';
 $wgScript = "$wgScriptPath/index.php";
 
@@ -919,11 +933,6 @@ $wgConf->settings += [
     ],
     'wgCheckUserGlobalContributionsCentralWikiId' => [
         'default' => null,
-    ],
-
-    // WebAuthn
-    'wgWebAuthnLimitPasskeysToRoaming' => [
-        'default' => true,
     ],
 
     // ManageWiki
