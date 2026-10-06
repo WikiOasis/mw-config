@@ -76,9 +76,19 @@ $wi = new WikiOasisFunctions();
 
 $wmgSharedDomainPathPrefix = '';
 
-if ( ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain()
+$wmgIsCustomDomain = !str_ends_with(
+    parse_url( $wi->server, PHP_URL_HOST ) ?? '',
+    '.' . WikiOasisFunctions::getDefaultServer()
+);
+
+$wmgIsCustomDomainLoad = $wmgIsCustomDomain
+    && ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain()
+    && defined( 'MW_ENTRY_POINT' ) && MW_ENTRY_POINT === 'load';
+
+if ( !$wmgIsCustomDomainLoad && (
+    ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain()
     || getenv( 'MW_USE_SHARED_DOMAIN' )
-) {
+) ) {
     $wgLoadScript = "{$wi->server}/w/load.php";
     $wmgSharedDomainPathPrefix = "/$wgDBname";
 
@@ -88,24 +98,18 @@ if ( ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain()
     $wgUseSiteJs = false;
 }
 
-$wmgIsCustomDomain = !str_ends_with(
-    parse_url( $wi->server, PHP_URL_HOST ) ?? '',
-    '.' . WikiOasisFunctions::getDefaultServer()
-);
-
 if ( $wmgIsCustomDomain ) {
     $wgLoadScript = 'https://' . $wi->getSharedDomain() . "/$wgDBname/load.php";
-
-    if ( $wmgSharedDomainPathPrefix && defined( 'MW_ENTRY_POINT' ) && MW_ENTRY_POINT === 'load' ) {
-        $wgUseSiteCss = true;
-        $wgUseSiteJs = true;
-    }
 }
 
 $wgScriptPath = $wmgSharedDomainPathPrefix ?: '/w';
 $wgScript = "$wgScriptPath/index.php";
 
 $wgResourceBasePath = ( $wmgSharedDomainPathPrefix ?: '' ) . '/versions/' . $wi->version;
+if ( $wmgIsCustomDomainLoad ) {
+    // Keep CSS asset URLs (images, fonts) on the wiki's own domain
+    $wgResourceBasePath = $wi->server . $wgResourceBasePath;
+}
 $wgExtensionAssetsPath = "$wgResourceBasePath/extensions";
 $wgStylePath = "$wgResourceBasePath/skins";
 $wgLocalStylePath = $wgStylePath;
