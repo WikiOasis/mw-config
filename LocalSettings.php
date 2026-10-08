@@ -81,12 +81,17 @@ $wmgIsCustomDomain = !str_ends_with(
     '.' . WikiOasisFunctions::getDefaultServer()
 );
 
+$wmgOnSharedDomain = ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain();
+
+// Only serve a custom domain wiki's full styling from the shared domain when
+// the request comes from a page on the shared domain (i.e. logging in there)
 $wmgIsCustomDomainLoad = $wmgIsCustomDomain
-    && ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain()
-    && defined( 'MW_ENTRY_POINT' ) && MW_ENTRY_POINT === 'load';
+    && $wmgOnSharedDomain
+    && defined( 'MW_ENTRY_POINT' ) && MW_ENTRY_POINT === 'load'
+    && parse_url( $_SERVER['HTTP_REFERER'] ?? '', PHP_URL_HOST ) === $wi->getSharedDomain();
 
 if ( !$wmgIsCustomDomainLoad && (
-    ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain()
+    $wmgOnSharedDomain
     || getenv( 'MW_USE_SHARED_DOMAIN' )
 ) ) {
     $wgLoadScript = "{$wi->server}/w/load.php";
@@ -98,7 +103,9 @@ if ( !$wmgIsCustomDomainLoad && (
     $wgUseSiteJs = false;
 }
 
-if ( $wmgIsCustomDomain ) {
+if ( $wmgIsCustomDomain && ( $wmgSharedDomainPathPrefix || $wmgIsCustomDomainLoad ) ) {
+    // Only route through the shared domain while on it; the custom domain
+    // itself keeps using its own load.php
     $wgLoadScript = 'https://' . $wi->getSharedDomain() . "/$wgDBname/load.php";
 }
 
@@ -801,6 +808,11 @@ $wgConf->settings += [
     ],
     'wgCreateWikiShowBiographicalOption' => [
 		'default' => true,
+    ],
+    // Let people request a wiki (from Special:RequestWiki or onboarding's
+    // Special:Welcome) without confirming an email address first.
+    'wgRequestWikiConfirmEmail' => [
+        'default' => false,
     ],
     'wgCreateWikiDatabaseSuffix' => [
         'default' => 'wiki',
