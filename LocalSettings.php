@@ -83,12 +83,10 @@ $wmgIsCustomDomain = !str_ends_with(
 
 $wmgOnSharedDomain = ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain();
 
-// Only serve a custom domain wiki's full styling from the shared domain when
-// the request comes from a page on the shared domain (i.e. logging in there)
+// Custom domain wikis serve their ResourceLoader output from the shared domain
 $wmgIsCustomDomainLoad = $wmgIsCustomDomain
     && $wmgOnSharedDomain
-    && defined( 'MW_ENTRY_POINT' ) && MW_ENTRY_POINT === 'load'
-    && parse_url( $_SERVER['HTTP_REFERER'] ?? '', PHP_URL_HOST ) === $wi->getSharedDomain();
+    && defined( 'MW_ENTRY_POINT' ) && MW_ENTRY_POINT === 'load';
 
 if ( !$wmgIsCustomDomainLoad && (
     $wmgOnSharedDomain
