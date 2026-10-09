@@ -2933,6 +2933,12 @@ $wgConf->settings += [
         'default' => true,
     ],
 
+    // fandoom
+    'wgWikiOasisMagicFandomImportEnabled' => [
+        'default' => false,
+        'metawiki' => true,
+    ],
+
     // CreateWiki Defined Special Variables
     'cwClosed' => [
         'default' => false,
