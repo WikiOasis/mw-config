@@ -65,10 +65,12 @@ $wgVirtualDomainsMapping['virtual-interwiki'] = ['db' => 'metawiki'];
 $wgVirtualDomainsMapping['virtual-interwiki-interlanguage'] = ['db' => 'metawiki'];
 $wgVirtualDomainsMapping['virtual-centralnotice'] = ['db' => 'metawiki'];
 $wgVirtualDomainsMapping['virtual-wikioasissafety'] = [ 'db' => 'wikidb' ];
+$wgVirtualDomainsMapping['virtual-wikioasismagic'] = [ 'db' => 'wikidb' ];
 
 $wgDebugLogGroups['WikiOasisFunctions'] = "/var/log/mediawiki/mf.log";
 require_once "/srv/mediawiki/config/WikiOasisFunctions.php";
 require_once "/srv/mediawiki/config/GlobalExtensions.php";
+require_once "/srv/mediawiki/config/Experiments.php";
 require_once "/srv/mediawiki/config/Safety.php";
 
 $wi = new WikiOasisFunctions();
@@ -809,10 +811,11 @@ $wgConf->settings += [
     'wgCreateWikiShowBiographicalOption' => [
 		'default' => true,
     ],
-    // Let people request a wiki (from Special:RequestWiki or onboarding's
-    // Special:Welcome) without confirming an email address first.
     'wgRequestWikiConfirmEmail' => [
         'default' => false,
+    ],
+    'wgWikiOasisMagicCentralWiki' => [
+        'default' => 'metawiki',
     ],
     'wgCreateWikiDatabaseSuffix' => [
         'default' => 'wiki',
@@ -1173,6 +1176,7 @@ $wgConf->settings += [
                 'createwiki-deleterequest' => true,
                 'globalgroupmembership' => true,
                 'globalgrouppermissions' => true,
+                'experiments-manage' => true,
                 'handle-import-request-interwiki' => true,
                 'handle-import-requests' => true,
                 'handle-custom-domain-requests' => true,
@@ -1256,6 +1260,7 @@ $wgConf->settings += [
                 'echo-create',
                 'editincidents',
                 'editothersprofiles-private',
+                'experiments-manage',
                 'flow-suppress',
                 'generate-random-hash',
                 'globalblock',
