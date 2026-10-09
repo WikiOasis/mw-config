@@ -1412,7 +1412,6 @@ $wgConf->settings += [
         'default' => [
             'visualeditor',
             'discussiontools',
-            'bucket',
             'moderation',
             'darkmode',
             'timedmediahandler',
@@ -2974,6 +2973,8 @@ $wi::$disabledExtensions = [
 
     'hawelcome' => 'Privacy issue',
     'semanticscribunto' => 'Semantic MediaWiki currently not enabled. Contact for enable.',
+
+    'bucket' => 'Missing database credentials ($wgBucketDBpassword is not provisioned on this farm).',
 ];
 
 $globals = WikiOasisFunctions::getConfigGlobals();
