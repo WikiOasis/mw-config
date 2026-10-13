@@ -24,17 +24,16 @@ if ( !defined( 'MW_ENTRY_POINT' ) ) {
     die( 'Not an entry point.' );
 }
 
-
-// Raise the per-request memory ceiling above the php.ini default of 128M.
-// MediaWiki only ever raises (never lowers) this during Setup; 128M is too
-// low for the number of extensions loaded here and causes OOM fatals on
-// heavy page parses.
-ini_set( 'memory_limit', '256M' );
+ini_set('memory_limit', '256M');
 $wgMemoryLimit = '256M';
 
 require_once "/srv/mediawiki/config/PrivateSettings.php";
+require_once "/srv/mediawiki/config/WikiOasisFunctions.php";
+require_once "/srv/mediawiki/config/GlobalExtensions.php";
+require_once "/srv/mediawiki/config/Experiments.php";
+require_once "/srv/mediawiki/config/Safety.php";
 
-$wgConf->suffixes = [ 'wiki' ];
+$wgConf->suffixes = ['wiki'];
 
 $wgDBtype = "mysql";
 
@@ -61,10 +60,7 @@ $wgVirtualDomainsMapping['virtual-wikioasissafety'] = [ 'db' => 'wikidb' ];
 $wgVirtualDomainsMapping['virtual-wikioasismagic'] = [ 'db' => 'wikidb' ];
 
 $wgDebugLogGroups['WikiOasisFunctions'] = "/var/log/mediawiki/mf.log";
-require_once "/srv/mediawiki/config/WikiOasisFunctions.php";
-require_once "/srv/mediawiki/config/GlobalExtensions.php";
-require_once "/srv/mediawiki/config/Experiments.php";
-require_once "/srv/mediawiki/config/Safety.php";
+
 
 $wi = new WikiOasisFunctions();
 // $wgReadOnly = ( PHP_SAPI === 'cli' ) ? null : 'This wiki is currently being upgraded to a newer software version. Please check back in a couple of hours.';
@@ -119,6 +115,48 @@ $wgLocalStylePath = $wgStylePath;
 $wgConf->settings += [
     'wgAuthenticationTokenVersion' => [
         'default' => '1',
+    ],
+    'wgAutoCreateTempUser' => [
+        'default' => [
+            'enabled' => true,
+            'known' => false,
+            'actions' => ['edit'],
+            'genPattern' => '~$1',
+            'matchPattern' => null,
+            'reservedPattern' => '~$1',
+            'serialProvider' => [
+                'type' => 'centralauth',
+                'useYear' => true,
+            ],
+            'serialMapping' => [
+                'type' => 'readable-numeric',
+            ],
+            'expireAfterDays' => 90,
+            'notifyBeforeExpirationDays' => 10,
+        ],
+    ],
+    'wgCookieSameSite' => [
+        'default' => 'None',
+    ],
+    'wgInterwikiMagic' => [
+	'default' => false,
+    ],
+    '+wgResourceLoaderSources' => [
+        'default' => [
+            'metawiki' => [
+                'apiScript' => '//meta.wikioasis.org/w/api.php',
+                'loadScript' => '//meta.wikioasis.org/w/load.php',
+            ],
+        ],
+	    'beta' => [
+	        'metawikibeta' => [
+                'apiScript' => '//meta.betaoasis.xyz/w/api.php',
+                'loadScript' => '//meta.betaoasis.xyz/w/load.php',
+	        ],
+	    ],
+    ],
+    'wgUseSameSiteLegacyCookies' => [
+        'default' => true,
     ],
     // ==================
     // MAINTENANCE THINGS
@@ -533,7 +571,6 @@ $wgConf->settings += [
     // ==================
     // EXTENSION SETTINGS
     // ==================
-
     // AbuseFilter
     'wgAbuseFilterActions' => [
         'default' => [
@@ -547,39 +584,39 @@ $wgConf->settings += [
             'warn' => true,
         ],
     ],
-    'wgAbuseFilterCentralDB' => [
-        'default' => 'metawiki',
-        'beta' => 'metawikibeta',
-    ],
-    'wgAbuseFilterIsCentral' => [
-        'default' => false,
-        'metawiki' => true,
-        'metawikibeta' => true,
+    'wgAbuseFilterAnonBlockDuration' => [
+        'default' => 2592000,
     ],
     'wgAbuseFilterBlockDuration' => [
         'default' => 'indefinite',
     ],
-    'wgAbuseFilterAnonBlockDuration' => [
-        'default' => 2592000,
+    'wgAbuseFilterCentralDB' => [
+        'default' => 'metawiki',
+        'beta' => 'metawikibeta',
     ],
-    'wgAbuseFilterNotifications' => [
-        'default' => 'udp',
-    ],
-    'wgAbuseFilterLogPrivateDetailsAccess' => [
-        'default' => true,
-    ],
-    'wgAbuseFilterPrivateDetailsForceReason' => [
-        'default' => true,
+    'wgAbuseFilterEmergencyDisableCount' => [
+        'default' => [
+            'default' => 2,
+        ],
     ],
     'wgAbuseFilterEmergencyDisableThreshold' => [
         'default' => [
             'default' => 0.05,
         ],
     ],
-    'wgAbuseFilterEmergencyDisableCount' => [
-        'default' => [
-            'default' => 2,
-        ],
+    'wgAbuseFilterIsCentral' => [
+        'default' => false,
+        'metawiki' => true,
+        'metawikibeta' => true,
+    ],
+    'wgAbuseFilterLogPrivateDetailsAccess' => [
+        'default' => true,
+    ],
+    'wgAbuseFilterNotifications' => [
+        'default' => 'udp',
+    ],
+    'wgAbuseFilterPrivateDetailsForceReason' => [
+        'default' => true,
     ],
 
     // AdvancedSearch
@@ -667,6 +704,22 @@ $wgConf->settings += [
         ],
     ],
 
+    // Bucket
+    'wgBucketDBuser' => [
+        'default' => 'bucketuser',
+    ],
+
+    // Cargo
+    'wgCargoDBuser' => [
+        'default' => 'cargouser2025',
+    ],
+    'wgCargoFileDataColumns' => [
+        'default' => [],
+    ],
+    'wgCargoPageDataColumns' => [
+        'default' => [],
+    ],
+
     // CentralAuth
     'wgCentralAuthAutoCreateWikis' => [
         'default' => [
@@ -683,11 +736,15 @@ $wgConf->settings += [
     'wgCentralAuthAutoMigrateNonGlobalAccounts' => [
         'default' => true,
     ],
-    'wgCentralAuthCookies' => [
-        'default' => true,
+    'wgCentralAuthCentralWiki' => [
+        'default' => 'metawiki',
+        'beta' => 'metawikibeta',
     ],
     'wgCentralAuthCookiePrefix' => [
         'default' => 'centralauth_',
+    ],
+    'wgCentralAuthCookies' => [
+        'default' => true,
     ],
     'wgCentralAuthDatabase' => [
         'default' => 'wikidb',
@@ -706,10 +763,6 @@ $wgConf->settings += [
         'default' => 'metawiki',
 	'beta' => 'metawikibeta',
     ],
-    'wgCentralAuthCentralWiki' => [
-        'default' => 'metawiki',
-        'beta' => 'metawikibeta',
-    ],
     'wgCentralAuthPreventUnattached' => [
         'default' => true,
     ],
@@ -719,24 +772,144 @@ $wgConf->settings += [
     'wgCentralAuthTokenCacheType' => [
         'default' => 'redis',
     ],
-    'wgCookieSameSite' => [
-        'default' => 'None',
+
+    // CentralNotice
+    'wgCentralBannerRecorder' => [
+        'default' => 'https://meta.wikioasis.org/wiki/Special:RecordImpression',
     ],
-    'wgUseSameSiteLegacyCookies' => [
+    'wgCentralDBname' => [
+        'default' => 'metawiki',
+		'beta' => 'metawikibeta',
+    ],
+    'wgCentralHost' => [
+        'default' => 'https://meta.wikioasis.org',
+    ],
+    'wgCentralSelectedBannerDispatcher' => [
+        'default' => 'https://meta.wikioasis.org/wiki/Special:BannerLoader',
+    ],
+    'wgNoticeInfrastructure' => [
+        'default' => false,
+        'metawiki' => true,
+        'metawikibeta' => true,
+    ],
+    'wgNoticeProject' => [
+        'default' => 'all',
+    ],
+    'wgNoticeProjects' => [
+        'default' => [
+            'all',
+            'optout',
+        ],
+    ],
+    'wgNoticeUseTranslateExtension' => [
         'default' => true,
     ],
+
+    // CFCachePurge
+    'wgCFCachePurgeIgnoreImgAuth' => [
+        'default' => true,
+    ],
+    'wgCFCachePurgePurgeableImageHosts'=> [
+        'default' => ['cdn.wikioasis.org'],
+    ],
+
+    // CheckUser
+	'wgCheckUserDisableCheckUserAPI' => [
+		'default' => false,
+	],
+	'wgCheckUserForceSummary' => [
+        'default' => true,
+    ],
+    'wgCheckUserGlobalContributionsCentralWikiId' => [
+        'default' => null,
+    ],
+    'wgCheckUserLogLogins' => [
+        'default' => true,
+    ],
+    'wgCheckUserSuggestedInvestigationsEnabled' => [
+        'default' => false,
+    ],
+
+    // Citoid
+    'wgCitoidFullRestbaseURL' => [
+        'default' => 'https://en.wikipedia.org/api/rest_',
+    ],
+
+    // CodeEditor
+    'wgCodeEditorEnableCore' => [
+        'default' => true,
+    ],
+
+    // Comments
+    'wgCommentsDefaultAvatar' => [
+        'default' => '/extensions/SocialProfile/avatars/default_ml.gif',
+    ],
+
     // Compass
     'wgCompassDefaultVisibility' => [
         'default' => false,
     ],
 
-    // CreateWiki
-    'wgCreateWikiDatabase' => [
-        'default' => 'wikidb',
- 	    'beta' => 'wikidbbeta',
+    // ConfirmEdit & hCaptcha
+    'wgCaptchaTriggers' => [
+        'default' => [
+            'edit' => false,
+            'create' => false,
+            'sendemail' => false,
+            'addurl' => true,
+            'createaccount' => true,
+            'badlogin' => true,
+            'badloginperuser' => true,
+        ],
+        '+ext-WikiForum' => [
+            'wikiforum' => true,
+        ],
+        '+ext-ContactPage' => [
+            'contactpage' => true,
+        ],
     ],
-    'wgCreateWikiUseJobQueue' => [
+    'wgHCaptchaSiteKey' => [
+        'default' => 'adce63ae-507e-4d80-8f9a-9a443e3658d6',
+    ],
+
+    // CookieWarning
+    'wgCookieWarningEnabled' => [
         'default' => true,
+    ],
+    'wgCookieWarningMoreUrl' => [
+        'default' => 'https://meta.wikioasis.org/wiki/Privacy_policy',
+    ],
+
+    // CreateWiki
+    'wgCreateWikiCacheDirectory' => [
+        'default' => '/srv/mediawiki/cw_cache',
+    ],
+    'wgCreateWikiCacheType' => [
+        'default' => 'redis',
+    ],
+    'wgCreateWikiCannedResponses' => [
+        'default' => [
+            'Approval reasons' => [
+                'Approved' => 'Please ensure your wiki complies with the WikiOasis Content Policy at all times or it may be closed. Thank you for choosing WikiOasis!',
+            ],
+            'Decline reasons' => [
+                'Obscene/Offensive Name/Subdomain' => 'We do not permit wikis with offensive names or subdomains. Please change the name or subdomain. Thank you.',
+                'Vandalism/Trolling' => 'This wiki request is a product of vandalism or trolling.',
+				'Content Policy: Illegal' => 'Declining per Content Policy provision: "Follow United States law." If you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
+				'Content Policy: Problematic' => 'Declining per Content Policy provision: "Don\'t cause problems for WikiOasis." If you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
+				'Content Policy: Hateful' => 'Declining per Content Policy provision: "No hate speech." If you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
+				'Content Policy: Gratuitous NSFW' => 'Declining per Content Policy provision: "No gratuitous NSFW." If you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
+				'Content Policy: Commercial' => 'Declining per Content Policy provision: "Don\'t use wikis as a tool for commercial promotion." If you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
+				'Content Policy: File Hosting' => 'Declining per Content Policy provision: "Don\'t use wikis as file hosting services." If you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
+				'Content Policy: Anarchy' => 'Declining per Content Policy provision: "No anarchy wikis." If you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
+				'Content Policy: Duplicate' => 'Your wiki appears to duplicate the scope of an existing WikiOasis wiki, which is not allowed per the Content Policy. Please contribute to the existing wiki instead; if you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
+            ],
+            'On hold reasons' => [
+                'More details needed' => 'Please describe your wiki and its topic in more detail.',
+                'On hold pending response' => 'This request is on hold pending a response from you. Please see the "Request Comments" tab and reply to the questions asked by the reviewer. Thank you.',
+                'On hold pending internal review' => 'This request has been placed on hold for internal review by another Steward. Thank you for your patience.',
+            ],
+        ],
     ],
     'wgCreateWikiCategories' => [
         'default' => [
@@ -771,93 +944,6 @@ $wgConf->settings += [
             'Uncategorised' => 'uncategorised',
         ],
     ],
-    'wgCreateWikiUseCategories' => [
-        'default' => true,
-    ],
-    'wgCreateWikiSubdomain' => [
-        'default' => 'wikioasis.org',
-    ],
-    'wgCreateWikiUseClosedWikis' => [
-        'default' => true,
-    ],
-    'wgCreateWikiUseCustomDomains' => [
-        'default' => true,
-    ],
-    'wgCreateWikiUseEchoNotifications' => [
-        'default' => true,
-    ],
-    'wgCreateWikiUseExperimental' => [
-        'default' => true,
-    ],
-    'wgCreateWikiUseInactiveWikis' => [
-        'default' => true,
-    ],
-    'wgCreateWikiUsePrivateWikis' => [
-        'default' => true,
-    ],
-    'wgCreateWikiCacheDirectory' => [
-        'default' => '/srv/mediawiki/cw_cache',
-    ],
-    'wgCreateWikiCacheType' => [
-        'default' => 'redis',
-    ],
-    'wgCreateWikiShowBiographicalOption' => [
-		'default' => true,
-    ],
-    'wgRequestWikiConfirmEmail' => [
-        'default' => false,
-    ],
-    'wgWikiOasisMagicCentralWiki' => [
-        'default' => 'metawiki',
-    ],
-    'wgCreateWikiDatabaseSuffix' => [
-        'default' => 'wiki',
-    ],
-    'wgCreateWikiDisableRESTAPI' => [
-        'default' => true,
-        'metawiki' => false,
-	    'metawikibeta' => false,
-    ],
-    'wgCreateWikiGlobalWiki' => [
-        'default' => 'metawiki',
-	    'beta' => 'metawikibeta',
-    ],
-    'wgCreateWikiEmailNotifications' => [
-        'default' => true,
-    ],
-    'wgCreateWikiInactiveExemptReasonOptions' => [
-        'default' => [
-            'Wiki completed and made to be read' => 'comp',
-            'Wiki made for time-based gathering' => 'tbg',
-            'Wiki made to be read' => 'mtr',
-            'Temporary exemption for exceptional hardship, see DPE' => 'temphardship',
-            'Other, see DPE' => 'other',
-        ],
-    ],
-    'wgCreateWikiCannedResponses' => [
-        'default' => [
-            'Approval reasons' => [
-                'Approved' => 'Please ensure your wiki complies with the WikiOasis Content Policy at all times or it may be closed. Thank you for choosing WikiOasis!',
-            ],
-            'Decline reasons' => [
-                'Obscene/Offensive Name/Subdomain' => 'We do not permit wikis with offensive names or subdomains. Please change the name or subdomain. Thank you.',
-                'Vandalism/Trolling' => 'This wiki request is a product of vandalism or trolling.',
-				'Content Policy: Illegal' => 'Declining per Content Policy provision: "Follow United States law." If you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
-				'Content Policy: Problematic' => 'Declining per Content Policy provision: "Don\'t cause problems for WikiOasis." If you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
-				'Content Policy: Hateful' => 'Declining per Content Policy provision: "No hate speech." If you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
-				'Content Policy: Gratuitous NSFW' => 'Declining per Content Policy provision: "No gratuitous NSFW." If you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
-				'Content Policy: Commercial' => 'Declining per Content Policy provision: "Don\'t use wikis as a tool for commercial promotion." If you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
-				'Content Policy: File Hosting' => 'Declining per Content Policy provision: "Don\'t use wikis as file hosting services." If you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
-				'Content Policy: Anarchy' => 'Declining per Content Policy provision: "No anarchy wikis." If you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
-				'Content Policy: Duplicate' => 'Your wiki appears to duplicate the scope of an existing WikiOasis wiki, which is not allowed per the Content Policy. Please contribute to the existing wiki instead; if you believe this was in error, please explain how your wiki will not violate the policy. Thank you.',
-            ],
-            'On hold reasons' => [
-                'More details needed' => 'Please describe your wiki and its topic in more detail.',
-                'On hold pending response' => 'This request is on hold pending a response from you. Please see the "Request Comments" tab and reply to the questions asked by the reviewer. Thank you.',
-                'On hold pending internal review' => 'This request has been placed on hold for internal review by another Steward. Thank you for your patience.',
-            ],
-        ],
-    ],
 	'wgCreateWikiClosedReasons' => [
 		'default' => [
 			'Closed by bureaucrat' => 'bureaucrat',
@@ -869,6 +955,18 @@ $wgConf->settings += [
 			'Unmanaged wiki' => 'unmanaged',
 		],
 	],
+    'wgCreateWikiDatabase' => [
+        'default' => 'wikidb',
+ 	    'beta' => 'wikidbbeta',
+    ],
+    'wgCreateWikiDatabaseSuffix' => [
+        'default' => 'wiki',
+    ],
+    'wgCreateWikiDisableRESTAPI' => [
+        'default' => true,
+        'metawiki' => false,
+	    'metawikibeta' => false,
+    ],
     'wgCreateWikiDisallowedSubdomains' => [
         'default' => [
             'www',
@@ -899,16 +997,27 @@ $wgConf->settings += [
             'issue-tracker',
         ]
     ],
-    'wgCreateWikiStateDays' => [
-        'default' => [
-            'inactive' => 90,
-            'closed' => 30,
-            'removed' => 120,
-            'deleted' => 30,
-        ]
+    'wgCreateWikiEmailNotifications' => [
+        'default' => true,
     ],
     'wgCreateWikiEnableManageInactiveWikis' => [
         'default' => true,
+    ],
+    'wgCreateWikiGlobalWiki' => [
+        'default' => 'metawiki',
+	    'beta' => 'metawikibeta',
+    ],
+    'wgCreateWikiInactiveExemptReasonOptions' => [
+        'default' => [
+            'Wiki completed and made to be read' => 'comp',
+            'Wiki made for time-based gathering' => 'tbg',
+            'Wiki made to be read' => 'mtr',
+            'Temporary exemption for exceptional hardship, see DPE' => 'temphardship',
+            'Other, see DPE' => 'other',
+        ],
+    ],
+    'wgCreateWikiShowBiographicalOption' => [
+		'default' => true,
     ],
     'wgCreateWikiSQLFiles' => [
         'default' => [
@@ -930,24 +1039,396 @@ $wgConf->settings += [
             //"/srv/mediawiki/versions/1.46/extensions/UrlShortener/schemas/tables-generated.sql",
         ],
     ],
-    // CheckUser
-	'wgCheckUserForceSummary' => [
+    'wgCreateWikiStateDays' => [
+        'default' => [
+            'inactive' => 90,
+            'closed' => 30,
+            'removed' => 120,
+            'deleted' => 30,
+        ]
+    ],
+    'wgCreateWikiSubdomain' => [
+        'default' => 'wikioasis.org',
+    ],
+    'wgCreateWikiUseCategories' => [
         'default' => true,
     ],
-	'wgCheckUserDisableCheckUserAPI' => [
-		'default' => false,
-	],
-    'wgCheckUserLogLogins' => [
+    'wgCreateWikiUseClosedWikis' => [
         'default' => true,
     ],
-    'wgCheckUserSuggestedInvestigationsEnabled' => [
+    'wgCreateWikiUseCustomDomains' => [
+        'default' => true,
+    ],
+    'wgCreateWikiUseEchoNotifications' => [
+        'default' => true,
+    ],
+    'wgCreateWikiUseExperimental' => [
+        'default' => true,
+    ],
+    'wgCreateWikiUseInactiveWikis' => [
+        'default' => true,
+    ],
+    'wgCreateWikiUseJobQueue' => [
+        'default' => true,
+    ],
+    'wgCreateWikiUsePrivateWikis' => [
+        'default' => true,
+    ],
+    'wgRequestWikiConfirmEmail' => [
         'default' => false,
     ],
-    'wgCheckUserGlobalContributionsCentralWikiId' => [
-        'default' => null,
+
+    // DataMaps
+    'wgDataMapsAllowExperimentalFeatures' => [
+        'default' => false,
+    ],
+    'wgDataMapsEnableCreateMap' => [
+        'default' => true,
+    ],
+    'wgDataMapsEnableVisualEditor' => [
+        'default' => false,
+    ],
+
+    // DiscordNotifications
+    'wgDiscordAdditionalIncomingWebhookUrls' => [
+        'default' => [],
+    ],
+    'wgDiscordAvatarUrl' => [
+        'default' => '',
+    ],
+    'wgDiscordDisableEmbedFooter' => [
+        'default' => false,
+    ],
+    'wgDiscordEnableExperimentalCVTFeatures' => [
+        'default' => true,
+    ],
+    'wgDiscordExcludeConditions' => [
+        'default' => [
+            'experimental' => [
+                'article_inserted' => [
+                    'groups' => [
+                        'sysop',
+                    ],
+                    'permissions' => [
+                        'bot',
+                        'managewiki-core',
+                        'managewiki-extensions',
+                        'managewiki-namespaces',
+                        'managewiki-permissions',
+                        'managewiki-settings',
+                    ],
+                ],
+                'article_saved' => [
+                    'groups' => [
+                        'sysop',
+                    ],
+                    'permissions' => [
+                        'bot',
+                        'managewiki-core',
+                        'managewiki-extensions',
+                        'managewiki-namespaces',
+                        'managewiki-permissions',
+                        'managewiki-settings',
+                    ],
+                ],
+            ],
+            'users' => [],
+        ],
+        '+metawiki' => [
+            'article_inserted' => [
+                'groups' => [
+                    'bot',
+                    'flood',
+                ],
+            ],
+            'article_saved' => [
+                'groups' => [
+                    'bot',
+                    'flood',
+                ],
+            ],
+        ],
+    ],
+    'wgDiscordExperimentalCVTMatchFilter' => [
+        'default' => [ '(n[1i!*]gg[3*e]r|r[e3*]t[4@*a]rd|f[@*4]gg[0*o]t|ch[1!i*]nk)' ],
+    ],
+    'wgDiscordExperimentalFeedLanguageCode' => [
+        'default' => 'en',
+    ],
+    'wgDiscordFromName' => [
+        'default' => $wi->sitename,
+    ],
+    'wgDiscordIgnoreMinorEdits' => [
+        'default' => false,
+    ],
+    'wgDiscordIncludeDiffSize' => [
+        'default' => true,
+    ],
+    'wgDiscordIncludePageUrls' => [
+        'default' => true,
+    ],
+    'wgDiscordIncludeUserUrls' => [
+        'default' => true,
+    ],
+    'wgDiscordNotificationAfterImportPage' => [
+        'default' => true,
+    ],
+    'wgDiscordNotificationBlockedUser' => [
+        'default' => true,
+    ],
+    'wgDiscordNotificationCentralAuthWikiUrl' => [
+        'default' => 'https://meta.wikioasis.org/',
+    ],
+    'wgDiscordNotificationFileUpload' => [
+        'default' => true,
+    ],
+    'wgDiscordNotificationIncludeAutocreatedUsers' => [
+        'default' => true,
+        'loginwiki' => false,
+        'metawiki' => false,
+    ],
+    'wgDiscordNotificationMovedArticle' => [
+        'default' => true,
+    ],
+    'wgDiscordNotificationNewUser' => [
+        'default' => true,
+    ],
+    'wgDiscordNotificationProtectedArticle' => [
+        'default' => true,
+    ],
+    'wgDiscordNotificationShowSuppressed' => [
+        'default' => false,
+    ],
+
+    // DismissableSiteNotice
+    'wgDismissableSiteNoticeForAnons' => [
+        'default' => true,
+    ],
+
+    // Echo
+    'wgEchoCrossWikiNotifications' => [
+        'default' => true,
+    ],
+    'wgEchoMaxMentionsInEditSummary' => [
+        'default' => 5,
+    ],
+    'wgEchoMentionStatusNotifications' => [
+        'default' => true,
+    ],
+    'wgEchoPerUserBlacklist' => [
+        'default' => true,
+    ],
+    'wgEchoSharedTrackingDB' => [
+        'default' => 'wikidb',
+	'beta' => 'wikidbbeta',
+    ],
+    'wgEchoUseCrossWikiBetaFeature' => [
+        'default' => false,
+    ],
+    'wgEchoUseJobQueue' => [
+        'default' => true,
+    ],
+    'wgEchoWatchlistEmailOncePerPage' => [
+        'default' => true,
+    ],
+    'wgEchoWatchlistNotifications' => [
+        'default' => false,
+    ],
+
+    // GlobalBlocking & GlobalPreferences & GlobalUserPage & GlobalCssJs & GlobalUsage
+    'wgGlobalBlockingDatabase' => [
+        'default' => 'wikidb',
+	    'beta' => 'wikidbbeta',
+    ],
+    'wgGlobalCssJsConfig' => [
+        'default' => [
+            'wiki' => 'metawiki',
+            'source' => 'metawiki',
+        ],
+	    'beta' => [
+            'wiki' => 'metawikibeta',
+            'source' => 'metawikibeta',
+	    ],
+    ],
+    'wgGlobalPreferencesDB' => [
+        'default' => 'wikidb',
+	    'beta' => 'wikidbbeta',
+    ],
+	'wgGlobalUsagePurgeBacklinks' => [
+		'default' => true,
+	],
+	'wgGlobalUsageSharedRepoWiki' => [
+		'govnpcommonsbetawiki' => 'govnpcommonsbetawiki',
+		'govnpdevwiki' => 'govnpcommonsbetawiki',
+	    'govnpbetawiki' => 'govnpcommonsbetawiki',
+	    'govnpediabetawiki' => 'govnpcommonsbetawiki',
+	],
+    'wgGlobalUserPageAPIUrl' => [
+        'default' => 'https://meta.wikioasis.org/w/api.php',
+    ],
+    'wgGlobalUserPageDBname' => [
+        'default' => 'metawiki',
+        'beta' => 'metawikibeta',
+    ],
+    'wgUseGlobalSiteCssJs' => [
+        'default' => true,
+    ],
+
+    // GTag
+    'wgGTagAnalyticsId' => [
+        'default' => 'G-NL7M72FBFT',
+    ],
+    'wgGTagAnonymizeIP' => [
+        'default' => true,
+    ],
+    'wgGTagEnableTCF' => [
+        'default' => false,
+    ],
+    'wgGTagHonorDNT' => [
+        'default' => true,
+    ],
+    'wgGTagTrackSensitivePages' => [
+        'default' => false,
+    ],
+
+    // ImportDump
+    'wgImportDumpCentralWiki' => [
+        'default' => 'metawiki',
+	'beta' => 'metawikibeta',
+    ],
+    'wgImportDumpEnableAutomatedJob' => [
+        'default' => true,
+    ],
+    'wgImportDumpInterwikiMap' => [
+        'default' => [
+            'fandom.com' => 'wikia',
+            'miraheze.org' => 'mh',
+            // 'wikitide.org' => 'wt',
+        ],
+    ],
+    'wgImportDumpScriptCommand' => [
+        'default' => 'php {IP}/maintenance/importDump.php --wiki={wiki} --username-prefix="{username-prefix}" {file-path}',
+        'metawikibeta' => 'screen -d -m bash -c ". /etc/swift-env.sh; swift download miraheze-metawikibeta-local-public {file-path} -o /home/$USER/{file-name}; mwscript importDump.php {wiki} -y --no-updates --username-prefix={username-prefix} /home/$USER/{file-name}; mwscript rebuildall.php {wiki} -y; mwscript initSiteStats.php {wiki} --active --update -y; rm /home/$USER/{file-name}"',
+    ],
+    'wgImportDumpUsersNotifiedOnAllRequests' => [
+        'default' => [
+            'Waki285',
+        ],
+    ],
+    'wgImportDumpUsersNotifiedOnFailedImports' => [
+        'default' => [
+            'Waki285',
+        ],
+    ],
+
+    // Interwiki & InterwikiDispatcher
+    'wgInterwikiCentralDB' => [
+        'default' => 'metawiki',
+    ],
+    'wgIWDPrefixes' => [
+        'default' => [
+            'fandom' => [
+                /* Fandom */
+                'interwiki' => 'fandom',
+                'url' => 'https://$2.fandom.com/wiki/$1',
+                'urlInt' => 'https://$2.fandom.com/$3/wiki/$1',
+                'baseTransOnly' => true,
+            ],
+            'miraheze' => [
+                /* Miraheze */
+                'interwiki' => 'mh',
+                'url' => 'https://$2.miraheze.org/wiki/$1',
+                'baseTransOnly' => true,
+            ],
+            'kyoikuportal' => [
+                /* KP */
+                'interwiki' => 'kp',
+                'url' => 'https://$2.kyoikuportal.com/wiki/$1',
+                'baseTransOnly' => true,
+            ],
+            'wikioasis' => [
+                /* WikiOasis */
+                'interwiki' => 'wo',
+                'url' => 'https://$2.wikioasis.org/wiki/$1',
+                'dbname' => '$2wiki',
+                'baseTransOnly' => true,
+            ],
+            'skywiki' => [
+                /* Skywiki */
+                'interwiki' => 'sw',
+                'url' => 'https://$2.skywiki.org/wiki/$1',
+                'baseTransOnly' => true,
+            ],
+        ],
+    ],
+
+    // JsonConfig
+    'wgJsonConfigEnableLuaSupport' => [
+        'default' => true,
+    ],
+    'wgJsonConfigInterwikiPrefix' => [
+        'default' => 'commons',
+    ],
+    'wgJsonConfigModels' => [
+        'default' => [
+            'Map.JsonConfig' => JsonConfig\JCMapDataContent::class,
+            'Tabular.JsonConfig' => JsonConfig\JCTabularContent::class,
+        ],
+    ],
+
+    // Kartographer
+    'wgKartographerDfltStyle' => [
+        'default' => '.',
+    ],
+    'wgKartographerEnableMapFrame' => [
+        'default' => true,
+    ],
+    'wgKartographerMapServer' => [
+        'default' => 'https://tile.openstreetmap.org',
+    ],
+    'wgKartographerSimpleStyleMarkers' => [
+        'default' => true,
+    ],
+    'wgKartographerSrcsetScales' => [
+        'default' => [],
+    ],
+    'wgKartographerStaticMapframe' => [
+        'default' => false,
+    ],
+    'wgKartographerStyles' => [
+        'default' => [
+            'osm-intl',
+            'osm',
+        ],
+    ],
+    'wgKartographerUseMarkerStyle' => [
+        'default' => false,
+    ],
+    'wgKartographerWikivoyageMode' => [
+        'default' => false,
     ],
 
     // ManageWiki
+    'wgManageWikiCacheDirectory' => [
+        'default' => '/srv/mediawiki/cw_cache',
+    ],
+    'wgManageWikiExtensionsDefault' => [
+        'default' => [
+            'categorytree',
+            'cite',
+            'citethispage',
+            'codeeditor',
+            'codemirror',
+            'darkmode',
+            'globaluserpage',
+            'minervaneue',
+            'mobilefrontend',
+            'syntaxhighlight_geshi',
+            'textextracts',
+            'urlshortener',
+            'wikiseo',
+        ],
+    ],
     'wgManageWikiModulesEnabled' => [
         'default' => [
             'core' => true,
@@ -957,17 +1438,18 @@ $wgConf->settings += [
             'settings' => true
         ],
     ],
-    'wgManageWikiCacheDirectory' => [
-        'default' => '/srv/mediawiki/cw_cache',
-    ],
-    'wgManageWikiUseCustomDomains' => [
-        'default' => true,
-    ],
     'wgManageWikiPermissionsAdditionalAddGroups' => [
         'default' => [
             'bureaucrat' => [
                   'temporary-account-viewer'
 	    ],
+        ],
+    ],
+    'wgManageWikiPermissionsAdditionalRemoveGroups' => [
+        'default' => [
+            'bureaucrat' => [
+                  'temporary-account-viewer'
+            ],
         ],
     ],
     'wgManageWikiPermissionsAdditionalRights' => [
@@ -1215,11 +1697,18 @@ $wgConf->settings += [
             ],
         ],
     ],
-    'wgManageWikiPermissionsAdditionalRemoveGroups' => [
+    'wgManageWikiPermissionsDefaultPrivateGroup' => [
+        'default' => 'member',
+    ],
+    'wgManageWikiPermissionsDisallowedGroups' => [
         'default' => [
-            'bureaucrat' => [
-                  'temporary-account-viewer'
-            ],
+            'checkuser',
+            'smwadministrator',
+            'oversight',
+            'steward',
+            'suppress',
+            'tech',
+            'safety',
         ],
     ],
     'wgManageWikiPermissionsDisallowedRights' => [
@@ -1353,53 +1842,200 @@ $wgConf->settings += [
             ],
         ],
     ],
-    'wgManageWikiPermissionsDisallowedGroups' => [
+    'wgManageWikiUseCustomDomains' => [
+        'default' => true,
+    ],
+
+    // Maps
+    'egMapsEnableCoordinateFunction' => [
+        'default' => true,
+    ],
+
+    // MediaModeration
+    'wgMediaModerationDeveloperMode' => [
+	    'default' => false,
+    ],
+    'wgMediaModerationFrom' => [
+	    'default' => 'noreply@wikioasis.org',
+    ],
+    'wgMediaModerationRecipientList' => [
+	    'default' => [
+	    	'safety@wikioasis.org',
+	    ],
+    ],
+
+    // OAuth
+    'wgMWOAuthCentralWiki' => [
+        'default' => 'metawiki',
+	'beta' => 'metawikibeta',
+    ],
+    'wgMWOAuthSecureTokenTransfer' => [
+        'default' => true,
+    ],
+    '$wgMWOAuthSharedUserIDs' => [
+        'default' => true,
+    ],
+    'wgMWOAuthSharedUserSource' => [
+        'default' => 'CentralAuth',
+    ],
+    'wgOAuth2GrantExpirationInterval' => [
+        'default' => 'PT4H',
+    ],
+    'wgOAuth2PrivateKey' => [
+        'default' => '/srv/mediawiki/config/OAuth.key',
+    ],
+    'wgOAuth2PublicKey' => [
+        'default' => '/srv/mediawiki/config/OAuth.key.pub',
+    ],
+    'wgOAuth2RefreshTokenTTL' => [
+        'default' => 'P365D',
+    ],
+
+    // PageImages
+    'wgPageImagesNamespaces' => [
         'default' => [
-            'checkuser',
-            'smwadministrator',
-            'oversight',
-            'steward',
-            'suppress',
-            'tech',
-            'safety',
+            NS_MAIN,
         ],
-    ],
-    'wgManageWikiPermissionsDefaultPrivateGroup' => [
-        'default' => 'member',
-    ],
-    'wgManageWikiExtensionsDefault' => [
-        'default' => [
-            'categorytree',
-            'cite',
-            'citethispage',
-            'codeeditor',
-            'codemirror',
-            'darkmode',
-            'globaluserpage',
-            'minervaneue',
-            'mobilefrontend',
-            'syntaxhighlight_geshi',
-            'textextracts',
-            'urlshortener',
-            'wikiseo',
+        'countryhumanswiki' => [
+            NS_MAIN,
+            3000,
+			3002,
+        ],
+        'objectshowwiki' => [
+            NS_MAIN,
+            3000,
+            3006,
+            3008,
+            3010,
+            3012,
+            3014,
+            3016,
+            3018,
+            3020,
+            3022,
+			3024,
+			3026
         ],
     ],
 
+    // PortableInfobox
+    'wgPortableInfoboxCacheRenderers' => [
+        'default' => true,
+    ],
+    'wgPortableInfoboxCustomImageWidth' => [
+        'default' => 300,
+    ],
+    'wgPortableInfoboxResponsiblyOpenCollapsed' => [
+        'default' => true,
+    ],
+    'wgPortableInfoboxUseFileDescriptionPage' => [
+        'default' => false,
+    ],
+    'wgPortableInfoboxUseHeadings' => [
+        'default' => true,
+    ],
+
+    // QuickInstantCommons
+    'wgQuickInstantCommonsUserAgentInfo' => [
+        'default' => "WikiOasis/0.0 (https://wikioasis.org/; tech@wikioasis.org)"
+    ],
+    'wgQuickInstantCommonsUserAgentOverride' => [
+        'default' => "WikiOasis/0.0 (https://wikioasis.org/; tech@wikioasis.org)"
+    ],
+
+    // RequestCustomDomain
+    'wgRequestCustomDomainUsersNotifiedOnAllRequests' => [
+        'default' => [
+            'Zippy',
+        ],
+    ],
+
+    // Scribunto
+    'wgScribuntoDefaultEngine' => [
+        'default' => 'luasandbox',
+    ],
+    'wgScribuntoSlowFunctionThreshold' => [
+        'default' => 0.99,
+    ],
+    'wgScribuntoUseCodeEditor' => [
+        'default' => true,
+    ],
+
+    // SecurePoll
+    'wgSecurePollSingleTransferableVoteEnabled' => [
+        'default' => true,
+    ],
+    'wgSecurePollUseLogging' => [
+        'default' => true,
+    ],
+    'wgSecurePollUseNamespace' => [
+        'default' => true,
+    ],
+
+    // SpamBlacklist
+    'wgBlacklistSettings' => [
+        'default' => [
+            'spam' => [
+                'files' => [
+                    "https://meta.wikioasis.org/w/index.php?title=Spam_blacklist&action=raw&sb_ver=1"
+                ],
+            ],
+        ]
+    ],
+    'wgLogSpamBlacklistHits' => [
+        'default' => true,
+    ],
+
     // Spring
-    'wgSpringEnabled' => [
+    'wgSpringAllowDismiss' => [
         'default' => true,
     ],
     'wgSpringAutoOpen' => [
         'default' => true,
     ],
-    'wgSpringAllowDismiss' => [
+    'wgSpringEnabled' => [
         'default' => true,
+    ],
+    'wgSpringFlows' => [
+        'default' => [
+            'template' => [
+                'label-message' => 'wikioasis-spring-flow-template',
+                'description-message' => 'wikioasis-spring-flow-template-desc',
+                'icon' => 'cdxIconTemplateAdd',
+                'steps' => [
+                    'template',
+                    'skins',
+                    'styling',
+                ],
+            ],
+            'manual' => [
+                'label-message' => 'wikioasis-spring-flow-manual',
+                'description-message' => 'wikioasis-spring-flow-manual-desc',
+                'icon' => 'cdxIconSettings',
+                'steps' => [
+                    'visibility',
+                    'editing',
+                    'extensions',
+                    'skins',
+                    'styling',
+                    'options',
+                    'import',
+                ],
+            ],
+            'quick' => [
+                'label-message' => 'wikioasis-spring-flow-quick',
+                'description-message' => 'wikioasis-spring-flow-quick-desc',
+                'icon' => 'cdxIconPlay',
+                'steps' => [
+                    'visibility',
+                    'editing',
+                    'styling',
+                ]
+            ]
+        ],
     ],
     'wgSpringHelpUrl' => [
         'default' => '',
-    ],
-    'wgSpringLogManageWikiChanges' => [
-        'default' => true,
     ],
     'wgSpringHighlightedExtensions' => [
         'default' => [
@@ -1418,17 +2054,6 @@ $wgConf->settings += [
             'tweeki',
             'medik',
             'gamepress',
-        ]
-    ],
-    'wgSpringSkinDefaultAdd' => [
-        'default' => [
-            'citizen',
-            'cologneblue',
-            'modern',
-            'monobook',
-            'timeless',
-            'vector',
-            'vector-2022',
         ]
     ],
     'wgSpringImportDirectory' => [
@@ -1453,12 +2078,32 @@ $wgConf->settings += [
             ],
         ],
     ],
+    'wgSpringIntroSteps' => [
+        'default' => [
+            'welcome',
+            'route',
+        ],
+    ],
+    'wgSpringLogManageWikiChanges' => [
+        'default' => true,
+    ],
     'wgSpringOutroSteps' => [
         'default' => [
             'compass',
             'share',
             'finish',
         ],
+    ],
+    'wgSpringSkinDefaultAdd' => [
+        'default' => [
+            'citizen',
+            'cologneblue',
+            'modern',
+            'monobook',
+            'timeless',
+            'vector',
+            'vector-2022',
+        ]
     ],
     'wgSpringSteps' => [
         'default' => [
@@ -1765,50 +2410,6 @@ $wgConf->settings += [
             ],
         ],
     ],
-    'wgSpringIntroSteps' => [
-        'default' => [
-            'welcome',
-            'route',
-        ],
-    ],
-    'wgSpringFlows' => [
-        'default' => [
-            'template' => [
-                'label-message' => 'wikioasis-spring-flow-template',
-                'description-message' => 'wikioasis-spring-flow-template-desc',
-                'icon' => 'cdxIconTemplateAdd',
-                'steps' => [
-                    'template',
-                    'skins',
-                    'styling',
-                ],
-            ],
-            'manual' => [
-                'label-message' => 'wikioasis-spring-flow-manual',
-                'description-message' => 'wikioasis-spring-flow-manual-desc',
-                'icon' => 'cdxIconSettings',
-                'steps' => [
-                    'visibility',
-                    'editing',
-                    'extensions',
-                    'skins',
-                    'styling',
-                    'options',
-                    'import',
-                ],
-            ],
-            'quick' => [
-                'label-message' => 'wikioasis-spring-flow-quick',
-                'description-message' => 'wikioasis-spring-flow-quick-desc',
-                'icon' => 'cdxIconPlay',
-                'steps' => [
-                    'visibility',
-                    'editing',
-                    'styling',
-                ]
-            ]
-        ],
-    ],
     'wgSpringTemplates' => [
         'default' => [
             'companion' => [
@@ -1880,362 +2481,21 @@ $wgConf->settings += [
             ],
         ],
     ],
-    // MediaModeration
-    'wgMediaModerationDeveloperMode' => [
-	    'default' => false,
-    ],
-    'wgMediaModerationFrom' => [
-	    'default' => 'noreply@wikioasis.org',
-    ],
-    'wgMediaModerationRecipientList' => [
-	    'default' => [
-	    	'safety@wikioasis.org',
-	    ],
-    ],
-    // GlobalBlocking & GlobalPreferences & GlobalUserPage & GlobalCssJs & GlobalUsage
-    'wgGlobalBlockingDatabase' => [
-        'default' => 'wikidb',
-	    'beta' => 'wikidbbeta',
-    ],
-    'wgGlobalPreferencesDB' => [
-        'default' => 'wikidb',
-	    'beta' => 'wikidbbeta',
-    ],
-	'wgGlobalUsageSharedRepoWiki' => [
-		'govnpcommonsbetawiki' => 'govnpcommonsbetawiki',
-		'govnpdevwiki' => 'govnpcommonsbetawiki',
-	    'govnpbetawiki' => 'govnpcommonsbetawiki',
-	    'govnpediabetawiki' => 'govnpcommonsbetawiki',
-	],
-	'wgGlobalUsagePurgeBacklinks' => [
-		'default' => true,
-	],
-    'wgGlobalUserPageAPIUrl' => [
-        'default' => 'https://meta.wikioasis.org/w/api.php',
-    ],
-    'wgGlobalUserPageDBname' => [
-        'default' => 'metawiki',
-        'beta' => 'metawikibeta',
-    ],
-    'wgUseGlobalSiteCssJs' => [
-        'default' => true,
-    ],
-    '+wgResourceLoaderSources' => [
-        'default' => [
-            'metawiki' => [
-                'apiScript' => '//meta.wikioasis.org/w/api.php',
-                'loadScript' => '//meta.wikioasis.org/w/load.php',
-            ],
-        ],
-	    'beta' => [
-	        'metawikibeta' => [
-                'apiScript' => '//meta.betaoasis.xyz/w/api.php',
-                'loadScript' => '//meta.betaoasis.xyz/w/load.php',
-	        ],
-	    ],
-    ],
-    'wgGlobalCssJsConfig' => [
-        'default' => [
-            'wiki' => 'metawiki',
-            'source' => 'metawiki',
-        ],
-	    'beta' => [
-            'wiki' => 'metawikibeta',
-            'source' => 'metawikibeta',
-	    ],
-    ],
-
-    // Temporary accounts
-    'wgAutoCreateTempUser' => [
-        'default' => [
-            'enabled' => true,
-            'known' => false,
-            'actions' => ['edit'],
-            'genPattern' => '~$1',
-            'matchPattern' => null,
-            'reservedPattern' => '~$1',
-            'serialProvider' => [
-                'type' => 'centralauth',
-                'useYear' => true,
-            ],
-            'serialMapping' => [
-                'type' => 'readable-numeric',
-            ],
-            'expireAfterDays' => 90,
-            'notifyBeforeExpirationDays' => 10,
-        ],
-    ],
-
-    // OAuth
-    'wgMWOAuthCentralWiki' => [
-        'default' => 'metawiki',
-	'beta' => 'metawikibeta',
-    ],
-    'wgOAuth2GrantExpirationInterval' => [
-        'default' => 'PT4H',
-    ],
-    'wgOAuth2RefreshTokenTTL' => [
-        'default' => 'P365D',
-    ],
-    '$wgMWOAuthSharedUserIDs' => [
-        'default' => true,
-    ],
-    'wgMWOAuthSharedUserSource' => [
-        'default' => 'CentralAuth',
-    ],
-    'wgMWOAuthSecureTokenTransfer' => [
-        'default' => true,
-    ],
-    'wgOAuth2PublicKey' => [
-        'default' => '/srv/mediawiki/config/OAuth.key.pub',
-    ],
-    'wgOAuth2PrivateKey' => [
-        'default' => '/srv/mediawiki/config/OAuth.key',
-    ],
-
-    // PortableInfobox
-    'wgPortableInfoboxResponsiblyOpenCollapsed' => [
-        'default' => true,
-    ],
-    'wgPortableInfoboxUseFileDescriptionPage' => [
-        'default' => false,
-    ],
-    'wgPortableInfoboxUseHeadings' => [
-        'default' => true,
-    ],
-    'wgPortableInfoboxCacheRenderers' => [
-        'default' => true,
-    ],
-    'wgPortableInfoboxCustomImageWidth' => [
-        'default' => 300,
-    ],
-
-    // JsonConfig
-    'wgJsonConfigEnableLuaSupport' => [
-        'default' => true,
-    ],
-    'wgJsonConfigInterwikiPrefix' => [
-        'default' => 'commons',
-    ],
-    'wgJsonConfigModels' => [
-        'default' => [
-            'Map.JsonConfig' => JsonConfig\JCMapDataContent::class,
-            'Tabular.JsonConfig' => JsonConfig\JCTabularContent::class,
-        ],
-    ],
-
-    // Interwiki & InterwikiDispatcher
-    'wgIWDPrefixes' => [
-        'default' => [
-            'fandom' => [
-                /* Fandom */
-                'interwiki' => 'fandom',
-                'url' => 'https://$2.fandom.com/wiki/$1',
-                'urlInt' => 'https://$2.fandom.com/$3/wiki/$1',
-                'baseTransOnly' => true,
-            ],
-            'miraheze' => [
-                /* Miraheze */
-                'interwiki' => 'mh',
-                'url' => 'https://$2.miraheze.org/wiki/$1',
-                'baseTransOnly' => true,
-            ],
-            'kyoikuportal' => [
-                /* KP */
-                'interwiki' => 'kp',
-                'url' => 'https://$2.kyoikuportal.com/wiki/$1',
-                'baseTransOnly' => true,
-            ],
-            'wikioasis' => [
-                /* WikiOasis */
-                'interwiki' => 'wo',
-                'url' => 'https://$2.wikioasis.org/wiki/$1',
-                'dbname' => '$2wiki',
-                'baseTransOnly' => true,
-            ],
-            'skywiki' => [
-                /* Skywiki */
-                'interwiki' => 'sw',
-                'url' => 'https://$2.skywiki.org/wiki/$1',
-                'baseTransOnly' => true,
-            ],
-        ],
-    ],
-    'wgInterwikiCentralDB' => [
-        'default' => 'metawiki',
-	'default' => 'metawikibeta',
-    ],
-    'wgInterwikiMagic' => [
-	'default' => false,
-    ],
-
-    // ConfirmEdit & hCaptcha
-    'wgCaptchaTriggers' => [
-        'default' => [
-            'edit' => false,
-            'create' => false,
-            'sendemail' => false,
-            'addurl' => true,
-            'createaccount' => true,
-            'badlogin' => true,
-            'badloginperuser' => true,
-        ],
-        '+ext-WikiForum' => [
-            'wikiforum' => true,
-        ],
-        '+ext-ContactPage' => [
-            'contactpage' => true,
-        ],
-    ],
-    'wgHCaptchaSiteKey' => [
-        'default' => 'adce63ae-507e-4d80-8f9a-9a443e3658d6',
-    ],
 
     // TimedMediaHandler
     'wgFFmpegLocation' => [
         'default' => '/usr/bin/ffmpeg',
     ],
+
+    // Timeline
     'wgTimelinePloticusCommand' => [
         'default' => '/usr/bin/ploticus',
     ],
 
-    // Echo
-    'wgEchoCrossWikiNotifications' => [
-        'default' => true,
-    ],
-    'wgEchoSharedTrackingDB' => [
-        'default' => 'wikidb',
-	'beta' => 'wikidbbeta',
-    ],
-    'wgEchoUseJobQueue' => [
-        'default' => true,
-    ],
-    'wgEchoUseCrossWikiBetaFeature' => [
-        'default' => false,
-    ],
-    'wgEchoMentionStatusNotifications' => [
-        'default' => true,
-    ],
-    'wgEchoMaxMentionsInEditSummary' => [
-        'default' => 5,
-    ],
-    'wgEchoPerUserBlacklist' => [
-        'default' => true,
-    ],
-    'wgEchoWatchlistNotifications' => [
-        'default' => false,
-    ],
-    'wgEchoWatchlistEmailOncePerPage' => [
-        'default' => true,
-    ],
-
-    // UserPageEditProtection
-    'wgOnlyUserEditUserPage' => [
-        'ext-UserPageEditProtection' => true,
-    ],
-
-    // Citoid
-    'wgCitoidFullRestbaseURL' => [
-        'default' => 'https://en.wikipedia.org/api/rest_',
-    ],
-
-    // Cargo
-    'wgCargoDBuser' => [
-        'default' => 'cargouser2025',
-    ],
-    'wgCargoFileDataColumns' => [
-        'default' => [],
-    ],
-    'wgCargoPageDataColumns' => [
-        'default' => [],
-    ],
-    // CentralNotice
-    'wgNoticeInfrastructure' => [
-        'default' => false,
-        'metawiki' => true,
-        'metawikibeta' => true,
-    ],
-    'wgCentralSelectedBannerDispatcher' => [
-        'default' => 'https://meta.wikioasis.org/wiki/Special:BannerLoader',
-    ],
-    'wgCentralBannerRecorder' => [
-        'default' => 'https://meta.wikioasis.org/wiki/Special:RecordImpression',
-    ],
-    'wgCentralDBname' => [
-        'default' => 'metawiki',
-		'beta' => 'metawikibeta',
-    ],
-    'wgCentralHost' => [
-        'default' => 'https://meta.wikioasis.org',
-    ],
-    'wgNoticeProjects' => [
-        'default' => [
-            'all',
-            'optout',
-        ],
-    ],
-    'wgNoticeUseTranslateExtension' => [
-        'default' => true,
-    ],
-    'wgNoticeProject' => [
-        'default' => 'all',
-    ],
-
-    // PageImages
-    'wgPageImagesNamespaces' => [
-        'default' => [
-            NS_MAIN,
-        ],
-        'countryhumanswiki' => [
-            NS_MAIN,
-            3000,
-			3002,
-        ],
-        'objectshowwiki' => [
-            NS_MAIN,
-            3000,
-            3006,
-            3008,
-            3010,
-            3012,
-            3014,
-            3016,
-            3018,
-            3020,
-            3022,
-			3024,
-			3026
-        ],
-    ],
-
-    // DismissableSiteNotice
-    'wgDismissableSiteNoticeForAnons' => [
-        'default' => true,
-    ],
-
-    // CookieWarning
-    'wgCookieWarningMoreUrl' => [
-        'default' => 'https://meta.wikioasis.org/wiki/Privacy_policy',
-    ],
-    'wgCookieWarningEnabled' => [
-        'default' => true,
-    ],
-
-    // SpamBlacklist
-    'wgLogSpamBlacklistHits' => [
-        'default' => true,
-    ],
-    'wgBlacklistSettings' => [
-        'default' => [
-            'spam' => [
-                'files' => [
-                    "https://meta.wikioasis.org/w/index.php?title=Spam_blacklist&action=raw&sb_ver=1"
-                ],
-            ],
-        ]
-    ],
-
     // TitleBlacklist
+    'wgTitleBlacklistBlockAutoAccountCreation' => [
+        'default' => false,
+    ],
     'wgTitleBlacklistLogHits' => [
         'default' => true,
     ],
@@ -2254,75 +2514,311 @@ $wgConf->settings += [
     'wgTitleBlacklistUsernameSources' => [
         'default' => '*',
     ],
-    'wgTitleBlacklistBlockAutoAccountCreation' => [
-        'default' => false,
+
+    // UserPageEditProtection
+    'wgOnlyUserEditUserPage' => [
+        'ext-UserPageEditProtection' => true,
     ],
 
-    'wgKartographerDfltStyle' => [
-        'default' => '.',
-    ],
-    'wgKartographerEnableMapFrame' => [
-        'default' => true,
-    ],
-    'wgKartographerMapServer' => [
-        'default' => 'https://tile.openstreetmap.org',
-    ],
-    'wgKartographerSrcsetScales' => [
-        'default' => [],
-    ],
-    'wgKartographerStaticMapframe' => [
-        'default' => false,
-    ],
-    'wgKartographerSimpleStyleMarkers' => [
-        'default' => true,
-    ],
-    'wgKartographerStyles' => [
-        'default' => [
-            'osm-intl',
-            'osm',
-        ],
-    ],
-    'wgKartographerUseMarkerStyle' => [
-        'default' => false,
-    ],
-    'wgKartographerWikivoyageMode' => [
-        'default' => false,
-    ],
-    // ImportDump
-    'wgImportDumpCentralWiki' => [
-        'default' => 'metawiki',
-	'beta' => 'metawikibeta',
-    ],
-    'wgImportDumpEnableAutomatedJob' => [
-        'default' => true,
-    ],
-    'wgImportDumpInterwikiMap' => [
-        'default' => [
-            'fandom.com' => 'wikia',
-            'miraheze.org' => 'mh',
-            // 'wikitide.org' => 'wt',
-        ],
-    ],
-    'wgImportDumpScriptCommand' => [
-        'default' => 'php {IP}/maintenance/importDump.php --wiki={wiki} --username-prefix="{username-prefix}" {file-path}',
-        'metawikibeta' => 'screen -d -m bash -c ". /etc/swift-env.sh; swift download miraheze-metawikibeta-local-public {file-path} -o /home/$USER/{file-name}; mwscript importDump.php {wiki} -y --no-updates --username-prefix={username-prefix} /home/$USER/{file-name}; mwscript rebuildall.php {wiki} -y; mwscript initSiteStats.php {wiki} --active --update -y; rm /home/$USER/{file-name}"',
-    ],
-    'wgImportDumpUsersNotifiedOnAllRequests' => [
-        'default' => [
-            'Waki285',
-        ],
-    ],
-    'wgImportDumpUsersNotifiedOnFailedImports' => [
-        'default' => [
-            'Waki285',
-        ],
+    // VisualEditor
+    'wgVisualEditorEnableWikitext' =>  [
+	    'default' => true,
     ],
 
-    // RequestCustomDomain
-    'wgRequestCustomDomainUsersNotifiedOnAllRequests' => [
+    // Widgets
+    'wgWidgetsCompileDir' => [
+        'default' => '/srv/mediawiki/cache/$wgDBname/compiled_templates',
+    ],
+
+    // Wikibase
+    'wmgAllowEntityImport' => [
+        'default' => false,
+    ],
+    'wmgCanonicalUriProperty' => [
+        'default' => false,
+    ],
+    'wmgEnableEntitySearchUI' => [
+        'default' => false,
+    ],
+    'wmgFederatedPropertiesEnabled' => [
+        'default' => false,
+    ],
+    'wmgFormatterUrlProperty' => [
+        'default' => false,
+    ],
+    'wmgWikibaseItemNamespaceID' => [
+        'default' => 0
+    ],
+    'wmgWikibasePropertyNamespaceID' => [
+        'default' => 120
+    ],
+    'wmgWikibaseRepoDatabase' => [
+        'default' => $wi->dbname
+    ],
+    'wmgWikibaseRepoItemNamespaceID' => [
+        'default' => 860
+    ],
+    'wmgWikibaseRepoPropertyNamespaceID' => [
+        'default' => 862
+    ],
+    'wmgWikibaseRepoUrl' => [
+        'default' => 'https://wikidata.org'
+    ],
+
+    // WikibaseLexeme
+    'wgLexemeEnableDataTransclusion' => [
+        'default' => false,
+    ],
+    'wgLexemeLanguageCodePropertyId' => [
+        'default' => null,
+    ],
+
+    // WikibaseQualityConstraints
+    'wgWBQualityConstraintsAllowedEntityTypesConstraintId' => [
+        'default' => 'Q52004125',
+    ],
+    'wgWBQualityConstraintsAllowedQualifiersConstraintId' => [
+        'default' => 'Q21510851',
+    ],
+    'wgWBQualityConstraintsAllowedUnitsConstraintId' => [
+        'default' => 'Q21514353',
+    ],
+    'wgWBQualityConstraintsAsMainValueId' => [
+        'default' => 'Q54828448',
+    ],
+    'wgWBQualityConstraintsAsQualifiersId' => [
+        'default' => 'Q54828449',
+    ],
+    'wgWBQualityConstraintsAsReferencesId' => [
+        'default' => 'Q54828450',
+    ],
+    'wgWBQualityConstraintsCitationNeededConstraintId' => [
+        'default' => 'Q54554025',
+    ],
+    'wgWBQualityConstraintsClassId' => [
+        'default' => 'P2308',
+    ],
+    'wgWBQualityConstraintsCommonsLinkConstraintId' => [
+        'default' => 'Q21510852',
+    ],
+    'wgWBQualityConstraintsConflictsWithConstraintId' => [
+        'default' => 'Q21502838',
+    ],
+    'wgWBQualityConstraintsConstraintCheckedOnMainValueId' => [
+        'default' => 'Q46466787',
+    ],
+    'wgWBQualityConstraintsConstraintCheckedOnQualifiersId' => [
+        'default' => 'Q46466783',
+    ],
+    'wgWBQualityConstraintsConstraintCheckedOnReferencesId' => [
+        'default' => 'Q46466805',
+    ],
+    'wgWBQualityConstraintsConstraintEntityTypesId' => [
+        'default' => 'P4680',
+    ],
+    'wgWBQualityConstraintsConstraintScopeId' => [
+        'default' => 'P4680',
+    ],
+    'wgWBQualityConstraintsConstraintStatusId' => [
+        'default' => 'P2316',
+    ],
+    'wgWBQualityConstraintsContemporaryConstraintId' => [
+        'default' => 'Q25796498',
+    ],
+    'wgWBQualityConstraintsDifferenceWithinRangeConstraintId' => [
+        'default' => 'Q21510854',
+    ],
+    'wgWBQualityConstraintsDistinctValuesConstraintId' => [
+        'default' => 'Q21502410',
+    ],
+    'wgWBQualityConstraintsEnableSuggestionConstraintStatus' => [
+        'default' => false,
+    ],
+    'wgWBQualityConstraintsEndTimePropertyIds' => [
         'default' => [
-            'Zippy',
+            'P570',
+            'P576',
+            'P582',
+            'P585',
         ],
+        'gratisdatawiki' => [
+            'P132',
+            'P539',
+            'P175',
+            'P80',
+        ],
+    ],
+    'wgWBQualityConstraintsExceptionToConstraintId' => [
+        'default' => 'P2303',
+    ],
+    'wgWBQualityConstraintsFormatAsARegularExpressionId' => [
+        'default' => 'P1793',
+    ],
+    'wgWBQualityConstraintsFormatConstraintId' => [
+        'default' => 'Q21502404',
+    ],
+    'wgWBQualityConstraintsInstanceOfId' => [
+        'default' => 'P31',
+    ],
+    'wgWBQualityConstraintsInstanceOfRelationId' => [
+        'default' => 'Q21503252',
+    ],
+    'wgWBQualityConstraintsInstanceOrSubclassOfRelationId' => [
+        'default' => 'Q30208840',
+    ],
+    'wgWBQualityConstraintsIntegerConstraintId' => [
+        'default' => 'Q52848401',
+    ],
+    'wgWBQualityConstraintsInverseConstraintId' => [
+        'default' => 'Q21510855',
+    ],
+    'wgWBQualityConstraintsItemRequiresClaimConstraintId' => [
+        'default' => 'Q21503247',
+    ],
+    'wgWBQualityConstraintsLabelInLanguageConstraintId' => [
+        'default' => 'Q108139345',
+    ],
+    'wgWBQualityConstraintsLanguagePropertyId' => [
+        'default' => 'P424',
+    ],
+    'wgWBQualityConstraintsLexemeLanguageConstraintId' => [
+        'default' => 'Q55819106',
+    ],
+    'wgWBQualityConstraintsMandatoryConstraintId' => [
+        'default' => 'Q21502408',
+    ],
+    'wgWBQualityConstraintsMandatoryQualifierConstraintId' => [
+        'default' => 'Q21510856',
+    ],
+    'wgWBQualityConstraintsMaximumDateId' => [
+        'default' => 'P2311',
+    ],
+    'wgWBQualityConstraintsMaximumQuantityId' => [
+        'default' => 'P2312',
+    ],
+    'wgWBQualityConstraintsMinimumDateId' => [
+        'default' => 'P2310',
+    ],
+    'wgWBQualityConstraintsMinimumQuantityId' => [
+        'default' => 'P2313',
+    ],
+    'wgWBQualityConstraintsMultiValueConstraintId' => [
+        'default' => 'Q21510857',
+    ],
+    'wgWBQualityConstraintsNamespaceId' => [
+        'default' => 'P2307',
+    ],
+    'wgWBQualityConstraintsNoBoundsConstraintId' => [
+        'default' => 'Q51723761',
+    ],
+    'wgWBQualityConstraintsNoneOfConstraintId' => [
+        'default' => 'Q52558054',
+    ],
+    'wgWBQualityConstraintsOneOfConstraintId' => [
+        'default' => 'Q21510859',
+    ],
+    'wgWBQualityConstraintsPropertyConstraintId' => [
+        'default' => 'P2302',
+    ],
+    'wgWBQualityConstraintsPropertyId' => [
+        'default' => 'P2306',
+    ],
+    'wgWBQualityConstraintsPropertyScopeConstraintId' => [
+        'default' => 'Q53869507',
+    ],
+    'wgWBQualityConstraintsPropertyScopeId' => [
+        'default' => 'P5314',
+    ],
+    'wgWBQualityConstraintsQualifierOfPropertyConstraintId' => [
+        'default' => 'P2305',
+    ],
+    'wgWBQualityConstraintsRangeConstraintId' => [
+        'default' => 'Q21510860',
+    ],
+    'wgWBQualityConstraintsRelationId' => [
+        'default' => 'P2309',
+    ],
+    'wgWBQualityConstraintsSeparatorId' => [
+        'default' => 'P4155',
+    ],
+    'wgWBQualityConstraintsSingleBestValueConstraintId' => [
+        'default' => 'Q52060874',
+    ],
+    'wgWBQualityConstraintsSingleValueConstraintId' => [
+        'default' => 'Q19474404',
+    ],
+    'wgWBQualityConstraintsStartTimePropertyIds' => [
+        'default' => [
+            'P569',
+            'P571',
+            'P580',
+            'P585',
+        ],
+        'gratisdatawiki' => [
+            'P26',
+            'P11',
+            'P174',
+            'P80',
+        ],
+    ],
+    'wgWBQualityConstraintsSubclassOfId' => [
+        'default' => 'P279',
+    ],
+    'wgWBQualityConstraintsSubclassOfRelationId' => [
+        'default' => 'Q21514624',
+    ],
+    'wgWBQualityConstraintsSuggestionConstraintId' => [
+        'default' => 'Q62026391',
+    ],
+    'wgWBQualityConstraintsSymmetricConstraintId' => [
+        'default' => 'Q21510862',
+    ],
+    'wgWBQualityConstraintsSyntaxClarificationId' => [
+        'default' => 'P2916',
+    ],
+    'wgWBQualityConstraintsTypeConstraintId' => [
+        'default' => 'Q21503250',
+    ],
+    'wgWBQualityConstraintsUsedAsQualifierConstraintId' => [
+        'default' => 'Q21510863',
+    ],
+    'wgWBQualityConstraintsUsedAsReferenceConstraintId' => [
+        'default' => 'Q21528959',
+    ],
+    'wgWBQualityConstraintsUsedForValuesOnlyConstraintId' => [
+        'default' => 'Q21528958',
+    ],
+    'wgWBQualityConstraintsValueRequiresClaimConstraintId' => [
+        'default' => 'Q21510864',
+    ],
+    'wgWBQualityConstraintsValueTypeConstraintId' => [
+        'default' => 'Q21510865',
+    ],
+    'wgWBQualityConstraintsWikibaseFormId' => [
+        'default' => 'Q54285143',
+    ],
+    'wgWBQualityConstraintsWikibaseItemId' => [
+        'default' => 'Q29934200',
+    ],
+    'wgWBQualityConstraintsWikibaseLexemeId' => [
+        'default' => 'Q51885771',
+    ],
+    'wgWBQualityConstraintsWikibaseMediaInfoId' => [
+        'default' => 'Q59712033',
+    ],
+    'wgWBQualityConstraintsWikibasePropertyId' => [
+        'default' => 'Q29934218',
+    ],
+    'wgWBQualityConstraintsWikibaseSenseId' => [
+        'default' => 'Q54285715',
+    ],
+
+    // WikimediaEvents
+    'wgWikimediaEventsCreateAccountInstrumentation' => [
+        'default' => true,
+    ],
+    'wgWikimediaEventsUserLoginInstrumentation' => [
+        'default' => true,
     ],
 
     // WikiOasisMagic
@@ -2352,7 +2848,13 @@ $wgConf->settings += [
             ],
         ],
     ],
-
+    'wgWikiOasisMagicCentralWiki' => [
+        'default' => 'metawiki',
+    ],
+    'wgWikiOasisMagicFandomImportEnabled' => [
+        'default' => false,
+        'metawiki' => true,
+    ],
     'wgWikiOasisMagicReportsBlockAlertKeywords' => [
 	'default' => [
 	    'underage',
@@ -2382,438 +2884,8 @@ $wgConf->settings += [
 	],
     ],
 
-    // Comments
-    'wgCommentsDefaultAvatar' => [
-        'default' => '/extensions/SocialProfile/avatars/default_ml.gif',
-    ],
-
-    // DiscordNotifications
-    'wgDiscordAvatarUrl' => [
-        'default' => '',
-    ],
-    'wgDiscordFromName' => [
-        'default' => $wi->sitename,
-    ],
-    'wgDiscordIgnoreMinorEdits' => [
-        'default' => false,
-    ],
-    'wgDiscordIncludePageUrls' => [
-        'default' => true,
-    ],
-    'wgDiscordIncludeUserUrls' => [
-        'default' => true,
-    ],
-    'wgDiscordIncludeDiffSize' => [
-        'default' => true,
-    ],
-    'wgDiscordNotificationMovedArticle' => [
-        'default' => true,
-    ],
-    'wgDiscordNotificationFileUpload' => [
-        'default' => true,
-    ],
-    'wgDiscordNotificationProtectedArticle' => [
-        'default' => true,
-    ],
-    'wgDiscordNotificationAfterImportPage' => [
-        'default' => true,
-    ],
-    'wgDiscordNotificationShowSuppressed' => [
-        'default' => false,
-    ],
-    'wgDiscordNotificationCentralAuthWikiUrl' => [
-        'default' => 'https://meta.wikioasis.org/',
-    ],
-    'wgDiscordNotificationBlockedUser' => [
-        'default' => true,
-    ],
-    'wgDiscordNotificationNewUser' => [
-        'default' => true,
-    ],
-    'wgDiscordNotificationIncludeAutocreatedUsers' => [
-        'default' => true,
-        'loginwiki' => false,
-        'metawiki' => false,
-    ],
-    'wgDiscordAdditionalIncomingWebhookUrls' => [
-        'default' => [],
-    ],
-    'wgDiscordDisableEmbedFooter' => [
-        'default' => false,
-    ],
-    'wgDiscordExcludeConditions' => [
-        'default' => [
-            'experimental' => [
-                'article_inserted' => [
-                    'groups' => [
-                        'sysop',
-                    ],
-                    'permissions' => [
-                        'bot',
-                        'managewiki-core',
-                        'managewiki-extensions',
-                        'managewiki-namespaces',
-                        'managewiki-permissions',
-                        'managewiki-settings',
-                    ],
-                ],
-                'article_saved' => [
-                    'groups' => [
-                        'sysop',
-                    ],
-                    'permissions' => [
-                        'bot',
-                        'managewiki-core',
-                        'managewiki-extensions',
-                        'managewiki-namespaces',
-                        'managewiki-permissions',
-                        'managewiki-settings',
-                    ],
-                ],
-            ],
-            'users' => [],
-        ],
-        '+metawiki' => [
-            'article_inserted' => [
-                'groups' => [
-                    'bot',
-                    'flood',
-                ],
-            ],
-            'article_saved' => [
-                'groups' => [
-                    'bot',
-                    'flood',
-                ],
-            ],
-        ],
-    ],
-    'wgDiscordEnableExperimentalCVTFeatures' => [
-        'default' => true,
-    ],
-    'wgDiscordExperimentalCVTMatchFilter' => [
-        'default' => [ '(n[1i!*]gg[3*e]r|r[e3*]t[4@*a]rd|f[@*4]gg[0*o]t|ch[1!i*]nk)' ],
-    ],
-    'wgDiscordExperimentalFeedLanguageCode' => [
-        'default' => 'en',
-    ],
-
-    // SecurePoll
-    'wgSecurePollUseLogging' => [
-        'default' => true,
-    ],
-    'wgSecurePollSingleTransferableVoteEnabled' => [
-        'default' => true,
-    ],
-    'wgSecurePollUseNamespace' => [
-        'default' => true,
-    ],
-
-    // Scribunto
-    'wgCodeEditorEnableCore' => [
-        'default' => true,
-    ],
-    'wgScribuntoDefaultEngine' => [
-        'default' => 'luasandbox',
-    ],
-    'wgScribuntoUseCodeEditor' => [
-        'default' => true,
-    ],
-    'wgScribuntoSlowFunctionThreshold' => [
-        'default' => 0.99,
-    ],
-
-    // Wikibase
-    'wmgAllowEntityImport' => [
-        'default' => false,
-    ],
-    'wmgCanonicalUriProperty' => [
-        'default' => false,
-    ],
-    'wmgEnableEntitySearchUI' => [
-        'default' => false,
-    ],
-    'wmgFederatedPropertiesEnabled' => [
-        'default' => false,
-    ],
-    'wmgFormatterUrlProperty' => [
-        'default' => false,
-    ],
-    'wmgWikibaseRepoDatabase' => [
-        'default' => $wi->dbname
-    ],
-    'wmgWikibaseRepoUrl' => [
-        'default' => 'https://wikidata.org'
-    ],
-    'wmgWikibaseItemNamespaceID' => [
-        'default' => 0
-    ],
-    'wmgWikibasePropertyNamespaceID' => [
-        'default' => 120
-    ],
-    'wmgWikibaseRepoItemNamespaceID' => [
-        'default' => 860
-    ],
-    'wmgWikibaseRepoPropertyNamespaceID' => [
-        'default' => 862
-    ],
-    // Widgets
-    'wgWidgetsCompileDir' => [
-        'default' => '/srv/mediawiki/cache/$wgDBname/compiled_templates',
-    ],
-    // WikibaseLexeme
-    'wgLexemeLanguageCodePropertyId' => [
-        'default' => null,
-    ],
-    'wgLexemeEnableDataTransclusion' => [
-        'default' => false,
-    ],
-
-    // WikibaseQualityConstraints
-    'wgWBQualityConstraintsInstanceOfId' => [
-        'default' => 'P31',
-    ],
-    'wgWBQualityConstraintsSubclassOfId' => [
-        'default' => 'P279',
-    ],
-    'wgWBQualityConstraintsStartTimePropertyIds' => [
-        'default' => [
-            'P569',
-            'P571',
-            'P580',
-            'P585',
-        ],
-        'gratisdatawiki' => [
-            'P26',
-            'P11',
-            'P174',
-            'P80',
-        ],
-    ],
-    'wgWBQualityConstraintsEndTimePropertyIds' => [
-        'default' => [
-            'P570',
-            'P576',
-            'P582',
-            'P585',
-        ],
-        'gratisdatawiki' => [
-            'P132',
-            'P539',
-            'P175',
-            'P80',
-        ],
-    ],
-    'wgWBQualityConstraintsPropertyConstraintId' => [
-        'default' => 'P2302',
-    ],
-    'wgWBQualityConstraintsExceptionToConstraintId' => [
-        'default' => 'P2303',
-    ],
-    'wgWBQualityConstraintsConstraintStatusId' => [
-        'default' => 'P2316',
-    ],
-    'wgWBQualityConstraintsMandatoryConstraintId' => [
-        'default' => 'Q21502408',
-    ],
-    'wgWBQualityConstraintsSuggestionConstraintId' => [
-        'default' => 'Q62026391',
-    ],
-    'wgWBQualityConstraintsDistinctValuesConstraintId' => [
-        'default' => 'Q21502410',
-    ],
-    'wgWBQualityConstraintsMultiValueConstraintId' => [
-        'default' => 'Q21510857',
-    ],
-    'wgWBQualityConstraintsUsedAsQualifierConstraintId' => [
-        'default' => 'Q21510863',
-    ],
-    'wgWBQualityConstraintsSingleValueConstraintId' => [
-        'default' => 'Q19474404',
-    ],
-    'wgWBQualityConstraintsSymmetricConstraintId' => [
-        'default' => 'Q21510862',
-    ],
-    'wgWBQualityConstraintsTypeConstraintId' => [
-        'default' => 'Q21503250',
-    ],
-    'wgWBQualityConstraintsValueTypeConstraintId' => [
-        'default' => 'Q21510865',
-    ],
-    'wgWBQualityConstraintsInverseConstraintId' => [
-        'default' => 'Q21510855',
-    ],
-    'wgWBQualityConstraintsItemRequiresClaimConstraintId' => [
-        'default' => 'Q21503247',
-    ],
-    'wgWBQualityConstraintsValueRequiresClaimConstraintId' => [
-        'default' => 'Q21510864',
-    ],
-    'wgWBQualityConstraintsConflictsWithConstraintId' => [
-        'default' => 'Q21502838',
-    ],
-    'wgWBQualityConstraintsOneOfConstraintId' => [
-        'default' => 'Q21510859',
-    ],
-    'wgWBQualityConstraintsMandatoryQualifierConstraintId' => [
-        'default' => 'Q21510856',
-    ],
-    'wgWBQualityConstraintsAllowedQualifiersConstraintId' => [
-        'default' => 'Q21510851',
-    ],
-    'wgWBQualityConstraintsRangeConstraintId' => [
-        'default' => 'Q21510860',
-    ],
-    'wgWBQualityConstraintsDifferenceWithinRangeConstraintId' => [
-        'default' => 'Q21510854',
-    ],
-    'wgWBQualityConstraintsCommonsLinkConstraintId' => [
-        'default' => 'Q21510852',
-    ],
-    'wgWBQualityConstraintsContemporaryConstraintId' => [
-        'default' => 'Q25796498',
-    ],
-    'wgWBQualityConstraintsFormatConstraintId' => [
-        'default' => 'Q21502404',
-    ],
-    'wgWBQualityConstraintsUsedForValuesOnlyConstraintId' => [
-        'default' => 'Q21528958',
-    ],
-    'wgWBQualityConstraintsUsedAsReferenceConstraintId' => [
-        'default' => 'Q21528959',
-    ],
-    'wgWBQualityConstraintsNoBoundsConstraintId' => [
-        'default' => 'Q51723761',
-    ],
-    'wgWBQualityConstraintsAllowedUnitsConstraintId' => [
-        'default' => 'Q21514353',
-    ],
-    'wgWBQualityConstraintsSingleBestValueConstraintId' => [
-        'default' => 'Q52060874',
-    ],
-    'wgWBQualityConstraintsAllowedEntityTypesConstraintId' => [
-        'default' => 'Q52004125',
-    ],
-    'wgWBQualityConstraintsCitationNeededConstraintId' => [
-        'default' => 'Q54554025',
-    ],
-    'wgWBQualityConstraintsPropertyScopeConstraintId' => [
-        'default' => 'Q53869507',
-    ],
-    'wgWBQualityConstraintsLexemeLanguageConstraintId' => [
-        'default' => 'Q55819106',
-    ],
-    'wgWBQualityConstraintsLabelInLanguageConstraintId' => [
-        'default' => 'Q108139345',
-    ],
-    'wgWBQualityConstraintsLanguagePropertyId' => [
-        'default' => 'P424',
-    ],
-    'wgWBQualityConstraintsClassId' => [
-        'default' => 'P2308',
-    ],
-    'wgWBQualityConstraintsRelationId' => [
-        'default' => 'P2309',
-    ],
-    'wgWBQualityConstraintsInstanceOfRelationId' => [
-        'default' => 'Q21503252',
-    ],
-    'wgWBQualityConstraintsSubclassOfRelationId' => [
-        'default' => 'Q21514624',
-    ],
-    'wgWBQualityConstraintsInstanceOrSubclassOfRelationId' => [
-        'default' => 'Q30208840',
-    ],
-    'wgWBQualityConstraintsPropertyId' => [
-        'default' => 'P2306',
-    ],
-    'wgWBQualityConstraintsQualifierOfPropertyConstraintId' => [
-        'default' => 'P2305',
-    ],
-    'wgWBQualityConstraintsMinimumQuantityId' => [
-        'default' => 'P2313',
-    ],
-    'wgWBQualityConstraintsMaximumQuantityId' => [
-        'default' => 'P2312',
-    ],
-    'wgWBQualityConstraintsMinimumDateId' => [
-        'default' => 'P2310',
-    ],
-    'wgWBQualityConstraintsMaximumDateId' => [
-        'default' => 'P2311',
-    ],
-    'wgWBQualityConstraintsNamespaceId' => [
-        'default' => 'P2307',
-    ],
-    'wgWBQualityConstraintsFormatAsARegularExpressionId' => [
-        'default' => 'P1793',
-    ],
-    'wgWBQualityConstraintsSyntaxClarificationId' => [
-        'default' => 'P2916',
-    ],
-    'wgWBQualityConstraintsConstraintScopeId' => [
-        'default' => 'P4680',
-    ],
-    'wgWBQualityConstraintsConstraintEntityTypesId' => [
-        'default' => 'P4680',
-    ],
-    'wgWBQualityConstraintsSeparatorId' => [
-        'default' => 'P4155',
-    ],
-    'wgWBQualityConstraintsConstraintCheckedOnMainValueId' => [
-        'default' => 'Q46466787',
-    ],
-    'wgWBQualityConstraintsConstraintCheckedOnQualifiersId' => [
-        'default' => 'Q46466783',
-    ],
-    'wgWBQualityConstraintsConstraintCheckedOnReferencesId' => [
-        'default' => 'Q46466805',
-    ],
-    'wgWBQualityConstraintsNoneOfConstraintId' => [
-        'default' => 'Q52558054',
-    ],
-    'wgWBQualityConstraintsIntegerConstraintId' => [
-        'default' => 'Q52848401',
-    ],
-    'wgWBQualityConstraintsWikibaseItemId' => [
-        'default' => 'Q29934200',
-    ],
-    'wgWBQualityConstraintsWikibasePropertyId' => [
-        'default' => 'Q29934218',
-    ],
-    'wgWBQualityConstraintsWikibaseLexemeId' => [
-        'default' => 'Q51885771',
-    ],
-    'wgWBQualityConstraintsWikibaseFormId' => [
-        'default' => 'Q54285143',
-    ],
-    'wgWBQualityConstraintsWikibaseSenseId' => [
-        'default' => 'Q54285715',
-    ],
-    'wgWBQualityConstraintsWikibaseMediaInfoId' => [
-        'default' => 'Q59712033',
-    ],
-    'wgWBQualityConstraintsPropertyScopeId' => [
-        'default' => 'P5314',
-    ],
-    'wgWBQualityConstraintsAsMainValueId' => [
-        'default' => 'Q54828448',
-    ],
-    'wgWBQualityConstraintsAsQualifiersId' => [
-        'default' => 'Q54828449',
-    ],
-    'wgWBQualityConstraintsAsReferencesId' => [
-        'default' => 'Q54828450',
-    ],
-    'wgWBQualityConstraintsEnableSuggestionConstraintStatus' => [
-        'default' => false,
-    ],
-
-    // WikiSEO configs
-    'wgTwitterCardType' => [
-        'default' => 'summary_large_image',
-    ],
-    'wgGoogleSiteVerificationKey' => [
+    // WikiSEO
+    'wgAlexaSiteVerificationKey' => [
         'default' => false,
     ],
     'wgBingSiteVerificationKey' => [
@@ -2822,20 +2894,33 @@ $wgConf->settings += [
     'wgFacebookAppId' => [
         'default' => false,
     ],
-    'wgYandexSiteVerificationKey' => [
+    'wgGoogleSiteVerificationKey' => [
         'default' => false,
     ],
-    'wgAlexaSiteVerificationKey' => [
+    'wgMetadataGenerators' => [
+        'default' => [
+            'OpenGraph',
+            'Twitter',
+            'SchemaOrg',
+        ],
+    ],
+    'wgNaverSiteVerificationKey' => [
         'default' => false,
     ],
     'wgPinterestSiteVerificationKey' => [
         'default' => false,
     ],
-    'wgNaverSiteVerificationKey' => [
-        'default' => false,
+    'wgTwitterCardType' => [
+        'default' => 'summary_large_image',
+    ],
+    'wgTwitterSiteHandle' => [
+        'default' => '',
     ],
     'wgWikiSeoDefaultImage' => [
         'default' => null,
+    ],
+    'wgWikiSeoDefaultLanguage' => [
+        'default' => '',
     ],
     'wgWikiSeoDisableLogoFallbackImage' => [
         'default' => false,
@@ -2846,93 +2931,14 @@ $wgConf->settings += [
     'wgWikiSeoTryCleanAutoDescription' => [
         'default' => false,
     ],
-    'wgMetadataGenerators' => [
-        'default' => [
-            'OpenGraph',
-            'Twitter',
-            'SchemaOrg',
-        ],
-    ],
-    'wgTwitterSiteHandle' => [
-        'default' => '',
-    ],
-    'wgWikiSeoDefaultLanguage' => [
-        'default' => '',
-    ],
-
-    // DataMaps
-    'wgDataMapsEnableCreateMap' => [
-        'default' => true,
-    ],
-    'wgDataMapsEnableVisualEditor' => [
-        'default' => false,
-    ],
-    'wgDataMapsAllowExperimentalFeatures' => [
+    'wgYandexSiteVerificationKey' => [
         'default' => false,
     ],
 
-    // Maps
-    'egMapsEnableCoordinateFunction' => [
-        'default' => true,
-    ],
 
-    // CFCachePurge
-    'wgCFCachePurgeIgnoreImgAuth' => [
-        'default' => true,
-    ],
-    'wgCFCachePurgePurgeableImageHosts'=> [
-        'default' => ['cdn.wikioasis.org'],
-    ],
-
-    // GTag
-    'wgGTagAnalyticsId' => [
-        'default' => 'G-NL7M72FBFT',
-    ],
-    'wgGTagAnonymizeIP' => [
-        'default' => true,
-    ],
-    'wgGTagEnableTCF' => [
-        'default' => false,
-    ],
-    'wgGTagHonorDNT' => [
-        'default' => true,
-    ],
-    'wgGTagTrackSensitivePages' => [
-        'default' => false,
-    ],
-    // VisualEditor
-    'wgVisualEditorEnableWikitext' =>  [
-	    'default' => true,
-    ],
-
-    // QuickInstantCommons
-    'wgQuickInstantCommonsUserAgentInfo' => [
-        'default' => "WikiOasis/0.0 (https://wikioasis.org/; tech@wikioasis.org)"
-    ],
-    'wgQuickInstantCommonsUserAgentOverride' => [
-        'default' => "WikiOasis/0.0 (https://wikioasis.org/; tech@wikioasis.org)"
-    ],
-
-    // Bucket
-    'wgBucketDBuser' => [
-        'default' => 'bucketuser',
-    ],
-
-    // WME
-    'wgWikimediaEventsCreateAccountInstrumentation' => [
-        'default' => true,
-    ],
-    'wgWikimediaEventsUserLoginInstrumentation' => [
-        'default' => true,
-    ],
-
-    // fandoom
-    'wgWikiOasisMagicFandomImportEnabled' => [
-        'default' => false,
-        'metawiki' => true,
-    ],
-
-    // CreateWiki Defined Special Variables
+    // ==================
+    // CREATEWIKI VARS
+    // ==================
     'cwClosed' => [
         'default' => false,
     ],
