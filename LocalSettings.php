@@ -24,6 +24,7 @@ if ( !defined( 'MW_ENTRY_POINT' ) ) {
     die( 'Not an entry point.' );
 }
 
+error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 ini_set('memory_limit', '256M');
 $wgMemoryLimit = '256M';
 
