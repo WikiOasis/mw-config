@@ -1,0 +1,86 @@
+name: CI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: ci-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    lint:
+        name: PHP lint
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.3"
+                  tools: composer
+            - run: composer install --no-progress --prefer-dist
+            - run: composer test:lint
+
+    phpcs:
+        name: phpcs
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.3"
+                  tools: composer
+            - run: composer install --no-progress --prefer-dist
+            - run: composer test:phpcs
+
+    phan:
+        name: phan (${{ matrix.mw-branch }})
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                mw-branch: [REL1_46, master]
+        env:
+            MW_INSTALL_PATH: ${{ github.workspace }}/mediawiki
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  path: mediawiki/config
+            - uses: actions/checkout@v4
+              with:
+                  repository: wikimedia/mediawiki
+                  ref: ${{ matrix.mw-branch }}
+                  path: mediawiki-core
+            - name: Prepare MediaWiki core
+              run: |
+                  mv mediawiki-core/* mediawiki-core/.[!.]* mediawiki/ 2>/dev/null || true
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.3"
+                  extensions: ast
+                  tools: composer
+            - name: Install MediaWiki core dependencies
+              working-directory: mediawiki
+              run: composer install --no-progress --prefer-dist
+            - name: Install config dependencies
+              working-directory: mediawiki/config
+              run: composer install --no-progress --prefer-dist
+            - name: Run phan
+              working-directory: mediawiki/config
+              run: composer test:phan
+
+    prettier:
+        name: prettier
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+                  cache: npm
+            - run: npm ci
+            - run: npm run prettier:check

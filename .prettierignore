@@ -1,0 +1,11 @@
+vendor
+node_modules
+*.php
+*.xml
+OAuth.key.pub
+robots.txt
+LICENSE.md
+composer.lock
+package-lock.json
+.claude
+.idea
