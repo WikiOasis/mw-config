@@ -61,11 +61,7 @@ if ( $wmgSharedDomainPathPrefix ) {
 }
 
 if ( $wi->isExtensionActive( 'chameleon' ) ) {
-	wfLoadExtension( 'Bootstrap' );
-}
-
-if ($wi->isExtensionActive('QuickInstantCommons')) {
-    $wgQuickInstantCommonsUserAgentInfo = 'https://wikioasis.org; tech@wikioasis.org';
+    wfLoadExtension('Bootstrap');
 }
 
 if ( !$wmgSharedDomainPathPrefix && $wi->isExtensionActive('CirrusSearch') ) {
@@ -332,6 +328,11 @@ if ($wgConf->get('wgRightsIcon', $wi->dbname)) {
 	];
 }
 
+/*
+ * Disable GlobalContributions as it's not performant,
+ * has security implications and more generally is a
+ * pita to keep running
+ */
 $wgExtensionFunctions[] = static function () {
 	MediaWikiServices::getInstance()->getHookContainer()->register(
 		'SpecialPage_initList',
