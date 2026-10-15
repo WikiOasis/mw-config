@@ -17,10 +17,9 @@ if (!defined('MEDIAWIKI')) {
 	die('Not an entry point.');
 }
 
-// Populates databases.php with per-wiki data including 'v' (version), 'd' (domain), etc.
+// Hooks to power WOFunctions
 $wgHooks['CreateWikiGenerateDatabaseLists'][] = 'WikiOasisFunctions::onGenerateDatabaseLists';
 
-// ManageWiki hooks for primary-domain, article-path, and version selection.
 $wgHooks['ManageWikiCoreAddFormFields'][] = 'WikiOasisFunctions::onManageWikiCoreAddFormFields';
 $wgHooks['ManageWikiCoreFormSubmission'][] = 'WikiOasisFunctions::onManageWikiCoreFormSubmission';
 
@@ -33,7 +32,10 @@ wfLoadExtensions( [
     'GlobalPreferences',
 ] );
 
-// Only allow users with global accounts to login
+// ==================
+// SUL3 stuff
+// ==================
+
 $wgCentralAuthStrict = true;
 $wgCentralAuthEnableSul3 = true;
 
@@ -48,6 +50,28 @@ $wgWebAuthnNewCredsDisabled = true;
 $wgCentralAuthSharedDomainCallback = static fn ( $dbname ) =>
 "https://{$wi->getSharedDomain()}/$dbname";
 
+// Shared domain asset/CSS handling
+if ( $wmgSharedDomainPathPrefix ) {
+    $wgLoadScript = "{$wi->server}/w/load.php";
+    $wgUseSiteCss = false;
+    $wgUseSiteJs = false;
+}
+
+if ( $wmgIsCustomDomain && ( $wmgSharedDomainPathPrefix || $wmgIsCustomDomainLoad ) ) {
+    $wgLoadScript = 'https://' . $wi->getSharedDomain() . "/$wgDBname/load.php";
+}
+
+$wgScriptPath = $wmgSharedDomainPathPrefix ?: '/w';
+$wgScript = "$wgScriptPath/index.php";
+
+$wgResourceBasePath = ( $wmgSharedDomainPathPrefix ?: '' ) . '/versions/' . $wi->version;
+if ( $wmgIsCustomDomainLoad ) {
+    $wgResourceBasePath = $wi->server . $wgResourceBasePath;
+}
+$wgExtensionAssetsPath = "$wgResourceBasePath/extensions";
+$wgStylePath = "$wgResourceBasePath/skins";
+$wgLocalStylePath = $wgStylePath;
+
 if ( $wmgSharedDomainPathPrefix ) {
     $wgCentralAuthCookieDomain = '.' . WikiOasisFunctions::getDefaultServer();
     $wgCookiePrefix = 'auth';
@@ -60,12 +84,12 @@ if ( $wmgSharedDomainPathPrefix ) {
     $wgCheckUserAlwaysSetClientHintHeaders = true;
 }
 
-if ( $wi->isExtensionActive( 'chameleon' ) ) {
-	wfLoadExtension( 'Bootstrap' );
-}
+// ==================
+// Extension stuff
+// ==================
 
-if ($wi->isExtensionActive('QuickInstantCommons')) {
-    $wgQuickInstantCommonsUserAgentInfo = 'https://wikioasis.org; tech@wikioasis.org';
+if ( $wi->isExtensionActive( 'chameleon' ) ) {
+    wfLoadExtension('Bootstrap');
 }
 
 if ( !$wmgSharedDomainPathPrefix && $wi->isExtensionActive('CirrusSearch') ) {
@@ -123,7 +147,7 @@ if ( $wi->isExtensionActive( 'JsonConfig' ) ) {
 
 if ( $wi->isAnyOfExtensionsActive( 'WikibaseClient', 'WikibaseRepository' ) ) {
 	// Includes Wikibase Configuration. There is a global and per-wiki system here.
-	require_once "$IP/config/Wikibase.php";
+	require_once "/srv/mediawiki/config/features/Wikibase.php";
 }
 
 if ( $wi->isAnyOfExtensionsActive( 'StandardDialogs', 'EnhancedUpload' ) ) {
@@ -332,6 +356,11 @@ if ($wgConf->get('wgRightsIcon', $wi->dbname)) {
 	];
 }
 
+/*
+ * Disable GlobalContributions as it's not performant,
+ * has security implications and more generally is a
+ * pita to keep running
+ */
 $wgExtensionFunctions[] = static function () {
 	MediaWikiServices::getInstance()->getHookContainer()->register(
 		'SpecialPage_initList',
