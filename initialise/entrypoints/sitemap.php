@@ -7,7 +7,7 @@
 define( 'MW_NO_OUTPUT_COMPRESSION', 1 );
 define( 'MW_ENTRY_POINT', 'index' );
 
-require_once dirname(__DIR__, 2) . '/WikiOasisFunctions.php';
+require_once dirname( __DIR__, 2 ) . '/WikiOasisFunctions.php';
 WikiOasisFunctions::getMediaWiki( '' );
 global $IP;
 

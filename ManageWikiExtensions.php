@@ -229,52 +229,52 @@ $wgManageWikiExtensions = [
 		],
 		'section' => 'parserhooks',
 	],
-    'bucket' => [
-        'name' => 'Bucket',
-        'linkPage' => 'https://meta.weirdgloop.org/w/Extension:Bucket',
-        'conflicts' => false,
-        'requires' => [],
-        'install' => [
-            'sql' => [
-                'bucket_pages' => 'extensions/Bucket/sql/tables-generated.sql',
-                'bucket_schemas' => 'extensions/Bucket/sql/tables-generated.sql',
-                'bucket__bucket_issues' => 'extensions/Bucket/sql/issues-table.sql',
-            ],
-            'mwscript' => [
-                'Bucket:CreateInitialSchemaForBucketIssues' => [],
-            ],
-            'permissions' => [
-                'sysop' => [
-                    'permissions' => [
-                        'editbucket',
-                    ],
-                ],
-            ],
-            'namespaces' => [
-                'Bucket' => [
-                    'id' => 9592,
-                    'searchable' => 0,
-                    'subpages' => 0,
-                    'protection' => 'editbucket',
-                    'content' => 0,
-                    'aliases' => [],
-                    'contentmodel' => 'json',
-                    'additional' => [],
-                ],
-                'Bucket_talk' => [
-                    'id' => 9593,
-                    'searchable' => 0,
-                    'subpages' => 0,
-                    'protection' => '',
-                    'content' => 0,
-                    'aliases' => [],
-                    'contentmodel' => 'wikitext',
-                    'additional' => [],
-                ],
-            ],
-        ],
-        'section' => 'parserhooks',
-    ],
+	'bucket' => [
+		'name' => 'Bucket',
+		'linkPage' => 'https://meta.weirdgloop.org/w/Extension:Bucket',
+		'conflicts' => false,
+		'requires' => [],
+		'install' => [
+			'sql' => [
+				'bucket_pages' => 'extensions/Bucket/sql/tables-generated.sql',
+				'bucket_schemas' => 'extensions/Bucket/sql/tables-generated.sql',
+				'bucket__bucket_issues' => 'extensions/Bucket/sql/issues-table.sql',
+			],
+			'mwscript' => [
+				'Bucket:CreateInitialSchemaForBucketIssues' => [],
+			],
+			'permissions' => [
+				'sysop' => [
+					'permissions' => [
+						'editbucket',
+					],
+				],
+			],
+			'namespaces' => [
+				'Bucket' => [
+					'id' => 9592,
+					'searchable' => 0,
+					'subpages' => 0,
+					'protection' => 'editbucket',
+					'content' => 0,
+					'aliases' => [],
+					'contentmodel' => 'json',
+					'additional' => [],
+				],
+				'Bucket_talk' => [
+					'id' => 9593,
+					'searchable' => 0,
+					'subpages' => 0,
+					'protection' => '',
+					'content' => 0,
+					'aliases' => [],
+					'contentmodel' => 'wikitext',
+					'additional' => [],
+				],
+			],
+		],
+		'section' => 'parserhooks',
+	],
 	'calendar-wikivoyage' => [
 		'name' => 'Calendar',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Calendar-Wikivoyage',
@@ -1164,31 +1164,31 @@ $wgManageWikiExtensions = [
 		'requires' => [],
 		'section' => 'parserhooks',
 	],
-    'yappin' => [
-        'name' => 'Yappin',
-        'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Yappin',
-        'conflicts' => false,
-        'requires' => [],
-        'install' => [
-            'sql' => [
-                'Yappin' => "$IP/extensions/Yappin/sql/mysql/tables-generated.sql"
-            ],
-            'permissions' => [
-                '*' => [
-                    'permissions' => [
-                        'yappin-comment',
-                    ],
-                ],
-                'sysop' => [
-                    'permissions' => [
-                        'yappin-manage',
-                        'yappin-import',
-                    ],
-                ],
-            ],
-        ],
-        'section' => 'parserhooks',
-    ],
+	'yappin' => [
+		'name' => 'Yappin',
+		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Yappin',
+		'conflicts' => false,
+		'requires' => [],
+		'install' => [
+			'sql' => [
+				'Yappin' => "$IP/extensions/Yappin/sql/mysql/tables-generated.sql"
+			],
+			'permissions' => [
+				'*' => [
+					'permissions' => [
+						'yappin-comment',
+					],
+				],
+				'sysop' => [
+					'permissions' => [
+						'yappin-manage',
+						'yappin-import',
+					],
+				],
+			],
+		],
+		'section' => 'parserhooks',
+	],
 
 	// Spam prevention
 	'approvedrevs' => [
@@ -1671,22 +1671,22 @@ $wgManageWikiExtensions = [
 		],
 		'section' => 'specialpages',
 	],
-    'protectsite' => [
-        'name' => 'Protect Site',
-        'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:ProtectSite',
-        'conflicts' => false,
-        'requires' => [],
-        'install' => [
-            'permissions' => [
-                'bureaucrat' => [
-                    'permissions' => [
-                        'protectsite',
-                    ],
-                ],
-            ],
-        ],
-        'section' => 'specialpages',
-    ],
+	'protectsite' => [
+		'name' => 'Protect Site',
+		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:ProtectSite',
+		'conflicts' => false,
+		'requires' => [],
+		'install' => [
+			'permissions' => [
+				'bureaucrat' => [
+					'permissions' => [
+						'protectsite',
+					],
+				],
+			],
+		],
+		'section' => 'specialpages',
+	],
 	'replacetext' => [
 		'name' => 'Replace Text',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Replace_Text',
@@ -1707,26 +1707,26 @@ $wgManageWikiExtensions = [
 		],
 		'section' => 'specialpages',
 	],
-    'refreshspecial' => [
-        'name' => 'RefreshSpecial',
-        'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:RefreshSpecial',
-        'conflicts' => false,
-        'requires' => [
-            'permissions' => [
-                'managewiki-restricted',
-            ],
-        ],
-        'install' => [
-            'permissions' => [
-                'sysop' => [
-                    'permissions' => [
-                        'refreshspecial',
-                    ],
-                ],
-            ],
-        ],
-        'section' => 'specialpages',
-    ],
+	'refreshspecial' => [
+		'name' => 'RefreshSpecial',
+		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:RefreshSpecial',
+		'conflicts' => false,
+		'requires' => [
+			'permissions' => [
+				'managewiki-restricted',
+			],
+		],
+		'install' => [
+			'permissions' => [
+				'sysop' => [
+					'permissions' => [
+						'refreshspecial',
+					],
+				],
+			],
+		],
+		'section' => 'specialpages',
+	],
 	'report' => [
 		'name' => 'Report',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Report',
@@ -2998,11 +2998,11 @@ $wgManageWikiExtensions = [
 		'name' => 'UnlinkedWikibase',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:UnlinkedWikibase',
 		'conflicts' => false,
-                'requires' => [
-                        'permissions' => [
-                                'managewiki-restricted',
-                        ],
-                ],
+				'requires' => [
+						'permissions' => [
+								'managewiki-restricted',
+						],
+				],
 		'section' => 'other',
 	],
 	'uploadslink' => [
@@ -3078,11 +3078,11 @@ $wgManageWikiExtensions = [
 		'name' => 'WikibaseClient',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Wikibase_Client',
 		'conflicts' => false,
-                'requires' => [
-                        'permissions' => [
-                                'managewiki-restricted',
-                        ],
-                ],
+				'requires' => [
+						'permissions' => [
+								'managewiki-restricted',
+						],
+				],
 		'install' => [
 			'sql' => [
 				'wbc_entity_usage' => "$IP/extensions/Wikibase/client/sql/mysql/entity_usage.sql",
@@ -3102,12 +3102,12 @@ $wgManageWikiExtensions = [
 		'name' => 'WikibaseRepository',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Wikibase_Repository',
 		'conflicts' => false,
-                'requires' => [
-                        'permissions' => [
-                                'managewiki-restricted',
-                        ],
-                ],
-      		'install' => [
+				'requires' => [
+						'permissions' => [
+								'managewiki-restricted',
+						],
+				],
+			'install' => [
 			'sql' => [
 				'wb_changes' => "$IP/extensions/Wikibase/repo/sql/mysql/wb_changes.sql",
 				'wb_changes_subscription' => "$IP/extensions/Wikibase/repo/sql/mysql/wb_changes_subscription.sql",
@@ -3192,7 +3192,7 @@ $wgManageWikiExtensions = [
 			'extensions' => [
 				'wikibaserepository',
 			],
-                ],
+				],
 		'section' => 'other',
 	],
 	'wikibaselexeme' => [
