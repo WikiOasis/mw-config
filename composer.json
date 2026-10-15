@@ -26,6 +26,9 @@
 		"format:prettier": "npm run --silent prettier:write"
 	},
 	"config": {
+		"platform": {
+			"php": "8.3"
+		},
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
