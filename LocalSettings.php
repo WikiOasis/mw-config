@@ -2983,7 +2983,7 @@ $wgHooks['SetupAfterCache'][] = static function () {
 		return true;
 	}
 
-	if ( !is_array( $wgAWSRepoZones ?? null ) || !isset( $wgLocalFileRepo['zones'] ) || !is_array( $wgLocalFileRepo['zones'] ) ) {
+	if ( !is_array( $wgAWSRepoZones ) || !isset( $wgLocalFileRepo['zones'] ) || !is_array( $wgLocalFileRepo['zones'] ) ) {
 		return true;
 	}
 

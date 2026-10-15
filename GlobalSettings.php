@@ -308,6 +308,7 @@ switch ( $wmgWikiLicense ) {
 	case 'cc-by-sa':
 		$wgRightsIcon = "https://meta.wikioasis.org$wgResourceBasePath/resources/assets/licenses/cc-by-sa.png";
 		$wgRightsText = 'Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)';
+		// @phan-suppress-next-line PhanPluginRedundantAssignmentInGlobalScope Kept explicit so each license case is self-contained
 		$wgRightsUrl = 'https://creativecommons.org/licenses/by-sa/4.0/';
 		break;
 	case 'cc-by-sa-2-0-kr':

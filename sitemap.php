@@ -2,8 +2,8 @@
 
 define( 'MW_NO_SESSION', 1 );
 
-require_once '/var/www/mediawiki/config/WikiOasisFunctions.php';
-require '/var/www/mediawiki/includes/WebStart.php';
+require_once '/srv/mediawiki/config/WikiOasisFunctions.php';
+require '/srv/mediawiki/includes/WebStart.php';
 
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
@@ -34,7 +34,7 @@ function streamSitemapIndex() {
 
 	$client = MediaWikiServices::getInstance()
 		->getHttpRequestFactory()
-		->create( $url );
+		->create( $url, [], 'sitemap.php' );
 	$client->setHeader( 'X-Sitemap-Loop', '1' );
 
 	$status = $client->execute();

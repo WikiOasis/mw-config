@@ -1995,6 +1995,7 @@ $wgManageWikiSettings = [
 		'help' => 'Whether to enable shared uploads from the wiki specified in <code>$wmgSharedUploadDBname</code>.',
 		'requires' => [
 			'settings' => [
+				// @phan-suppress-next-line PhanImpossibleConditionInGlobalScope Value is only set per-wiki at runtime
 				'dbname' => $wmgSharedUploadDBname ?: '<code>$wmgSharedUploadDBname</code>',
 				'setting' => 'wmgSharedUploadClientDBname',
 				'value' => $wi->dbname,
@@ -4869,7 +4870,7 @@ $wgManageWikiSettings = [
 		'help' => 'Namespace ID of the Item namespace for Wikibase Repository.',
 		'requires' => [],
 	],
-	'wmgWikibasePropertyNamespaceID' => [
+	'wmgWikibaseRepoPropertyNamespaceID' => [
 		'name' => 'Repository Property Namespace ID',
 		'from' => 'wikibaserepository',
 		'type' => 'integer',

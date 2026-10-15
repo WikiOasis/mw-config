@@ -276,6 +276,16 @@ class WikiOasisFunctions {
 		return $servers;
 	}
 
+	/**
+	 * @return-taint none
+	 */
+	private static function sanitiseDatabaseName( string $dbname ): string {
+		return preg_match( '/^[a-z0-9_-]+$/i', $dbname ) ? $dbname : '';
+	}
+
+	/**
+	 * @return-taint none
+	 */
 	public static function getCurrentDatabase( bool $ignorePrimary = false ): string {
 		if ( defined( 'MW_DB' ) ) {
 			return MW_DB;
@@ -287,11 +297,12 @@ class WikiOasisFunctions {
 			$pathBits = explode( '/', $requestUri, 3 );
 			if ( count( $pathBits ) < 3 ) {
 				trigger_error( "Invalid request URI (requestUri=" . $requestUri . "), can't determine language.\n", E_USER_ERROR );
+				// @phan-suppress-next-line PhanPluginUnreachableCode E_USER_ERROR may be handled by a custom handler
 				exit( 1 );
 			}
 			[ , $dbname, ] = $pathBits;
-			// No validation of $dbname at this point - if it's invalid, an error will be produced
-			return $dbname;
+			// If $dbname is invalid (or empty after sanitising), an error will be produced later
+			return self::sanitiseDatabaseName( $dbname );
 		}
 
 		static $database = null;
@@ -307,10 +318,11 @@ class WikiOasisFunctions {
 			$parts = explode( '.', $parts[1], 2 );
 		}
 
-		[ $subdomain, $domain ] = $parts + [ '', '' ];
+		$subdomain = $parts[0];
+		$domain = $parts[1] ?? '';
 		foreach ( self::SUFFIXES as $suffix => $sites ) {
 			if ( in_array( $domain, $sites, true ) ) {
-				return $subdomain . $suffix;
+				return self::sanitiseDatabaseName( $subdomain . $suffix );
 			}
 		}
 
@@ -327,10 +339,6 @@ class WikiOasisFunctions {
 
 	public function getGlobalDatabase(): string {
 		return self::GLOBAL_DATABASE[$this->realm];
-	}
-
-	public function getIncidentsDatabase(): string {
-		return self::INCIDENTS_DATABASE[$this->realm];
 	}
 
 	public function isBeta(): bool {
@@ -432,9 +440,13 @@ class WikiOasisFunctions {
 	}
 
 	public static function getDefaultMediaWikiVersion(): string {
+		// @phan-suppress-next-line PhanRedundantCondition 'beta' is only defined while a beta version is deployed
 		return ( php_uname( 'n' ) === self::BETA_HOSTNAME && isset( self::MEDIAWIKI_VERSIONS['beta'] ) ) ? 'beta' : 'stable';
 	}
 
+	/**
+	 * @return-taint none
+	 */
 	private static function resolveMediaWikiVersion( string $version ): string {
 		$version = self::MEDIAWIKI_VERSIONS[$version] ?? $version;
 
@@ -446,6 +458,9 @@ class WikiOasisFunctions {
 		return $version;
 	}
 
+	/**
+	 * @return-taint none
+	 */
 	public static function getMediaWikiVersion( ?string $database = null ): string {
 		$envVersion = getenv( 'MIRAHEZE_WIKI_VERSION' );
 		if ( $envVersion ) {
@@ -643,6 +658,7 @@ class WikiOasisFunctions {
 		}
 
 		try {
+			// @phan-suppress-next-line PhanNoopNew Constructor throws on an invalid timezone
 			new DateTimeZone( $timezone );
 		} catch ( Throwable ) {
 			return false;

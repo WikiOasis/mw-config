@@ -38,6 +38,8 @@ curl_setopt_array( $ch, [
 	CURLOPT_TIMEOUT        => 10,
 	CURLOPT_FOLLOWLOCATION => true,
 	CURLOPT_MAXREDIRS      => 3,
+	CURLOPT_PROTOCOLS      => CURLPROTO_HTTPS,
+	CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTPS,
 ] );
 
 $body      = curl_exec( $ch );
@@ -67,4 +69,6 @@ if ( $httpCode !== 200 ) {
 }
 
 header( 'Content-Type: application/xml; charset=UTF-8' );
+header( 'X-Content-Type-Options: nosniff' );
+// @phan-suppress-next-line SecurityCheck-XSS Body comes from our own CDN and is served as XML with nosniff, not HTML
 echo $body;
