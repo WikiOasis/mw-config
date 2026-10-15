@@ -13,8 +13,8 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\SpecialPage\DisabledSpecialPage;
 
 // Protect against web entry
-if (!defined('MEDIAWIKI')) {
-	die('Not an entry point.');
+if ( !defined( 'MEDIAWIKI' ) ) {
+	die( 'Not an entry point.' );
 }
 
 // Hooks to power WOFunctions
@@ -27,9 +27,9 @@ $wgHooks['CreateWikiCreation'][] = 'WikiOasisFunctions::onCreateWikiCreation';
 $wgHooks['wfShellWikiCmd'][] = 'WikiOasisFunctions::onWfShellWikiCmd';
 
 wfLoadExtensions( [
-    'CentralAuth',
-    'GlobalBlocking',
-    'GlobalPreferences',
+	'CentralAuth',
+	'GlobalBlocking',
+	'GlobalPreferences',
 ] );
 
 // ==================
@@ -40,7 +40,7 @@ $wgCentralAuthStrict = true;
 $wgCentralAuthEnableSul3 = true;
 
 if ( isset( $wgAuthManagerAutoConfig['primaryauth'][LocalPasswordPrimaryAuthenticationProvider::class] ) ) {
-    $wgAuthManagerAutoConfig['primaryauth'][LocalPasswordPrimaryAuthenticationProvider::class]['args'][0]['loginOnly'] = true;
+	$wgAuthManagerAutoConfig['primaryauth'][LocalPasswordPrimaryAuthenticationProvider::class]['args'][0]['loginOnly'] = true;
 }
 
 $wgPasswordConfig['null'] = [ 'class' => InvalidPassword::class ];
@@ -52,13 +52,13 @@ $wgCentralAuthSharedDomainCallback = static fn ( $dbname ) =>
 
 // Shared domain asset/CSS handling
 if ( $wmgSharedDomainPathPrefix ) {
-    $wgLoadScript = "{$wi->server}/w/load.php";
-    $wgUseSiteCss = false;
-    $wgUseSiteJs = false;
+	$wgLoadScript = "{$wi->server}/w/load.php";
+	$wgUseSiteCss = false;
+	$wgUseSiteJs = false;
 }
 
 if ( $wmgIsCustomDomain && ( $wmgSharedDomainPathPrefix || $wmgIsCustomDomainLoad ) ) {
-    $wgLoadScript = 'https://' . $wi->getSharedDomain() . "/$wgDBname/load.php";
+	$wgLoadScript = 'https://' . $wi->getSharedDomain() . "/$wgDBname/load.php";
 }
 
 $wgScriptPath = $wmgSharedDomainPathPrefix ?: '/w';
@@ -66,22 +66,22 @@ $wgScript = "$wgScriptPath/index.php";
 
 $wgResourceBasePath = ( $wmgSharedDomainPathPrefix ?: '' ) . '/versions/' . $wi->version;
 if ( $wmgIsCustomDomainLoad ) {
-    $wgResourceBasePath = $wi->server . $wgResourceBasePath;
+	$wgResourceBasePath = $wi->server . $wgResourceBasePath;
 }
 $wgExtensionAssetsPath = "$wgResourceBasePath/extensions";
 $wgStylePath = "$wgResourceBasePath/skins";
 $wgLocalStylePath = $wgStylePath;
 
 if ( $wmgSharedDomainPathPrefix ) {
-    $wgCentralAuthCookieDomain = '.' . WikiOasisFunctions::getDefaultServer();
-    $wgCookiePrefix = 'auth';
-    $wgSessionName = 'authSession';
-    $wgWebAuthnNewCredsDisabled = false;
-    $wgOATHPasswordlessLogin = true;
-    $wgWebAuthnRelyingPartyName = 'WikiOasis';
+	$wgCentralAuthCookieDomain = '.' . WikiOasisFunctions::getDefaultServer();
+	$wgCookiePrefix = 'auth';
+	$wgSessionName = 'authSession';
+	$wgWebAuthnNewCredsDisabled = false;
+	$wgOATHPasswordlessLogin = true;
+	$wgWebAuthnRelyingPartyName = 'WikiOasis';
 
-    $wgCheckUserClientHintsEnabled = true;
-    $wgCheckUserAlwaysSetClientHintHeaders = true;
+	$wgCheckUserClientHintsEnabled = true;
+	$wgCheckUserAlwaysSetClientHintHeaders = true;
 }
 
 // ==================
@@ -89,26 +89,26 @@ if ( $wmgSharedDomainPathPrefix ) {
 // ==================
 
 if ( $wi->isExtensionActive( 'chameleon' ) ) {
-    wfLoadExtension('Bootstrap');
+	wfLoadExtension( 'Bootstrap' );
 }
 
-if ( !$wmgSharedDomainPathPrefix && $wi->isExtensionActive('CirrusSearch') ) {
-	wfLoadExtension('Elastica');
+if ( !$wmgSharedDomainPathPrefix && $wi->isExtensionActive( 'CirrusSearch' ) ) {
+	wfLoadExtension( 'Elastica' );
 	$wgSearchType = 'CirrusSearch';
-	$wgCirrusSearchServers = ['opensearch-us-east-011.ovvin.wonet', 'opensearch-us-east-012.ovvin.wonet'];
+	$wgCirrusSearchServers = [ 'opensearch-us-east-011.ovvin.wonet', 'opensearch-us-east-012.ovvin.wonet' ];
 
-	if ($wi->isExtensionActive('RelatedArticles')) {
+	if ( $wi->isExtensionActive( 'RelatedArticles' ) ) {
 		$wgRelatedArticlesUseCirrusSearch = true;
 	}
 }
 
-if ($wi->isExtensionActive('SocialProfile')) {
+if ( $wi->isExtensionActive( 'SocialProfile' ) ) {
 	require_once "$IP/extensions/SocialProfile/SocialProfile.php";
 
 	$wgSocialProfileFileBackend = 'AmazonS3';
 }
 
-if ($wi->isExtensionActive('UserProfileV2')) {
+if ( $wi->isExtensionActive( 'UserProfileV2' ) ) {
 	$wgUserProfileV2Backend = 'AmazonS3';
 	$wgUserProfileGlobalUploadBaseUrl = "https://cdn.wikioasis.org/{$wgDBname}";
 }
@@ -155,9 +155,9 @@ if ( $wi->isAnyOfExtensionsActive( 'StandardDialogs', 'EnhancedUpload' ) ) {
 }
 
 if ( $wi->isExtensionActive( 'PortableInfobox' ) ) {
-    // incompatible with Parsoid, tracking in T89
-    $wgParserMigrationEnableParsoidDiscussionTools = false;
-    $wgParserMigrationEnableParsoidArticlePages = false;
+	// incompatible with Parsoid, tracking in T89
+	$wgParserMigrationEnableParsoidDiscussionTools = false;
+	$wgParserMigrationEnableParsoidArticlePages = false;
 }
 
 $articlePath = str_replace( '$1', '', $wgArticlePath );
@@ -175,7 +175,7 @@ if ( !$cwPrivate ) {
 	$wgDiscordIncomingWebhookUrl = $wmgGlobalDiscordWebhookUrl;
 }
 
-if ($cwClosed) {
+if ( $cwClosed ) {
 	$wgRevokePermissions = [
 		'*' => [
 			'block' => true,
@@ -189,7 +189,7 @@ if ($cwClosed) {
 		],
 	];
 
-	if ($wi->isExtensionActive('Comments')) {
+	if ( $wi->isExtensionActive( 'Comments' ) ) {
 		$wgRevokePermissions['*']['comment'] = true;
 	}
 }
@@ -228,7 +228,7 @@ $wgDataDump = [
 			'type' => 'namespaceselect',
 			'exists' => true,
 			'noArgsValue' => 'all',
-			'hide-if' => ['!==', 'generatedumptype', 'xml'],
+			'hide-if' => [ '!==', 'generatedumptype', 'xml' ],
 			'label-message' => 'datadump-namespaceselect-label'
 		],
 	],
@@ -284,7 +284,7 @@ $wgRightsUrl = 'https://creativecommons.org/licenses/by-sa/4.0/';
  * values to be absolute overrides. This is however how licensing should
  * be forced. LocalSettings.php values should take priority, which they do.
  */
-switch ($wmgWikiLicense) {
+switch ( $wmgWikiLicense ) {
 	case 'arr':
 		$wgRightsIcon = 'https://static.miraheze.org/commonswiki/6/67/License_icon-copyright-88x31.svg';
 		$wgRightsText = 'All Rights Reserved';
@@ -308,6 +308,7 @@ switch ($wmgWikiLicense) {
 	case 'cc-by-sa':
 		$wgRightsIcon = "https://meta.wikioasis.org$wgResourceBasePath/resources/assets/licenses/cc-by-sa.png";
 		$wgRightsText = 'Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)';
+		// @phan-suppress-next-line PhanPluginRedundantAssignmentInGlobalScope Kept explicit so each license case is self-contained
 		$wgRightsUrl = 'https://creativecommons.org/licenses/by-sa/4.0/';
 		break;
 	case 'cc-by-sa-2-0-kr':
@@ -348,11 +349,11 @@ switch ($wmgWikiLicense) {
  * Make sure it works to override the footer icon
  * for other overrides in LocalSettings.php.
  */
-if ($wgConf->get('wgRightsIcon', $wi->dbname)) {
+if ( $wgConf->get( 'wgRightsIcon', $wi->dbname ) ) {
 	$wgFooterIcons['copyright']['copyright'] = [
-		'url' => $wgConf->get('wgRightsUrl', $wi->dbname),
-		'src' => $wgConf->get('wgRightsIcon', $wi->dbname),
-		'alt' => $wgConf->get('wgRightsText', $wi->dbname),
+		'url' => $wgConf->get( 'wgRightsUrl', $wi->dbname ),
+		'src' => $wgConf->get( 'wgRightsIcon', $wi->dbname ),
+		'alt' => $wgConf->get( 'wgRightsText', $wi->dbname ),
 	];
 }
 

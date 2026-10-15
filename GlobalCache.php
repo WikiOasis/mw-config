@@ -10,18 +10,18 @@ $wgCacheDirectory = "/srv/mediawiki/cache/{$wgDBname}";
 // maxmemory-policy: volatile-lru so it evicts parser cache entries under memory pressure
 // while the SQL backend retains them for the full $wgParserCacheExpireTime.
 $wgObjectCaches['parsercache-multiwrite'] = [
-    'class' => MultiWriteBagOStuff::class,
-    'caches' => [
-        0 => $wgObjectCaches['redis'],
-        1 => [
-            'class' => SqlBagOStuff::class,
-            'cluster' => 'pc1',
-            'dbDomain' => 'parsercache',
-            'purgePeriod' => 0,
-            'tableName' => 'objectcache',
-            'reportDupes' => false,
-        ],
-    ],
+	'class' => MultiWriteBagOStuff::class,
+	'caches' => [
+		0 => $wgObjectCaches['redis'],
+		1 => [
+			'class' => SqlBagOStuff::class,
+			'cluster' => 'pc1',
+			'dbDomain' => 'parsercache',
+			'purgePeriod' => 0,
+			'tableName' => 'objectcache',
+			'reportDupes' => false,
+		],
+	],
 ];
 
 $wgParserCacheType = 'parsercache-multiwrite';
@@ -51,7 +51,7 @@ $wgDplSettings['queryCacheTime'] = 120;
 $wgSearchSuggestCacheExpiry = 10800;
 
 if ( !$wmgSharedDomainPathPrefix ) {
-    $wgEnableSidebarCache = true;
+	$wgEnableSidebarCache = true;
 }
 
 $wgUseLocalMessageCache = true;
@@ -62,48 +62,48 @@ $wgResourceLoaderUseObjectCacheForDeps = true;
 $wgCdnMatchParameterOrder = false;
 
 if ( PHP_SAPI === 'cli' ) {
-        // APC not available in CLI mode
-        $wgLanguageConverterCacheType = CACHE_NONE;
+		// APC not available in CLI mode
+		$wgLanguageConverterCacheType = CACHE_NONE;
 
-        // Suppress DEBUG/INFO log noise in CLI scripts; errors and warnings still reach stderr
-        $wgMWLoggerDefaultSpi = [
-            'class' => \MediaWiki\Logger\MonologSpi::class,
-            'args' => [[
-                'loggers' => [
-                    '@default' => [ 'handlers' => [ 'stderr' ] ],
-                ],
-                'handlers' => [
-                    'stderr' => [
-                        'class' => \Monolog\Handler\StreamHandler::class,
-                        'args'  => [ 'php://stderr', \Monolog\Logger::ERROR ],
-                    ],
-                ],
-            ]],
-        ];
+		// Suppress DEBUG/INFO log noise in CLI scripts; errors and warnings still reach stderr
+		$wgMWLoggerDefaultSpi = [
+			'class' => \MediaWiki\Logger\MonologSpi::class,
+			'args' => [ [
+				'loggers' => [
+					'@default' => [ 'handlers' => [ 'stderr' ] ],
+				],
+				'handlers' => [
+					'stderr' => [
+						'class' => \Monolog\Handler\StreamHandler::class,
+						'args'  => [ 'php://stderr', \Monolog\Logger::ERROR ],
+					],
+				],
+			] ],
+		];
 }
 
 $wgUseGzip = true;
 
 $wgParsoidCacheConfig = [
-    'StashType' => null,
-    // store for 24h
-    'StashDuration' => 24 * 60 * 60,
-    // cache all
-    'CacheThresholdTime' => 0.0,
-    'WarmParsoidParserCache' => true,
+	'StashType' => null,
+	// store for 24h
+	'StashDuration' => 24 * 60 * 60,
+	// cache all
+	'CacheThresholdTime' => 0.0,
+	'WarmParsoidParserCache' => true,
 ];
 
 $wgManageWikiServers = [
-      'task-us-east-011.ovvin.wonet:80',
-      'mw-us-east-011.ovvin.wonet:80',
-      'mw-us-east-012.ovvin.wonet:80',
-      'mw-us-east-021.ovvin.wonet:80',
-      'mw-us-east-022.ovvin.wonet:80',
+	  'task-us-east-011.ovvin.wonet:80',
+	  'mw-us-east-011.ovvin.wonet:80',
+	  'mw-us-east-012.ovvin.wonet:80',
+	  'mw-us-east-021.ovvin.wonet:80',
+	  'mw-us-east-022.ovvin.wonet:80',
 ];
 
 $wgJobTypeConf['default'] = [
-    'class' => WikiOasis\WikiOasisMagic\JobQueue\JobQueueSentryRedis::class,
-    'redisServer' => 'redis-us-east-012.ovvin.wonet:6379',
-    'redisConfig' => [],
-    'daemonized' => true,
+	'class' => WikiOasis\WikiOasisMagic\JobQueue\JobQueueSentryRedis::class,
+	'redisServer' => 'redis-us-east-012.ovvin.wonet:6379',
+	'redisConfig' => [],
+	'daemonized' => true,
 ];

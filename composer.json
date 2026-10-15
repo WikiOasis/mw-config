@@ -1,0 +1,36 @@
+{
+	"name": "wikioasis/mw-config",
+	"description": "Production configuration for WikiOasis",
+	"license": "GPL-3.0-or-later",
+	"require-dev": {
+		"mediawiki/mediawiki-codesniffer": "^46.0",
+		"mediawiki/mediawiki-phan-config": "^0.15.1",
+		"php-parallel-lint/php-parallel-lint": "^1.4"
+	},
+	"scripts": {
+		"test": [
+			"@test:lint",
+			"@test:phpcs",
+			"@test:phan",
+			"@test:prettier"
+		],
+		"test:lint": "parallel-lint . --exclude vendor --exclude node_modules",
+		"test:phpcs": "phpcs -p -s",
+		"test:phan": "phan -d . --long-progress-bar",
+		"test:prettier": "npm run --silent prettier:check",
+		"format": [
+			"@format:phpcs",
+			"@format:prettier"
+		],
+		"format:phpcs": "phpcbf",
+		"format:prettier": "npm run --silent prettier:write"
+	},
+	"config": {
+		"platform": {
+			"php": "8.3"
+		},
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	}
+}
