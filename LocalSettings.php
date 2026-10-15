@@ -74,28 +74,30 @@ if ( !$wmgIsCustomDomainLoad && (
 require_once "/srv/mediawiki/config/features/Experiments.php";
 require_once "/srv/mediawiki/config/features/Safety.php";
 
+
+
 $wgConf->settings += [
     'wgAuthenticationTokenVersion' => [
         'default' => '1',
     ],
     'wgVirtualDomainsMapping' => [
         'default' => [
-            'virtual-centralauth' => $wi->getGlobalDatabase(),
-            'virtual-centralnotice' => $wi->getCentralDatabase(),
-            'virtual-checkuser-global' => $wi->getGlobalDatabase(),
-            'virtual-createwiki' => $wi->getGlobalDatabase(),
-            'virtual-createwiki-central' => $wi->getCentralDatabase(),
-            'virtual-globalblocking' => $wi->getGlobalDatabase(),
-            'virtual-managewiki' => $wi->getGlobalDatabase(),
-            'virtual-managewiki-central' => $wi->getCentralDatabase(),
-            'virtual-oathauth' => $wi->getGlobalDatabase(),
-            'virtual-LoginNotify' => $wi->getGlobalDatabase(),
-            'virtual-importdump' => $wi->getCentralDatabase(),
-            'virtual-requestcustomdomain' => $wi->getCentralDatabase(),
-            'virtual-interwiki' => $wi->getCentralDatabase(),
-            'virtual-interwiki-interlanguage' => $wi->getCentralDatabase(),
-            'virtual-wikioasissafety' => $wi->getGlobalDatabase(),
-            'virtual-wikioasismagic' => $wi->getGlobalDatabase(),
+            'virtual-centralauth' => ['db' => $wi->getGlobalDatabase()],
+            'virtual-centralnotice' => ['db' => $wi->getCentralDatabase()],
+            'virtual-checkuser-global' => ['db' => $wi->getGlobalDatabase()],
+            'virtual-createwiki' => ['db' => $wi->getGlobalDatabase()],
+            'virtual-createwiki-central' => ['db' => $wi->getCentralDatabase()],
+            'virtual-globalblocking' => ['db' => $wi->getGlobalDatabase()],
+            'virtual-managewiki' => ['db' => $wi->getGlobalDatabase()],
+            'virtual-managewiki-central' => ['db' => $wi->getCentralDatabase()],
+            'virtual-oathauth' => ['db' => $wi->getGlobalDatabase()],
+            'virtual-LoginNotify' => ['db' => $wi->getGlobalDatabase()],
+            'virtual-importdump' => ['db' => $wi->getCentralDatabase()],
+            'virtual-requestcustomdomain' => ['db' => $wi->getCentralDatabase()],
+            'virtual-interwiki' => ['db' => $wi->getCentralDatabase()],
+            'virtual-interwiki-interlanguage' => ['db' => $wi->getCentralDatabase()],
+            'virtual-wikioasissafety' => ['db' => $wi->getGlobalDatabase()],
+            'virtual-wikioasismagic' => ['db' => $wi->getGlobalDatabase()],
         ]
     ],
     'wgAutoCreateTempUser' => [
