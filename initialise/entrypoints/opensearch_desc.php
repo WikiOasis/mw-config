@@ -2,7 +2,7 @@
 define( 'MW_NO_SESSION', 1 );
 define( 'MW_ENTRY_POINT', 'opensearch_desc' );
 
-require_once dirname(__DIR__, 2) . '/WikiOasisFunctions.php';
+require_once dirname( __DIR__, 2 ) . '/WikiOasisFunctions.php';
 WikiOasisFunctions::getMediaWiki( '' );
 global $IP;
 

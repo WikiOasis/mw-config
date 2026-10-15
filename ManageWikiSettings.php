@@ -206,34 +206,34 @@ $wgManageWikiSettings = [
 		'help' => 'Actions that can be restricted.',
 		'requires' => [],
 	],
-    'wgExtractsRemoveClasses' => [
-        'name' => 'TextExtracts: Remove Classes',
-        'from' => 'textextracts',
-        'type' => 'texts',
-        'overridedefault' => [
-            'table',
-            'div',
-            'figure',
-            'script',
-            'input',
-            'style',
-            'ul.gallery',
-            'mw\\:editsection',
-            'editsection',
-            'meta',
-            'sup.reference',
-            'ol.references',
-            '.error',
-            '.nomobile',
-            '.noprint',
-            '.noexcerpt',
-            '.sortkey',
-            '.mw-empty-elt',
-        ],
-        'section' => 'other',
-        'help' => 'Selectors for elements which will be excluded from extraction.',
-        'requires' => [],
-    ],
+	'wgExtractsRemoveClasses' => [
+		'name' => 'TextExtracts: Remove Classes',
+		'from' => 'textextracts',
+		'type' => 'texts',
+		'overridedefault' => [
+			'table',
+			'div',
+			'figure',
+			'script',
+			'input',
+			'style',
+			'ul.gallery',
+			'mw\\:editsection',
+			'editsection',
+			'meta',
+			'sup.reference',
+			'ol.references',
+			'.error',
+			'.nomobile',
+			'.noprint',
+			'.noexcerpt',
+			'.sortkey',
+			'.mw-empty-elt',
+		],
+		'section' => 'other',
+		'help' => 'Selectors for elements which will be excluded from extraction.',
+		'requires' => [],
+	],
 	'wgRSSAllowLinkTag' => [
 		'name' => 'Allow links in RSS feeds',
 		'from' => 'rss',
@@ -1394,24 +1394,24 @@ $wgManageWikiSettings = [
 	],
 
 	// Parser Functions
-    'wgParserMigrationEnableParsoidDiscussionTools' => [
-        'name' => 'Use Parsoid for discussiontools rendering',
-        'from' => 'discussiontools',
-        'type' => 'check',
-        'overridedefault' => false,
-        'section' => 'parserfunctions',
-        'help' => 'Parsoid is a modern parser for wikitext, bringing improved accuracy to rendering',
-        'requires' => [],
-    ],
-    'wgParserMigrationEnableParsoidArticlePages' => [
-        'name' => 'Use Parsoid for article rendering',
-        'from' => 'mediawiki',
-        'type' => 'check',
-        'overridedefault' => false,
-        'section' => 'parserfunctions',
-        'help' => 'Parsoid is a modern parser for wikitext, bringing improved accuracy to rendering',
-        'requires' => [],
-    ],
+	'wgParserMigrationEnableParsoidDiscussionTools' => [
+		'name' => 'Use Parsoid for discussiontools rendering',
+		'from' => 'discussiontools',
+		'type' => 'check',
+		'overridedefault' => false,
+		'section' => 'parserfunctions',
+		'help' => 'Parsoid is a modern parser for wikitext, bringing improved accuracy to rendering',
+		'requires' => [],
+	],
+	'wgParserMigrationEnableParsoidArticlePages' => [
+		'name' => 'Use Parsoid for article rendering',
+		'from' => 'mediawiki',
+		'type' => 'check',
+		'overridedefault' => false,
+		'section' => 'parserfunctions',
+		'help' => 'Parsoid is a modern parser for wikitext, bringing improved accuracy to rendering',
+		'requires' => [],
+	],
 	'wgDLPAllowUnlimitedResults' => [
 		'name' => 'DLP Allow Unlimited Results',
 		'from' => 'dynamicpagelist',
@@ -1995,6 +1995,7 @@ $wgManageWikiSettings = [
 		'help' => 'Whether to enable shared uploads from the wiki specified in <code>$wmgSharedUploadDBname</code>.',
 		'requires' => [
 			'settings' => [
+				// @phan-suppress-next-line PhanImpossibleConditionInGlobalScope Value is only set per-wiki at runtime
 				'dbname' => $wmgSharedUploadDBname ?: '<code>$wmgSharedUploadDBname</code>',
 				'setting' => 'wmgSharedUploadClientDBname',
 				'value' => $wi->dbname,
@@ -3466,9 +3467,9 @@ $wgManageWikiSettings = [
 		'name' => 'PortableInfobox Custom Image Width (px)',
 		'from' => 'portableinfobox',
 		'type' => 'integer',
-        	'minint' => 0,
+			'minint' => 0,
 		'maxint' => 3000,
-        	'overridedefault' => 300,
+			'overridedefault' => 300,
 		'section' => 'styling',
 		'help' => 'Size (in px) of image thumbnails used in infoboxes.',
 		'requires' => [],
@@ -3768,8 +3769,8 @@ $wgManageWikiSettings = [
 	],
 	'wgCitizenShowPageTools' => [
 		'name' => 'Citizen Show Page Tools',
-                'from' => 'citizen',
-                'global' => true,
+				'from' => 'citizen',
+				'global' => true,
 		'type' => 'list',
 		'options' => [
 			'true' => 1,
@@ -3783,8 +3784,8 @@ $wgManageWikiSettings = [
 	],
 	'wgCitizenThemeColor' => [
 		'name' => 'Citizen Theme Color',
-                'from' => 'citizen',
-                'global' => true,
+				'from' => 'citizen',
+				'global' => true,
 		'type' => 'text',
 		'overridedefault' => '#131a21',
 		'section' => 'styling',
@@ -3793,8 +3794,8 @@ $wgManageWikiSettings = [
 	],
 	'wgCitizenSearchGateway' => [
 		'name' => 'Citizen Search Gateway',
-                'from' => 'citizen',
-                'global' => true,
+				'from' => 'citizen',
+				'global' => true,
 		'type' => 'list',
 		'options' => [
 			'Action API' => 'mwActionApi',
@@ -3807,8 +3808,8 @@ $wgManageWikiSettings = [
 	],
 	'wgCitizenSearchDescriptionSource' => [
 		'name' => 'Citizen Search Description Source',
-                'from' => 'citizen',
-                'global' => true,
+				'from' => 'citizen',
+				'global' => true,
 		'type' => 'list',
 		'options' => [
 			'TextExtracts' => 'textextracts',
@@ -3822,8 +3823,8 @@ $wgManageWikiSettings = [
 	],
 	'wgCitizenMaxSearchResults' => [
 		'name' => 'Citizen Max Search Results',
-                'from' => 'citizen',
-                'global' => true,
+				'from' => 'citizen',
+				'global' => true,
 		'type' => 'integer',
 		'minint' => 1,
 		'maxint' => 15,
@@ -3834,8 +3835,8 @@ $wgManageWikiSettings = [
 	],
 	'wgCitizenEnableCJKFonts' => [
 		'name' => 'Citizen Enable CJK fonts',
-                'from' => 'citizen',
-                'global' => true,
+				'from' => 'citizen',
+				'global' => true,
 		'type' => 'check',
 		'overridedefault' => false,
 		'section' => 'styling',
@@ -3844,8 +3845,8 @@ $wgManageWikiSettings = [
 	],
 	'wgCitizenOverflowNowrapClasses' => [
 		'name' => 'Citizen Overflow No-wrap Classes',
-                'from' => 'citizen',
-                'global' => true,
+				'from' => 'citizen',
+				'global' => true,
 		'type' => 'texts',
 		'overridedefault' => [
 			'citizen-table-nowrap',
@@ -4869,7 +4870,7 @@ $wgManageWikiSettings = [
 		'help' => 'Namespace ID of the Item namespace for Wikibase Repository.',
 		'requires' => [],
 	],
-	'wmgWikibasePropertyNamespaceID' => [
+	'wmgWikibaseRepoPropertyNamespaceID' => [
 		'name' => 'Repository Property Namespace ID',
 		'from' => 'wikibaserepository',
 		'type' => 'integer',
@@ -4934,53 +4935,53 @@ $wgManageWikiSettings = [
 		'requires' => [],
 	],
 
-    // Yappin
-    'wgYappinReadOnly' => [
-        'name' => 'Yappin Read Only',
-        'from' => 'yappin',
-        'type' => 'check',
-        'overridedefault' => false,
-        'section' => 'editing',
-        'help' => 'Disallow users from commenting on pages.',
-        'requires' => [],
-    ],
-    'wgYappinUseAbuseFilter' => [
-        'name' => 'Yappin Use AbuseFilter',
-        'from' => 'yappin',
-        'type' => 'check',
-        'overridedefault' => true,
-        'section' => 'editing',
-        'help' => 'Use AbuseFilter to review Yappin comments',
-        'requires' => [],
-    ],
-    'wgYappinUseVisualEditor' => [
-        'name' => 'Yappin Use VisualEditor',
-        'from' => 'yappin',
-        'type' => 'check',
-        'overridedefault' => false,
-        'section' => 'editing',
-        'help' => 'Use VisualEditor with Yappin',
-        'requires' => [
-            'extensions' => [
-                'visualeditor',
-                'yappin',
-            ],
-        ],
-    ],
-    'wgYappinShowUPV2Avatars' => [
-        'name' => 'Yappin Use UPV2 Avatars',
-        'from' => 'yappin',
-        'type' => 'check',
-        'overridedefault' => false,
-        'section' => 'editing',
-        'help' => 'Show avatars with Yappin',
-        'requires' => [
-            'extensions' => [
-                'userprofilev2',
-                'yappin',
-            ],
-        ],
-    ],
+	// Yappin
+	'wgYappinReadOnly' => [
+		'name' => 'Yappin Read Only',
+		'from' => 'yappin',
+		'type' => 'check',
+		'overridedefault' => false,
+		'section' => 'editing',
+		'help' => 'Disallow users from commenting on pages.',
+		'requires' => [],
+	],
+	'wgYappinUseAbuseFilter' => [
+		'name' => 'Yappin Use AbuseFilter',
+		'from' => 'yappin',
+		'type' => 'check',
+		'overridedefault' => true,
+		'section' => 'editing',
+		'help' => 'Use AbuseFilter to review Yappin comments',
+		'requires' => [],
+	],
+	'wgYappinUseVisualEditor' => [
+		'name' => 'Yappin Use VisualEditor',
+		'from' => 'yappin',
+		'type' => 'check',
+		'overridedefault' => false,
+		'section' => 'editing',
+		'help' => 'Use VisualEditor with Yappin',
+		'requires' => [
+			'extensions' => [
+				'visualeditor',
+				'yappin',
+			],
+		],
+	],
+	'wgYappinShowUPV2Avatars' => [
+		'name' => 'Yappin Use UPV2 Avatars',
+		'from' => 'yappin',
+		'type' => 'check',
+		'overridedefault' => false,
+		'section' => 'editing',
+		'help' => 'Show avatars with Yappin',
+		'requires' => [
+			'extensions' => [
+				'userprofilev2',
+				'yappin',
+			],
+		],
+	],
 ];
 
 if ( $wi->isAllOfExtensionsActive( 'Gamepress', 'Theme' ) ) {

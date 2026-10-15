@@ -73,23 +73,23 @@ if ( PHP_SAPI !== 'cli' ) {
 	} );
 }
 
-$wgHooks['LogException'][] = function ( Throwable $e, bool $suppressed ) {
+$wgHooks['LogException'][] = static function ( Throwable $e, bool $suppressed ) {
 	if ( !$suppressed ) {
 		\Sentry\captureException( $e );
 	}
 	return true;
 };
 
-$wgHooks['UserGetRights'][] = function ( $user ) {
+$wgHooks['UserGetRights'][] = static function ( $user ) {
 	if ( $user && $user->isRegistered() ) {
-		\Sentry\configureScope( function ( \Sentry\State\Scope $scope ) use ( $user ) {
+		\Sentry\configureScope( static function ( \Sentry\State\Scope $scope ) use ( $user ) {
 			$scope->setUser( [ 'id' => $user->getId(), 'username' => $user->getName() ] );
 		} );
 	}
 	return true;
 };
 
-$wgHooks['BeforePageDisplay'][] = function ( OutputPage $out, Skin $skin ) {
+$wgHooks['BeforePageDisplay'][] = static function ( OutputPage $out, Skin $skin ) {
 	$out->addHeadItem( 'sentry-js-config', <<<'HTML'
 		<script>
 		window.sentryOnLoad = function () {

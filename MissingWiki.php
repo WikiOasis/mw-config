@@ -233,12 +233,11 @@ EOF;
 
 // Sync databases.php just in case wiki is missing due to it being outdated
 try {
-    MediaWikiServices::allowGlobalInstance();
-    $dataStore = MediaWikiServices::getInstance()->get( 'CreateWikiDataStore' );
-    $dataStore->syncCache();
+	MediaWikiServices::allowGlobalInstance();
+	$dataStore = MediaWikiServices::getInstance()->get( 'CreateWikiDataStore' );
+	$dataStore->syncCache();
 } catch ( Throwable $ex ) {
-    // Intentionally left empty
+	// Intentionally left empty
 }
 
 die( 1 );
-

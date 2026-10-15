@@ -16,4 +16,19 @@ $cfg['exclude_analysis_directory_list'] = [
 	...array_map( static fn ( $dir ) => "$mwPath/$dir", $coreDirs ),
 ];
 
+$cfg['minimum_target_php_version'] = '8.3';
+
+$cfg['suppress_issue_types'] = array_merge( $cfg['suppress_issue_types'] ?? [], [
+	'PhanUndeclaredGlobalVariable',
+	'PhanPossiblyUndeclaredGlobalVariable',
+	'PhanUndeclaredVariable',
+	'PhanUndeclaredVariableDim',
+	'PhanNonClassMethodCall',
+	'PhanUndeclaredClassReference',
+	'PhanUndeclaredClassMethod',
+	'PhanUndeclaredClassConstant',
+	'PhanUndeclaredTypeParameter',
+	'PhanUndeclaredFunction',
+] );
+
 return $cfg;

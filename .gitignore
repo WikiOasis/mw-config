@@ -1,3 +1,6 @@
 .idea
 PrivateSettings.php
 OAuth.key
+vendor
+node_modules
+.DS_Store
