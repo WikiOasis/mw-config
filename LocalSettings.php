@@ -31,8 +31,6 @@ $wgMemoryLimit = '256M';
 require_once "/srv/mediawiki/config/PrivateSettings.php";
 require_once "/srv/mediawiki/config/WikiOasisFunctions.php";
 require_once "/srv/mediawiki/config/GlobalExtensions.php";
-require_once "/srv/mediawiki/config/features/Experiments.php";
-require_once "/srv/mediawiki/config/features/Safety.php";
 
 $wgConf->suffixes = ['wiki'];
 
@@ -43,28 +41,12 @@ $wgDBssl = false;
 
 $wgDiff3 = "/usr/bin/diff3";
 
-$wgVirtualDomainsMapping['virtual-centralauth'] = ['db' => 'wikidb'];
-$wgVirtualDomainsMapping['virtual-checkuser-global'] = ['db' => 'wikidb'];
-$wgVirtualDomainsMapping['virtual-createwiki'] = ['db' => 'wikidb'];
-$wgVirtualDomainsMapping['virtual-createwiki-central'] = ['db' => 'metawiki'];
-$wgVirtualDomainsMapping['virtual-globalblocking'] = ['db' => 'wikidb'];
-$wgVirtualDomainsMapping['virtual-managewiki'] = ['db' => 'wikidb'];
-$wgVirtualDomainsMapping['virtual-managewiki-central'] = ['db' => 'metawiki'];
-$wgVirtualDomainsMapping['virtual-oathauth'] = ['db' => 'wikidb'];
-$wgVirtualDomainsMapping['virtual-LoginNotify'] = ['db' => 'wikidb'];
-$wgVirtualDomainsMapping['virtual-importdump'] = ['db' => 'metawiki'];
-$wgVirtualDomainsMapping['virtual-requestcustomdomain'] = ['db' => 'metawiki'];
-$wgVirtualDomainsMapping['virtual-interwiki'] = ['db' => 'metawiki'];
-$wgVirtualDomainsMapping['virtual-interwiki-interlanguage'] = ['db' => 'metawiki'];
-$wgVirtualDomainsMapping['virtual-centralnotice'] = ['db' => 'metawiki'];
-$wgVirtualDomainsMapping['virtual-wikioasissafety'] = [ 'db' => 'wikidb' ];
-$wgVirtualDomainsMapping['virtual-wikioasismagic'] = [ 'db' => 'wikidb' ];
+
 
 $wgDebugLogGroups['WikiOasisFunctions'] = "/var/log/mediawiki/mf.log";
 
 
 $wi = new WikiOasisFunctions();
-// $wgReadOnly = ( PHP_SAPI === 'cli' ) ? null : 'This wiki is currently being upgraded to a newer software version. Please check back in a couple of hours.';
 
 $wmgSharedDomainPathPrefix = '';
 
@@ -75,8 +57,6 @@ $wmgIsCustomDomain = !str_ends_with(
 
 $wmgOnSharedDomain = ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain();
 
-// Only serve a custom domain wiki's full styling from the shared domain when
-// the request comes from a page on the shared domain (i.e. logging in there)
 $wmgIsCustomDomainLoad = $wmgIsCustomDomain
     && $wmgOnSharedDomain
     && defined( 'MW_ENTRY_POINT' ) && MW_ENTRY_POINT === 'load'
@@ -86,36 +66,37 @@ if ( !$wmgIsCustomDomainLoad && (
     $wmgOnSharedDomain
     || getenv( 'MW_USE_SHARED_DOMAIN' )
 ) ) {
-    $wgLoadScript = "{$wi->server}/w/load.php";
     $wmgSharedDomainPathPrefix = "/$wgDBname";
-
     $wgCanonicalServer = 'https://' . $wi->getSharedDomain();
-
-    $wgUseSiteCss = false;
-    $wgUseSiteJs = false;
 }
 
-if ( $wmgIsCustomDomain && ( $wmgSharedDomainPathPrefix || $wmgIsCustomDomainLoad ) ) {
-    // Only route through the shared domain while on it; the custom domain
-    // itself keeps using its own load.php
-    $wgLoadScript = 'https://' . $wi->getSharedDomain() . "/$wgDBname/load.php";
-}
-
-$wgScriptPath = $wmgSharedDomainPathPrefix ?: '/w';
-$wgScript = "$wgScriptPath/index.php";
-
-$wgResourceBasePath = ( $wmgSharedDomainPathPrefix ?: '' ) . '/versions/' . $wi->version;
-if ( $wmgIsCustomDomainLoad ) {
-    // Keep CSS asset URLs (images, fonts) on the wiki's own domain
-    $wgResourceBasePath = $wi->server . $wgResourceBasePath;
-}
-$wgExtensionAssetsPath = "$wgResourceBasePath/extensions";
-$wgStylePath = "$wgResourceBasePath/skins";
-$wgLocalStylePath = $wgStylePath;
+// require non essentials that should still be used
+require_once "/srv/mediawiki/config/features/Experiments.php";
+require_once "/srv/mediawiki/config/features/Safety.php";
 
 $wgConf->settings += [
     'wgAuthenticationTokenVersion' => [
         'default' => '1',
+    ],
+    'wgVirtualDomainsMapping' => [
+        'default' => [
+            'virtual-centralauth' => $wi->getGlobalDatabase(),
+            'virtual-centralnotice' => $wi->getCentralDatabase(),
+            'virtual-checkuser-global' => $wi->getGlobalDatabase(),
+            'virtual-createwiki' => $wi->getGlobalDatabase(),
+            'virtual-createwiki-central' => $wi->getCentralDatabase(),
+            'virtual-globalblocking' => $wi->getGlobalDatabase(),
+            'virtual-managewiki' => $wi->getGlobalDatabase(),
+            'virtual-managewiki-central' => $wi->getCentralDatabase(),
+            'virtual-oathauth' => $wi->getGlobalDatabase(),
+            'virtual-LoginNotify' => $wi->getGlobalDatabase(),
+            'virtual-importdump' => $wi->getCentralDatabase(),
+            'virtual-requestcustomdomain' => $wi->getCentralDatabase(),
+            'virtual-interwiki' => $wi->getCentralDatabase(),
+            'virtual-interwiki-interlanguage' => $wi->getCentralDatabase(),
+            'virtual-wikioasissafety' => $wi->getGlobalDatabase(),
+            'virtual-wikioasismagic' => $wi->getGlobalDatabase(),
+        ]
     ],
     'wgAutoCreateTempUser' => [
         'default' => [

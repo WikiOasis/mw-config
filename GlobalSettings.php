@@ -17,10 +17,9 @@ if (!defined('MEDIAWIKI')) {
 	die('Not an entry point.');
 }
 
-// Populates databases.php with per-wiki data including 'v' (version), 'd' (domain), etc.
+// Hooks to power WOFunctions
 $wgHooks['CreateWikiGenerateDatabaseLists'][] = 'WikiOasisFunctions::onGenerateDatabaseLists';
 
-// ManageWiki hooks for primary-domain, article-path, and version selection.
 $wgHooks['ManageWikiCoreAddFormFields'][] = 'WikiOasisFunctions::onManageWikiCoreAddFormFields';
 $wgHooks['ManageWikiCoreFormSubmission'][] = 'WikiOasisFunctions::onManageWikiCoreFormSubmission';
 
@@ -33,7 +32,10 @@ wfLoadExtensions( [
     'GlobalPreferences',
 ] );
 
-// Only allow users with global accounts to login
+// ==================
+// SUL3 stuff
+// ==================
+
 $wgCentralAuthStrict = true;
 $wgCentralAuthEnableSul3 = true;
 
@@ -48,6 +50,28 @@ $wgWebAuthnNewCredsDisabled = true;
 $wgCentralAuthSharedDomainCallback = static fn ( $dbname ) =>
 "https://{$wi->getSharedDomain()}/$dbname";
 
+// Shared domain asset/CSS handling
+if ( $wmgSharedDomainPathPrefix ) {
+    $wgLoadScript = "{$wi->server}/w/load.php";
+    $wgUseSiteCss = false;
+    $wgUseSiteJs = false;
+}
+
+if ( $wmgIsCustomDomain && ( $wmgSharedDomainPathPrefix || $wmgIsCustomDomainLoad ) ) {
+    $wgLoadScript = 'https://' . $wi->getSharedDomain() . "/$wgDBname/load.php";
+}
+
+$wgScriptPath = $wmgSharedDomainPathPrefix ?: '/w';
+$wgScript = "$wgScriptPath/index.php";
+
+$wgResourceBasePath = ( $wmgSharedDomainPathPrefix ?: '' ) . '/versions/' . $wi->version;
+if ( $wmgIsCustomDomainLoad ) {
+    $wgResourceBasePath = $wi->server . $wgResourceBasePath;
+}
+$wgExtensionAssetsPath = "$wgResourceBasePath/extensions";
+$wgStylePath = "$wgResourceBasePath/skins";
+$wgLocalStylePath = $wgStylePath;
+
 if ( $wmgSharedDomainPathPrefix ) {
     $wgCentralAuthCookieDomain = '.' . WikiOasisFunctions::getDefaultServer();
     $wgCookiePrefix = 'auth';
@@ -59,6 +83,10 @@ if ( $wmgSharedDomainPathPrefix ) {
     $wgCheckUserClientHintsEnabled = true;
     $wgCheckUserAlwaysSetClientHintHeaders = true;
 }
+
+// ==================
+// Extension stuff
+// ==================
 
 if ( $wi->isExtensionActive( 'chameleon' ) ) {
     wfLoadExtension('Bootstrap');
