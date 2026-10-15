@@ -355,6 +355,10 @@ class WikiOasisFunctions {
 			'db' => $this->getGlobalDatabase(),
 		];
 
+		$wgVirtualDomainsMapping['virtual-globalblocking'] = [
+			'db' => $this->getGlobalDatabase(),
+		];
+
 		$wgVirtualDomainsMapping['virtual-managewiki'] = [
 			'db' => $this->getGlobalDatabase(),
 		];
