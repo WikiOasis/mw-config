@@ -31,8 +31,8 @@ $wgMemoryLimit = '256M';
 require_once "/srv/mediawiki/config/PrivateSettings.php";
 require_once "/srv/mediawiki/config/WikiOasisFunctions.php";
 require_once "/srv/mediawiki/config/GlobalExtensions.php";
-require_once "/srv/mediawiki/config/Experiments.php";
-require_once "/srv/mediawiki/config/Safety.php";
+require_once "/srv/mediawiki/config/features/Experiments.php";
+require_once "/srv/mediawiki/config/features/Safety.php";
 
 $wgConf->suffixes = ['wiki'];
 

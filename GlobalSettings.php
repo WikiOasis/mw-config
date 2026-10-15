@@ -123,7 +123,7 @@ if ( $wi->isExtensionActive( 'JsonConfig' ) ) {
 
 if ( $wi->isAnyOfExtensionsActive( 'WikibaseClient', 'WikibaseRepository' ) ) {
 	// Includes Wikibase Configuration. There is a global and per-wiki system here.
-	require_once "$IP/config/Wikibase.php";
+	require_once "/srv/mediawiki/config/features/Wikibase.php";
 }
 
 if ( $wi->isAnyOfExtensionsActive( 'StandardDialogs', 'EnhancedUpload' ) ) {
