@@ -2939,7 +2939,7 @@ $wi::$disabledExtensions = [
 	'drafts' => '<a href="https://issue-tracker.miraheze.org/T11970">T11970</a>',
 	'score' => '<a href="https://issue-tracker.miraheze.org/T5863">T5863</a>',
 	'wikiforum' => '<a href="https://issue-tracker.miraheze.org/T11641">T11641</a>',
-    'yappin' => '<a href="https://phorge.wikioasis.org/T176">T176</a>',
+	'yappin' => '<a href="https://phorge.wikioasis.org/T176">T176</a>',
 	'mobiletabsplugin' => 'Incompatible with MediaWiki 1.42+',
 
 	'lingo' => 'Currently broken',
