@@ -4,6 +4,7 @@
 	'dsn'                 => $sentryDSN,
 	'environment'         => defined( 'MW_ENV' ) ? MW_ENV : 'production',
 	'release'             => $wgVersion ?? null,
+	'error_types'         => E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR,
 	'enable_logs'         => true,
 	'traces_sample_rate'  => 1.0,
 	'profiles_sample_rate' => 0.3,
