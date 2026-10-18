@@ -83,6 +83,7 @@ $wgConf->settings += [
 			'virtual-managewiki' => [ 'db' => $wi->getGlobalDatabase() ],
 			'virtual-managewiki-central' => [ 'db' => $wi->getCentralDatabase() ],
 			'virtual-oathauth' => [ 'db' => $wi->getGlobalDatabase() ],
+			'virtual-oauth' => [ 'db' => $wi->getCentralDatabase() ],
 			'virtual-LoginNotify' => [ 'db' => $wi->getGlobalDatabase() ],
 			'virtual-importdump' => [ 'db' => $wi->getCentralDatabase() ],
 			'virtual-requestcustomdomain' => [ 'db' => $wi->getCentralDatabase() ],
