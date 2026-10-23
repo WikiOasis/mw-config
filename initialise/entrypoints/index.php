@@ -11,7 +11,13 @@ WikiOasisFunctions::getMediaWiki( '' );
 global $IP;
 
 require_once "$IP/includes/PHPVersionCheck.php";
-wfEntryPointCheck( 'html', dirname( $_SERVER['SCRIPT_NAME'] ) );
+if ( function_exists( 'wfEntryPointCheck' ) ) {
+	// 1.46
+	wfEntryPointCheck( 'html', dirname( $_SERVER['SCRIPT_NAME'] ) );
+} else {
+	// 1.47
+	( new \MediaWiki\PHPVersionCheck( 'html', dirname( $_SERVER['SCRIPT_NAME'] ) ) )->run();
+}
 
 require "$IP/includes/WebStart.php";
 
