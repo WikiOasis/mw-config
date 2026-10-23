@@ -88,6 +88,10 @@ if ( $wmgSharedDomainPathPrefix ) {
 // Extension stuff
 // ==================
 
+if ( $wi->getMediaWikiVersion === '1.47' ) {
+	wgLoadExtension( 'TestKitchen' );
+}
+
 if ( $wi->isExtensionActive( 'chameleon' ) ) {
 	wfLoadExtension( 'Bootstrap' );
 }
