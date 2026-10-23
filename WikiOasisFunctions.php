@@ -63,7 +63,7 @@ class WikiOasisFunctions {
 	public const MEDIAWIKI_DIRECTORY = '/srv/mediawiki/versions';
 
 	public const MEDIAWIKI_VERSIONS = [
-		'alpha' => '1.46',
+		'alpha' => '1.47',
 		'beta' => '1.46',
 		'stable' => '1.46',
 	];
