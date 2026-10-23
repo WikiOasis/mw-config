@@ -89,7 +89,7 @@ if ( $wmgSharedDomainPathPrefix ) {
 // ==================
 
 if ( $wi->getMediaWikiVersion === '1.47' ) {
-	wgLoadExtension( 'TestKitchen' );
+	wfLoadExtension( 'TestKitchen' );
 }
 
 if ( $wi->isExtensionActive( 'chameleon' ) ) {
