@@ -88,7 +88,7 @@ if ( $wmgSharedDomainPathPrefix ) {
 // Extension stuff
 // ==================
 
-if ( $wi->getMediaWikiVersion === '1.47' ) {
+if ( WikiOasisFunctions::getMediaWikiVersion() === '1.47' ) {
 	wfLoadExtension( 'TestKitchen' );
 }
 
