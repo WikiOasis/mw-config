@@ -160,6 +160,10 @@ if ( $wi->isExtensionActive( 'PortableInfobox' ) ) {
 	$wgParserMigrationEnableParsoidArticlePages = false;
 }
 
+if ( $wi->isExtensionActive( 'RatePage' ) ) {
+	$wgRPUseMMVModule = false;
+}
+
 $articlePath = str_replace( '$1', '', $wgArticlePath );
 
 $wgDiscordNotificationWikiUrl = $wi->server . $articlePath;
