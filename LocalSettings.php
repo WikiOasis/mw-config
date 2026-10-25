@@ -3032,8 +3032,6 @@ $wgFileBackends['s3'] = [
 ];
 $wgAWSBucketDomain = "https://cdn.wikioasis.org";
 
-// Zone paths are relative to the bucket and $wgAWSBucketTopSubdirectory ("/$wgDBname"),
-// the extension builds containerPaths from them as "$wikiId-<container>".
 $wgAWSRepoZones['upv2avatars'] = [
 	'container' => 'upv2avatars',
 	'path' => '/upv2avatars',
