@@ -3032,37 +3032,32 @@ $wgFileBackends['s3'] = [
 ];
 $wgAWSBucketDomain = "https://cdn.wikioasis.org";
 
-// Global containers shared across all wikis (SocialProfile avatars/awards, UserProfileV2 avatars)
-$wgFileBackends['s3']['containerPaths'] = [
-	'avatars'    => 'wikioasis-media/avatars',
-	'awards'     => 'wikioasis-media/awards',
-	'upv2avatars' => 'wikioasis-media/upv2avatars',
-	"{$wgDBname}-avatars" => "wikioasis-media/{$wgDBname}/avatars",
-	"{$wgDBname}-upv2avatars" => "wikioasis-media/{$wgDBname}/upv2avatars",
-];
+// Zone paths are relative to the bucket and $wgAWSBucketTopSubdirectory ("/$wgDBname"),
+// the extension builds containerPaths from them as "$wikiId-<container>".
 $wgAWSRepoZones['upv2avatars'] = [
 	'container' => 'upv2avatars',
-	'path' => 'wikioasis-media/upv2avatars',
-	'isPublic' => true,
-];
-
-$wgAWSRepoZones["{$wgDBname}-upv2avatars"] = [
-	'container' => $wgDBname,
-	'path' => "wikioasis-media/{$wgDBname}/upv2avatars",
+	'path' => '/upv2avatars',
 	'isPublic' => true,
 ];
 
 $wgAWSRepoZones['avatars'] = [
 	'container' => 'avatars',
-	'path' => 'wikioasis-media/avatars',
+	'path' => '/avatars',
 	'isPublic' => true,
 ];
 
-$wgAWSRepoZones["{$wgDBname}-avatars"] = [
-	'container' => $wgDBname,
-	'path' => "wikioasis-media/{$wgDBname}/avatars",
+$wgAWSRepoZones['awards'] = [
+	'container' => 'awards',
+	'path' => '/awards',
 	'isPublic' => true,
 ];
+
+$wgHooks['MediaWikiServices'][] = static function () use ( $wgDBname ) {
+	global $wgFileBackends;
+	foreach ( [ 'avatars', 'awards', 'upv2avatars' ] as $container ) {
+		$wgFileBackends['s3']['containerPaths']["{$wgDBname}-{$container}"] = "wikioasis-media/{$container}";
+	}
+};
 
 $wgAWSRepoZones['dumps-backup'] = [
 	'container' => 'dumps-backup',
