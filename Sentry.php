@@ -1,5 +1,7 @@
 <?php
 
+$sentryRequestId = \MediaWiki\Request\WebRequest::getRequestId();
+
 \Sentry\init( [
 	'dsn'                 => $sentryDSN,
 	'environment'         => defined( 'MW_ENV' ) ? MW_ENV : 'production',
@@ -10,21 +12,47 @@
 	'profiles_sample_rate' => 0.3,
 	'attach_stacktrace'   => true,
 	'max_breadcrumbs'     => 100,
+	'before_send_transaction' => static function ( \Sentry\Event $event ) use ( $sentryRequestId ) {
+		foreach ( $event->getSpans() as $span ) {
+			$span->setTags( [ 'request_id' => $sentryRequestId ] + $span->getTags() );
+		}
+		return $event;
+	},
+	'before_send_log' => static function ( \Sentry\Logs\Log $log ) use ( $sentryRequestId ) {
+		$log->setAttribute( 'request_id', $sentryRequestId );
+		return $log;
+	},
 ] );
+
+\Sentry\configureScope( static function ( \Sentry\State\Scope $scope ) use ( $sentryRequestId ) {
+	$scope->setTag( 'request_id', $sentryRequestId );
+} );
 
 $wgMWLoggerDefaultSpi = [
 	'class' => \MediaWiki\Logger\MonologSpi::class,
 	'args'  => [ [
 		'loggers' => [
-			'exception' => [ 'handlers' => [ 'sentry-logs', 'sentry-crumbs', 'stderr' ], 'processors' => [ 'psr' ] ],
-			'error'     => [ 'handlers' => [ 'sentry-logs', 'sentry-crumbs', 'stderr' ], 'processors' => [ 'psr' ] ],
-			'DBError'   => [ 'handlers' => [ 'sentry-logs', 'sentry-crumbs', 'stderr' ], 'processors' => [ 'psr' ] ],
-			'@default'  => [ 'handlers' => [ 'sentry-logs', 'sentry-crumbs', 'stderr' ], 'processors' => [ 'psr' ] ],
+			'exception' => [ 'handlers' => [ 'sentry-logs', 'sentry-crumbs', 'stderr' ], 'processors' => [ 'psr', 'request-id' ] ],
+			'error'     => [ 'handlers' => [ 'sentry-logs', 'sentry-crumbs', 'stderr' ], 'processors' => [ 'psr', 'request-id' ] ],
+			'DBError'   => [ 'handlers' => [ 'sentry-logs', 'sentry-crumbs', 'stderr' ], 'processors' => [ 'psr', 'request-id' ] ],
+			'@default'  => [ 'handlers' => [ 'sentry-logs', 'sentry-crumbs', 'stderr' ], 'processors' => [ 'psr', 'request-id' ] ],
 		],
 		'processors' => [
 			'psr' => [
 				'class' => \Monolog\Processor\PsrLogMessageProcessor::class,
 				'args'  => [],
+			],
+			'request-id' => [
+				'factory' => static function () {
+					return static function ( $record ) {
+						$id = \MediaWiki\Request\WebRequest::getRequestId();
+						if ( $record instanceof \Monolog\LogRecord ) {
+							return $record->with( message: "[$id] " . $record->message );
+						}
+						$record['message'] = "[$id] " . $record['message'];
+						return $record;
+					};
+				},
 			],
 		],
 		'handlers' => [
@@ -56,6 +84,7 @@ if ( PHP_SAPI !== 'cli' ) {
 	$sentryTxCtx->setName( ( $_SERVER['REQUEST_METHOD'] ?? 'GET' ) . ' ' . strtok( $_SERVER['REQUEST_URI'] ?? '/', '?' ) );
 	$sentryTxCtx->setOp( 'http.server' );
 	$sentryTx = \Sentry\startTransaction( $sentryTxCtx );
+	$sentryTx->setTags( [ 'request_id' => $sentryRequestId ] );
 	\Sentry\SentrySdk::getCurrentHub()->setSpan( $sentryTx );
 
 	register_shutdown_function( static function () use ( $sentryTx ) {
