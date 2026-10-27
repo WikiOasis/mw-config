@@ -47,6 +47,7 @@ $wgMWLoggerDefaultSpi = [
 					return static function ( $record ) {
 						$id = \MediaWiki\Request\WebRequest::getRequestId();
 						if ( $record instanceof \Monolog\LogRecord ) {
+							// @phan-suppress-next-line PhanUndeclaredMethod, PhanUndeclaredProperty
 							return $record->with( message: "[$id] " . $record->message );
 						}
 						$record['message'] = "[$id] " . $record['message'];
