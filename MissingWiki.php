@@ -3,7 +3,7 @@
 use MediaWiki\MediaWikiServices;
 
 header( 'Content-Type: text/html; charset=utf-8' );
-header( 'Cache-Control: s-maxage=2678400, max-age=2678400' );
+header( 'Cache-Control: s-maxage=300, max-age=0' );
 
 $path = $_SERVER['REQUEST_URI'];
 $actual_link = 'https://' . $_SERVER['HTTP_HOST'] . $path;
