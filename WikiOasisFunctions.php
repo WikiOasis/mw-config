@@ -35,7 +35,7 @@ class WikiOasisFunctions {
 		],
 	];
 
-	private const BETA_HOSTNAME = 'staging-us-east-021';
+	private const BETA_HOSTNAME = '';
 
 	public const CACHE_DIRECTORY = '/srv/mediawiki/cw_cache';
 
