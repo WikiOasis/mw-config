@@ -28,6 +28,7 @@ class WikiOasisFunctions {
 	private const ALLOWED_DOMAINS = [
 		'default' => [
 			'wikioasis.org',
+            'has-a.wiki',
 		],
 		'beta' => [
 			'betaoasis.xyz',
