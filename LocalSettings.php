@@ -66,17 +66,17 @@ if ( !$wmgIsCustomDomainLoad && (
 
 // redirect to any other serviced domains to the primary host
 if (
-    !$wmgOnSharedDomain
-    && !$wmgSharedDomainPathPrefix
-    && in_array( $_SERVER['REQUEST_METHOD'] ?? '', [ 'GET', 'HEAD' ], true )
-    && WikiOasisFunctions::readDbListFile( 'databases', false, $wi->dbname )
+	!$wmgOnSharedDomain
+	&& !$wmgSharedDomainPathPrefix
+	&& in_array( $_SERVER['REQUEST_METHOD'] ?? '', [ 'GET', 'HEAD' ], true )
+	&& WikiOasisFunctions::readDbListFile( 'databases', false, $wi->dbname )
 ) {
-    $reqHost = strtolower( preg_replace( '/:\d+$/', '', $_SERVER['HTTP_HOST'] ?? '' ) );
-    $primaryHost = parse_url( $wi->server, PHP_URL_HOST );
-    if ( $reqHost !== '' && $primaryHost && $reqHost !== $primaryHost ) {
-        header( 'Location: ' . $wi->server . ( $_SERVER['REQUEST_URI'] ?? '/' ), true, 302 );
-        exit;
-    }
+	$reqHost = strtolower( preg_replace( '/:\d+$/', '', $_SERVER['HTTP_HOST'] ?? '' ) );
+	$primaryHost = parse_url( $wi->server, PHP_URL_HOST );
+	if ( $reqHost !== '' && $primaryHost && $reqHost !== $primaryHost ) {
+		header( 'Location: ' . $wi->server . ( $_SERVER['REQUEST_URI'] ?? '/' ), true, 302 );
+		exit;
+	}
 }
 
 // require non essentials that should still be used
