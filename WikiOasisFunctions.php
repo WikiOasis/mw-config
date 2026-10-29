@@ -1163,6 +1163,31 @@ class WikiOasisFunctions {
 		}
 	}
 
+    public static function onRequestWikiFormDescriptorModify( array &$formDescriptor ): void {
+        $domains = self::ALLOWED_DOMAINS[ self::getRealm() ];
+        $default = self::DEFAULT_SERVER[ self::getRealm() ];
+
+        $field = [
+            'type' => 'select',
+            'label' => 'Domain',
+            'options' => array_combine( $domains, $domains ),
+            'default' => $default,
+        ];
+
+        $ordered = [];
+        foreach ( $formDescriptor as $key => $value ) {
+            $ordered[$key] = $value;
+            if ( $key === 'subdomain' ) {
+                $ordered['primary-domain'] = $field;
+            }
+        }
+        $formDescriptor = $ordered;
+    }
+
+    public static function onCreateWikiCreationExtraFields( array &$extraFields ): void {
+        $extraFields[] = 'primary-domain';
+    }
+
 	public static function onMediaWikiServices(): void {
 		if ( !isset( $GLOBALS['globals'] ) || !is_array( $GLOBALS['globals'] ) ) {
 			return;
