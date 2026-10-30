@@ -3013,10 +3013,7 @@ $wgHooks['SetupAfterCache'][] = static function () {
 
 	return true;
 };
-// some observability here
-$wgStatsFormat = 'dogstatsd';
-$wgStatsTarget = 'udp://monitoring-us-east-021.ovvin.wonet:9125';
-$wgWMEStatsdBaseUri = 'udp://monitoring-us-east-021.ovvin.wonet:9125';
+require_once "/srv/mediawiki/config/Observability.php";
 
 $wmgUploadHostname = 'cdn.wikioasis.org';
 
