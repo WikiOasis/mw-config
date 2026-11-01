@@ -768,6 +768,13 @@ $wgManageWikiExtensions = [
 		'requires' => [],
 		'section' => 'parserhooks',
 	],
+	'mustache' => [
+		'name' => 'Mustache',
+		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Mustache',
+		'conflicts' => 'codemirror',
+		'requires' => [],
+		'section' => 'parserhooks',
+	],
 	'myvariables' => [
 		'name' => 'MyVariables',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:MyVariables',
@@ -812,6 +819,13 @@ $wgManageWikiExtensions = [
 				'ext_oredict_items' => "$IP/extensions/OreDict/install/sql/ext_oredict_items.sql"
 			],
 		],
+		'requires' => [],
+		'section' => 'parserhooks',
+	],
+	'parserpower' => [
+		'name' => 'ParserPower',
+		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:ParserPower',
+		'conflicts' => 'pageforms',
 		'requires' => [],
 		'section' => 'parserhooks',
 	],
@@ -2768,6 +2782,13 @@ $wgManageWikiExtensions = [
 	'removeredlinks' => [
 		'name' => 'RemoveRedlinks',
 		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:RemoveRedlinks',
+		'conflicts' => false,
+		'requires' => [],
+		'section' => 'other',
+	],
+	'renderblocking' => [
+		'name' => 'RenderBlocking',
+		'linkPage' => 'https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:RenderBlocking',
 		'conflicts' => false,
 		'requires' => [],
 		'section' => 'other',

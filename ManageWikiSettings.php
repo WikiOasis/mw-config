@@ -2494,6 +2494,17 @@ $wgManageWikiSettings = [
 		'requires' => [],
 	],
 
+	// RenderBlocking
+	'wgRenderBlockingInlineAssets' => [
+		'name' => 'RenderBlocking Inline Assets',
+		'from' => 'renderblocking',
+		'type' => 'check',
+		'overridedefault' => false,
+		'section' => 'styling',
+		'help' => 'Inline render-blocking CSS and JS in the page head instead of linking to them.',
+		'requires' => [],
+	],
+
 	// Restricted (settings that require the managewiki-restricted right)
 	'wgSVGMetadataCutoff' => [
 		'name' => 'SVG Metadata Cutoff',
