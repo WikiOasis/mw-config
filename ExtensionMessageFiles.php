@@ -193,6 +193,7 @@ $wgExtensionMessagesFiles = [
   'PageSchemasAlias' => "$IP/extensions/PageSchemas/PageSchemas.i18n.alias.php",
   'PageTriageAlias' => "$IP/extensions/PageTriage/PageTriage.alias.php",
   'PagedTiffHandlerMagic' => "$IP/extensions/PagedTiffHandler/PagedTiffHandler.i18n.magic.php",
+  'ParserPowerMagic' => "$IP/extensions/ParserPower/ParserPower.i18n.magic.php",
   'PhonosMagic' => "$IP/extensions/Phonos/Phonos.i18n.php",
   'PipeEscapeMagic' => "$IP/extensions/PipeEscape/PipeEscape.i18n.magic.php",
   'PollNYAlias' => "$IP/extensions/PollNY/includes/PollNY.alias.php",
@@ -1400,6 +1401,10 @@ $wgMessagesDirs = [
   [
 	0 => "$IP/extensions/PagedTiffHandler/i18n",
   ],
+  'ParserPower' =>
+  [
+	0 => "$IP/extensions/ParserPower/i18n",
+  ],
   'PdfHandler' =>
   [
 	0 => "$IP/extensions/PdfHandler/i18n",
@@ -1478,6 +1483,10 @@ $wgMessagesDirs = [
   'RemoveRedlinks' =>
   [
 	0 => "$IP/extensions/RemoveRedlinks/i18n",
+  ],
+  'RenderBlocking' =>
+  [
+	0 => "$IP/extensions/RenderBlocking/i18n",
   ],
   'Report' =>
   [
