@@ -36,6 +36,7 @@ $wgExtensionMessagesFiles = [
   'OATHAuthAlias' => "$IP/extensions/OATHAuth/OATHAuth.alias.php",
   'MWOAuthAliases' => "$IP/extensions/OAuth/MWOAuth.alias.php",
   'OOJSPlusAlias' => "$IP/extensions/OOJSPlus/OOJSPlus.alias.php",
+  'MultimediaViewerMagic' => "$IP/extensions/MultimediaViewer/MultimediaViewer.i18n.magic.php",
   'ParserFunctionsMagic' => "$IP/extensions/ParserFunctions/ParserFunctions.i18n.magic.php",
   'ScribuntoMagic' => "$IP/extensions/Scribunto/Scribunto.magic.php",
   'ScribuntoNamespaces' => "$IP/extensions/Scribunto/Scribunto.namespaces.php",
