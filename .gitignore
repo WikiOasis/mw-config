@@ -3,4 +3,5 @@ PrivateSettings.php
 OAuth.key
 vendor
 node_modules
+pnpm-lock.yaml
 .DS_Store
