@@ -1185,7 +1185,7 @@ $wgManageWikiExtensions = [
 		'requires' => [],
 		'install' => [
 			'sql' => [
-				'Yappin' => "$IP/extensions/Yappin/sql/mysql/tables-generated.sql"
+				'yappin_comment' => "$IP/extensions/Yappin/sql/mysql/tables-generated.sql"
 			],
 			'permissions' => [
 				'*' => [
