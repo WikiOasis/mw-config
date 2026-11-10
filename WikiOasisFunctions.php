@@ -729,6 +729,10 @@ class WikiOasisFunctions {
 		// Permissions
 		foreach ( $cacheArray['permissions'] ?? [] as $group => $perm ) {
 			foreach ( (array)$perm['permissions'] as $right ) {
+				if ( $group === '*' && str_starts_with( $right, 'checkuser-temporary-account' ) ) {
+					continue;
+				}
+
 				$settings['wgGroupPermissions']['default'][$group][$right] = true;
 			}
 
