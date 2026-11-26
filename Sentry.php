@@ -125,7 +125,7 @@ $wgHooks['BeforePageDisplay'][] = static function ( OutputPage $out, Skin $skin 
 		<script>
 		window.sentryOnLoad = function () {
 			Sentry.init( {
-				replaysSessionSampleRate: 0.1,
+				replaysSessionSampleRate: 0.05,
 				replaysOnErrorSampleRate: 1,
 				beforeSend: function ( event ) {
 					var values = event.exception && event.exception.values;
