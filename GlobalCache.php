@@ -39,8 +39,8 @@ $wgDiscussionToolsTalkPageParserCacheExpiry = 86400 * 10;
 // 3 days
 $wgRevisionCacheExpiry = 86400 * 3;
 
-// 1 day
-$wgObjectCacheSessionExpiry = 86400;
+// 30 days — how long an idle login session survives server-side (core default is 1 hour)
+$wgObjectCacheSessionExpiry = 86400 * 30;
 
 // 7 days
 $wgDLPMaxCacheTime = 604800;
