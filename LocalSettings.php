@@ -53,8 +53,7 @@ $wmgOnSharedDomain = ( $_SERVER['HTTP_HOST'] ?? '' ) === $wi->getSharedDomain();
 
 $wmgIsCustomDomainLoad = $wmgIsCustomDomain
 	&& $wmgOnSharedDomain
-	&& defined( 'MW_ENTRY_POINT' ) && MW_ENTRY_POINT === 'load'
-	&& parse_url( $_SERVER['HTTP_REFERER'] ?? '', PHP_URL_HOST ) === $wi->getSharedDomain();
+	&& defined( 'MW_ENTRY_POINT' ) && MW_ENTRY_POINT === 'load';
 
 if ( !$wmgIsCustomDomainLoad && (
 	$wmgOnSharedDomain
