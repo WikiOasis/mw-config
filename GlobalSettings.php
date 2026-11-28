@@ -40,6 +40,8 @@ wfLoadExtensions( [
 // ==================
 
 $wgCentralAuthStrict = true;
+$wgCentralAuthAutomaticVanishPerformer = 'Vanish request queue';
+$wgReservedUsernames[] = $wgCentralAuthAutomaticVanishPerformer;
 $wgCentralAuthEnableSul3 = true;
 
 if ( isset( $wgAuthManagerAutoConfig['primaryauth'][LocalPasswordPrimaryAuthenticationProvider::class] ) ) {
