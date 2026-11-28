@@ -100,7 +100,7 @@ $wgConf->settings += [
 			'virtual-oathauth' => [ 'db' => $wi->getGlobalDatabase() ],
 			'virtual-oauth' => [ 'db' => $wi->getCentralDatabase() ],
 			'virtual-LoginNotify' => [ 'db' => $wi->getGlobalDatabase() ],
-			'virtual-importdump' => [ 'db' => $wi->getCentralDatabase() ],
+			'virtual-requestimport' => [ 'db' => $wi->getCentralDatabase() ],
 			'virtual-requestcustomdomain' => [ 'db' => $wi->getCentralDatabase() ],
 			'virtual-interwiki' => [ 'db' => $wi->getCentralDatabase() ],
 			'virtual-interwiki-interlanguage' => [ 'db' => $wi->getCentralDatabase() ],
@@ -1289,26 +1289,26 @@ $wgConf->settings += [
 		'default' => 'metawiki',
 	'beta' => 'metawikibeta',
 	],
-	'wgImportDumpEnableAutomatedJob' => [
+	'wgRequestImportEnableAutomatedJob' => [
 		'default' => true,
 	],
-	'wgImportDumpInterwikiMap' => [
+	'wgRequestImportInterwikiMap' => [
 		'default' => [
 			'fandom.com' => 'wikia',
 			'miraheze.org' => 'mh',
 			// 'wikitide.org' => 'wt',
 		],
 	],
-	'wgImportDumpScriptCommand' => [
+	'wgRequestImportDumpCommand' => [
 		'default' => 'php {IP}/maintenance/importDump.php --wiki={wiki} --username-prefix="{username-prefix}" {file-path}',
 		'metawikibeta' => 'screen -d -m bash -c ". /etc/swift-env.sh; swift download miraheze-metawikibeta-local-public {file-path} -o /home/$USER/{file-name}; mwscript importDump.php {wiki} -y --no-updates --username-prefix={username-prefix} /home/$USER/{file-name}; mwscript rebuildall.php {wiki} -y; mwscript initSiteStats.php {wiki} --active --update -y; rm /home/$USER/{file-name}"',
 	],
-	'wgImportDumpUsersNotifiedOnAllRequests' => [
+	'wgRequestImportUsersNotifiedOnAllRequests' => [
 		'default' => [
 			'Waki285',
 		],
 	],
-	'wgImportDumpUsersNotifiedOnFailedImports' => [
+	'wgRequestImportUsersNotifiedOnFailedImports' => [
 		'default' => [
 			'Waki285',
 		],
